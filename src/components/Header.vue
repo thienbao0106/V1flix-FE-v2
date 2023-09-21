@@ -1,11 +1,14 @@
 <template>
   <nav
-    class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-4 px-5"
+    class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-5"
   >
     <section class="flex-none w-1/6">Logo</section>
     <section class="flex-1 w-2/6">Genres</section>
 
-    <section aria-label="search" class="flex flex-col w-3/6 h-12 text-white">
+    <section
+      aria-label="search"
+      class="flex flex-row w-3/6 h-12 text-white gap-10"
+    >
       <aside aria-label="input" className="flex flex-row">
         <div
           class="flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
@@ -24,6 +27,17 @@
           />
         </div>
       </aside>
+      <div class="flex justify-center items-center">
+        <i
+          class="pi pi-sun text-2xl cursor-pointer hover:text-secondColorBrighter"
+        ></i>
+      </div>
+      <a
+        href="/login"
+        className="flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
+      >
+        Login
+      </a>
     </section>
   </nav>
 </template>

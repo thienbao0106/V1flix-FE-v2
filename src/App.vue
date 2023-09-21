@@ -5,6 +5,7 @@ import Header from "./components/Header.vue";
 <template>
   <main class="bg-bgColor">
     <Header />
+    <router-view />
   </main>
 </template>
 

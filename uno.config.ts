@@ -17,7 +17,10 @@ export default defineConfig({
       thirdAnime: "#7cc6fe",
       other: "#c2cae8",
       opacityText: "#22282d",
+
+      outColor: "#e89b26",
     },
+
     fontFamily: {
       mainFont: "Nunito, Arial, sans-serif",
     },
