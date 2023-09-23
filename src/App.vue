@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import Header from "./components/Header.vue";
-
-//temp logic
-console.log(window.location.pathname);
-const isValid = window.location.pathname === "/";
+import BaseLayout from "./layouts/BaseLayout.vue";
 </script>
 
 <template>
-  <main class="bg-bgColor">
-    <Header v-if="isValid" />
+  <BaseLayout>
     <router-view />
-  </main>
+  </BaseLayout>
 </template>
 
 <style>

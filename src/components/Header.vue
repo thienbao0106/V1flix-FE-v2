@@ -1,3 +1,19 @@
+<script lang="ts">
+export default {
+  data() {
+    return {
+      theme: "dark",
+    };
+  },
+  methods: {
+    toggleTheme: function (theme: String) {
+      this.theme = theme === "dark" ? "light" : "dark";
+      return;
+    },
+  },
+};
+</script>
+
 <template>
   <nav
     class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-5"
@@ -29,7 +45,9 @@
       </aside>
       <div class="flex justify-center items-center">
         <i
-          class="pi pi-sun text-2xl cursor-pointer hover:text-secondColorBrighter"
+          @click="toggleTheme(theme)"
+          class="pi text-2xl cursor-pointer hover:text-secondColorBrighter"
+          :class="theme === 'dark' ? 'pi-sun' : 'pi-moon'"
         ></i>
       </div>
       <a
