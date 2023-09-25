@@ -1,14 +1,24 @@
 <script lang="ts">
+import { useQuery } from "@vue/apollo-composable";
+import { findSeriesQuery } from "../api/series";
 export default {
   data() {
     return {
       theme: "dark",
+      keyword: "",
+      filmResult: [] as any[],
     };
   },
   methods: {
     toggleTheme: function (theme: String) {
       this.theme = theme === "dark" ? "light" : "dark";
       return;
+    },
+    searchKeyword: function (keyword: String) {
+      const { onResult } = useQuery(findSeriesQuery(["title"], keyword));
+      onResult((result) => {
+        if (result.data) this.filmResult = result.data.findSeries;
+      });
     },
   },
 };
@@ -25,23 +35,36 @@ export default {
       aria-label="search"
       class="flex flex-row w-3/6 h-12 text-white gap-10"
     >
-      <aside aria-label="input" className="flex flex-row">
-        <div
-          class="flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
-        >
-          <a
-            href="/search"
-            class="no-underline text-white hover:text-secondColorBrighter flex justify-between items-center"
+      <aside aria-label="input" className="flex flex-col">
+        <div class="flex flex-row">
+          <div
+            class="flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
           >
-            <span class="pi pi-search"></span>
-          </a>
-          <input
-            type="text"
-            class="bg-transparent w-xl px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
-            placeholder="Search"
-            value=""
-          />
+            <a
+              href="/search"
+              class="no-underline text-white hover:text-secondColorBrighter flex justify-between items-center"
+            >
+              <span class="pi pi-search"></span>
+            </a>
+            <input
+              type="text"
+              class="bg-transparent w-xl px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
+              placeholder="Search"
+              v-model="keyword"
+              @change="searchKeyword(keyword)"
+            />
+          </div>
         </div>
+        <aside v-if="keyword !== ''" aria-label="result">
+          <ul className="rounded-b-md list">
+            <li
+              v-for="film in filmResult"
+              className="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
+            >
+              {{ film?.title }}
+            </li>
+          </ul>
+        </aside>
       </aside>
       <div class="flex justify-center items-center">
         <i
