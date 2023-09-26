@@ -1,12 +1,14 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { findSeriesQuery } from "../api/series";
+import { findSeriesQuery } from "../queries/series";
+
 export default {
   data() {
     return {
       theme: "dark",
       keyword: "",
       filmResult: [] as any[],
+      loading: false as any,
     };
   },
   methods: {
@@ -16,8 +18,11 @@ export default {
     },
     searchKeyword: function (keyword: String) {
       const { onResult } = useQuery(findSeriesQuery(["title"], keyword));
+      this.loading = true;
+      this.filmResult = [];
       onResult((result) => {
-        if (result.data) this.filmResult = result.data.findSeries;
+        if (!result.data) return;
+        this.filmResult = result.data.findSeries;
       });
     },
   },
@@ -26,7 +31,7 @@ export default {
 
 <template>
   <nav
-    class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-5"
+    class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
   >
     <section class="flex-none w-1/6">Logo</section>
     <section class="flex-1 w-2/6">Genres</section>
@@ -57,11 +62,30 @@ export default {
         </div>
         <aside v-if="keyword !== ''" aria-label="result">
           <ul className="rounded-b-md list">
+            <div
+              v-if="!loading"
+              class="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
+            >
+              Loading...
+            </div>
             <li
+              v-if="filmResult.length > 0"
               v-for="film in filmResult"
               className="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
             >
-              {{ film?.title }}
+              {{ film.title }}
+            </li>
+            <li
+              v-if="filmResult.length === 3"
+              className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2 list-none"
+            >
+              See more
+            </li>
+            <li
+              v-if="filmResult.length === 0 && loading"
+              className="bg-mainColor rounded-b-md text-center font-bold py-2 px-2 list-none"
+            >
+              Can't find the data with {{ keyword }}
             </li>
           </ul>
         </aside>
