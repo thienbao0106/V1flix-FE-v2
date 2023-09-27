@@ -1,6 +1,29 @@
-<script setup lang="ts">
+<script lang="ts">
+import { useQuery } from "@vue/apollo-composable";
 import { register } from "swiper/element/bundle";
+import { seriesBannerQuery } from "../../queries/series";
+import BannerCard from "./BannerCard.vue";
+
 register();
+export default {
+  data() {
+    return {
+      series: [] as any[],
+    };
+  },
+  setup() {
+    const { onResult: resultFn } = useQuery(seriesBannerQuery(2));
+    return {
+      resultFn,
+    };
+  },
+  mounted() {
+    this.resultFn((result) => {
+      if (result.data) this.series = result.data.series.series;
+    });
+  },
+  components: { BannerCard },
+};
 </script>
 
 <template>
@@ -12,9 +35,15 @@ register();
       }"
       loop="true"
     >
-      <swiper-slide class="h-80">Slide 1</swiper-slide>
-      <swiper-slide class="h-80">Slide 2</swiper-slide>
-      <swiper-slide class="h-80">Slide 3</swiper-slide>
+      <swiper-slide v-for="s in series">
+        <BannerCard
+          :key="s._id"
+          :id="s._id"
+          :title="s.title"
+          :description="s.description"
+          :images="s.images"
+        />
+      </swiper-slide>
     </swiper-container>
   </section>
 </template>

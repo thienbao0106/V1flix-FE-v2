@@ -21,7 +21,7 @@
         </div>
         <div class="text-white space-y-4">
           <h2 class="text-xl">Communities</h2>
-          <div class="flex gap-x-10">
+          <div class="flex gap-x-10 text-2xl">
             <div class="hover:text-secondColor hover:cursor-pointer">
               <i class="pi pi-discord" />
             </div>
