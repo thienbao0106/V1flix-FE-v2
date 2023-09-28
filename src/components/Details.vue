@@ -15,11 +15,24 @@ export default {
       </div>
     </div>
     <div
-      className="flex justify-center items-center gap-2 bg-ongoing rounded-br-md rounded-tl-md rounded-tr-lg rounded-bl-lg px-2"
+      class="flex justify-center items-center gap-2 rounded-br-md rounded-tl-md rounded-tr-lg rounded-bl-lg px-2 font-bold"
+      :class="
+        status === 'Ongoing'
+          ? 'bg-ongoing '
+          : status === 'Completed'
+          ? 'bg-secondColor'
+          : 'bg-red-500'
+      "
     >
-      <i v-if="status === 'ongoing'" class="pi pi-play" />
-      <i v-else-if="status === 'completed'" class="pi pi-check" />
-      <i v-else class="pi pi-stop-circle" />
+      <div v-if="status === 'Ongoing'">
+        <i class="pi pi-play" />
+        Ongoing
+      </div>
+      <div v-else-if="status === 'Completed'">
+        <i class="pi pi-check" />
+        Completed
+      </div>
+      <div v-else><i class="pi pi-stop-circle" /> Dropped</div>
     </div>
     <span className="xl:text-base lg:text-xl sm:text-2xl">{{ type }}</span>
   </main>

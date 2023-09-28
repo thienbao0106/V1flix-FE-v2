@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <aside class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8">
+  <aside class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8">
     <Card
       v-for="s in series"
       :id="s._id"

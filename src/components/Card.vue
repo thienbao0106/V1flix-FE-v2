@@ -1,13 +1,22 @@
 <script lang="ts">
 import Details from "./Details.vue";
+import { ref } from "vue";
 
 export default {
   props: ["id", "title", "images", "type", "total_episodes", "status"],
   methods: {
     getCoverImage: function (images: any[]): string {
-      return images.find((image) => image.type === "cover").source;
+      const result = images.find((image) => image.type === "cover");
+      return result.source;
     },
   },
+  setup() {
+    const imageRef = ref(null);
+    return {
+      imageRef,
+    };
+  },
+
   components: { Details },
 };
 </script>
@@ -16,16 +25,21 @@ export default {
   <div class="flex flex-col w-full">
     <div class="relative group">
       <a href="/">
-        <img :src="getCoverImage(images)" :alt="`cover-image-${title}`" />
+        <img
+          ref="image"
+          class="group-hover:opacity-25 max-w-full"
+          :src="getCoverImage(images)"
+          :alt="`cover-image-${title}`"
+        />
       </a>
+      <div
+        class="absolute top-1/2 xl:left-[40%] sm:left-[35%] left-[40%] group-hover:translate-x-4 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"
+      >
+        <i class="pi pi-play text-white text-5xl" />
+      </div>
     </div>
     <div
-      class="absolute top-1/2 lg:left-1/3 md:left-1/4 sm:left-[4.5rem] left-[75px] group-hover:translate-x-4 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"
-    >
-      <i class="pi pi-play" />
-    </div>
-    <div
-      class="flex flex-row items-center justify-between bg-mainColor px-2 py-0.5 mb-3 rounded-b-md"
+      class="max-w-full flex flex-row items-center justify-between bg-mainColor px-2 py-0.5 mb-3 rounded-b-md"
     >
       <Details :newep="total_episodes" :type="type" :status="status" />
     </div>

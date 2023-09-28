@@ -16,7 +16,7 @@ export default {
     <img
       :src="getBannerImage(images)"
       alt="test"
-      class="lg:static absolute inset-0 h-80 w-full lg:basis-1/2 lg:w-1/2 lg:h-1/2 lg:rounded-3xl lg:shadow-black lg:shadow-sm lg:opacity-100 opacity-60"
+      class="lg:static absolute inset-0 lg:basis-1/2 lg:w-1/2 lg:h-1/2 lg:rounded-3xl lg:shadow-black lg:shadow-sm lg:opacity-100 opacity-60"
     />
     <aside
       className="lg:static lg:basis-1/2 xl:gap-8 lg:gap-4 lg:w-1/2 w-full relative lg:h-auto h-80 flex flex-col justify-center items-start gap-3"
