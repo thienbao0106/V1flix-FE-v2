@@ -7,8 +7,6 @@ export default {
     return {
       theme: "dark",
       keyword: "",
-      filmResult: [] as any[],
-      loading: false as any,
     };
   },
   methods: {
@@ -16,14 +14,16 @@ export default {
       this.theme = theme === "dark" ? "light" : "dark";
       return;
     },
-    searchKeyword: function (keyword: String) {
-      const { onResult } = useQuery(findSeriesQuery(["title"], keyword));
-      this.loading = true;
-      this.filmResult = [];
-      onResult((result) => {
-        if (!result.data) return;
-        this.filmResult = result.data.findSeries;
-      });
+  },
+  computed: {
+    resultQuery(): any {
+      console.log(this.keyword);
+
+      if (this.keyword === "") return;
+      const { result } = useQuery(findSeriesQuery(["title"], this.keyword));
+      console.log(result.value.findSeries);
+      if (result.value) return result.value.findSeries;
+      return [];
     },
   },
 };
@@ -31,7 +31,7 @@ export default {
 
 <template>
   <nav
-    class="sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
+    class="max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
   >
     <section class="flex-none w-1/6">Logo</section>
     <section class="flex-1 w-2/6">Genres</section>
@@ -40,8 +40,8 @@ export default {
       aria-label="search"
       class="flex flex-row w-3/6 h-12 text-white gap-10"
     >
-      <aside aria-label="input" className="flex flex-col">
-        <div class="flex flex-row">
+      <aside aria-label="input" class="w-3/5 flex-none flex flex-col">
+        <div class="flex">
           <div
             class="flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
           >
@@ -53,36 +53,29 @@ export default {
             </a>
             <input
               type="text"
-              class="bg-transparent w-xl px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
+              class="xl:w-[29rem] lg:w-[14rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
               placeholder="Search"
               v-model="keyword"
-              @change="searchKeyword(keyword)"
             />
           </div>
         </div>
         <aside v-if="keyword !== ''" aria-label="result">
           <ul className="rounded-b-md list">
-            <div
-              v-if="!loading"
-              class="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
-            >
-              Loading...
-            </div>
             <li
-              v-if="filmResult.length > 0"
-              v-for="film in filmResult"
+              v-if="resultQuery.length > 0"
+              v-for="film in resultQuery"
               className="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
             >
               {{ film.title }}
             </li>
             <li
-              v-if="filmResult.length === 3"
+              v-if="resultQuery.length === 3"
               className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2 list-none"
             >
               See more
             </li>
             <li
-              v-if="filmResult.length === 0 && loading"
+              v-if="resultQuery.length === 0"
               className="bg-mainColor rounded-b-md text-center font-bold py-2 px-2 list-none"
             >
               Can't find the data with {{ keyword }}
@@ -90,7 +83,7 @@ export default {
           </ul>
         </aside>
       </aside>
-      <div class="flex justify-center items-center">
+      <div class="w-1/5 flex flex-1 justify-center items-center">
         <i
           @click="toggleTheme(theme)"
           class="pi text-2xl cursor-pointer hover:text-secondColorBrighter"
@@ -99,7 +92,7 @@ export default {
       </div>
       <a
         href="/login"
-        className="flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
+        class="w-full flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
       >
         Login
       </a>
