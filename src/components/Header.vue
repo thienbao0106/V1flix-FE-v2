@@ -17,8 +17,6 @@ export default {
   },
   computed: {
     resultQuery(): any {
-      console.log(this.keyword);
-
       if (this.keyword === "") return;
       const { result } = useQuery(findSeriesQuery(["title"], this.keyword));
       console.log(result.value.findSeries);
@@ -40,8 +38,8 @@ export default {
       aria-label="search"
       class="flex flex-row w-3/6 h-12 text-white gap-10"
     >
-      <aside aria-label="input" class="w-3/5 flex-none flex flex-col">
-        <div class="flex">
+      <aside aria-label="input" class="w-4/6 flex flex-col">
+        <div class="flex w-full">
           <div
             class="flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
           >
@@ -53,18 +51,18 @@ export default {
             </a>
             <input
               type="text"
-              class="xl:w-[29rem] lg:w-[14rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
+              class="2xl:w-[33rem] xl:w-[24rem] lg:w-[16rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
               placeholder="Search"
               v-model="keyword"
             />
           </div>
         </div>
-        <aside v-if="keyword !== ''" aria-label="result">
-          <ul className="rounded-b-md list">
+        <div v-if="keyword !== ''" aria-label="result">
+          <ul className="rounded-b-md list w-full">
             <li
               v-if="resultQuery.length > 0"
               v-for="film in resultQuery"
-              className="bg-mainColor text-left py-2 px-2 even:bg-black-500 text-white list-none"
+              className="bg-mainColor text-left py-2 pl-2 even:bg-black-500 text-white list-none"
             >
               {{ film.title }}
             </li>
@@ -81,9 +79,9 @@ export default {
               Can't find the data with {{ keyword }}
             </li>
           </ul>
-        </aside>
+        </div>
       </aside>
-      <div class="w-1/5 flex flex-1 justify-center items-center">
+      <div class="w-1/6 flex flex-1 justify-center items-center">
         <i
           @click="toggleTheme(theme)"
           class="pi text-2xl cursor-pointer hover:text-secondColorBrighter"
@@ -92,7 +90,7 @@ export default {
       </div>
       <a
         href="/login"
-        class="w-full flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
+        class="w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
       >
         Login
       </a>

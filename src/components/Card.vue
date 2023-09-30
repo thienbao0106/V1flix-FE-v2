@@ -3,14 +3,15 @@ import Details from "./Details.vue";
 import { ref } from "vue";
 
 export default {
-  props: ["id", "title", "images", "type", "total_episodes", "status"],
+  props: ["id", "title", "images", "type", "total_episodes", "status", "view"],
   methods: {
     getCoverImage: function (images: any[]): string {
       const result = images.find((image) => image.type === "cover");
       return result.source;
     },
   },
-  setup() {
+  setup(props) {
+    console.log(props.view);
     const imageRef = ref(null);
     return {
       imageRef,
@@ -41,7 +42,12 @@ export default {
     <div
       class="max-w-full flex flex-row items-center justify-between bg-mainColor px-2 py-0.5 mb-3 rounded-b-md"
     >
-      <Details :newep="total_episodes" :type="type" :status="status" />
+      <Details
+        :newep="total_episodes"
+        :type="type"
+        :status="status"
+        :view="view"
+      />
     </div>
     <h3 class="lg:text-xl text-lg w-full line-clamp-2">{{ title }}</h3>
   </div>

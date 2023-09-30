@@ -34,6 +34,7 @@ export const seriesQuery = (limit: number) => gql`
         status
         total_episodes
         type
+        view
         images {
           _id
           source

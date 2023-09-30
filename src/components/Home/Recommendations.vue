@@ -34,6 +34,7 @@ export default {
       :title="s.title"
       :total_episodes="s.total_episodes"
       :type="s.type"
+      :view="s.view"
     />
   </aside>
   <aside class="flex justify-center items-center">

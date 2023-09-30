@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  props: ["newep", "type", "status"],
+  props: ["newep", "type", "status", "view"],
 };
 </script>
 
@@ -26,13 +26,19 @@ export default {
     >
       <div v-if="status === 'Ongoing'">
         <i class="pi pi-play" />
-        Ongoing
       </div>
       <div v-else-if="status === 'Completed'">
         <i class="pi pi-check" />
-        Completed
       </div>
-      <div v-else><i class="pi pi-stop-circle" /> Dropped</div>
+      <div v-else><i class="pi pi-stop-circle" /></div>
+    </div>
+    <div className="flex flex-row justify-start gap-0.5">
+      <div
+        className="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
+      >
+        <i class="pi pi-eye" />
+        <span className="lg:text-base text-sm">{{ view }}</span>
+      </div>
     </div>
     <span className="xl:text-base lg:text-xl sm:text-2xl">{{ type }}</span>
   </main>

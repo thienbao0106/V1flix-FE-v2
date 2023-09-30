@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Banner from "../components/Home/Banner.vue";
 import Recommendations from "../components/Home/Recommendations.vue";
+import TopAnimeList from "../components/Home/TopAnimeList.vue";
 </script>
 
 <template>
@@ -16,6 +17,7 @@ import Recommendations from "../components/Home/Recommendations.vue";
     </section>
     <section className="basis-1/4 lg:mt-5 mt-8">
       <h1 className="font-bold lg:text-2xl text-4xl mb-5">Top Anime</h1>
+      <TopAnimeList />
     </section>
   </main>
 </template>

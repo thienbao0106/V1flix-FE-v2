@@ -1,0 +1,57 @@
+<script lang="ts">
+import Details from "../Details.vue";
+
+export default {
+  props: ["id", "title", "status", "view", "images", "rank", "type"],
+  methods: {
+    getCoverImage: function (images: any[]): string {
+      const result = images.find((image) => image.type === "cover");
+      return result.source;
+    },
+  },
+  components: { Details },
+};
+</script>
+
+<template>
+  <div className="flex flex-row w-full h-auto gap-3 bg-mainColor bg-opacity-50">
+    <div className="basis-1/5 flex justify-center items-center">
+      <span
+        :class="
+          parseInt(rank) === 1
+            ? 'first'
+            : parseInt(rank) === 2
+            ? 'second'
+            : parseInt(rank) === 3
+            ? 'third'
+            : 'other'
+        "
+        class="text-7xl text-opacityText font-extrabold"
+      >
+        {{ rank }}
+      </span>
+    </div>
+    <div className="basis-1/5">
+      <img
+        loading="lazy"
+        className="xl:h-[150px] lg:h-[108px]"
+        :src="getCoverImage(images)"
+        alt="placeholder-img"
+      />
+    </div>
+    <div
+      className="flex flex-col basis-3/5  w-full  m-auto space-y-3 xl:mx-0 lg:-mx-12 sm:-mx-5 md:mx-0 mx-0"
+    >
+      <h3
+        className="xl:text-base lg:text-3xl sm:text-2xl pt-2 text-lg font-semibold line-clamp-1"
+      >
+        <a href="/" class="decoration-none text-white">{{ title }}</a>
+      </h3>
+      <div
+        className="flex flex-row items-center justify-between pr-5 py-0.5 mb-3 rounded-b-md"
+      >
+        <Details :type="type" :newep="8" :status="status" :view="view" />
+      </div>
+    </div>
+  </div>
+</template>
