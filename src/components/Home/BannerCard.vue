@@ -34,7 +34,7 @@ export default {
       <a
         className="cursor-pointer bg-secondColor text-white hover:bg-opacity-70 xl:px-10 px-5 font-bold lg:py-4 py-2 xl:text-2xl lg:text-lg text-base rounded-md flex justify-center items-center gap-x-3"
       >
-        <i class="pi pi-play text-2xl" />
+        <i class="pi pi-play xl:text-2xl lg:text-lg text-base" />
         PLAY NOW
       </a>
     </aside>

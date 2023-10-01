@@ -47,6 +47,7 @@ export default {
         :type="type"
         :status="status"
         :view="view"
+        :check="true"
       />
     </div>
     <h3 class="lg:text-xl text-lg w-full line-clamp-2">{{ title }}</h3>

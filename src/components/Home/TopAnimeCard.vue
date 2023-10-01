@@ -34,13 +34,13 @@ export default {
     <div className="basis-1/5">
       <img
         loading="lazy"
-        className="xl:h-[150px] lg:h-[108px]"
+        class="h-full w-full"
         :src="getCoverImage(images)"
         alt="placeholder-img"
       />
     </div>
     <div
-      className="flex flex-col basis-3/5  w-full  m-auto space-y-3 xl:mx-0 lg:-mx-12 sm:-mx-5 md:mx-0 mx-0"
+      className="flex flex-col basis-3/5  w-full  my-auto space-y-3 xl:mx-0 lg:mx-2 md:mx-0 "
     >
       <h3
         className="xl:text-base lg:text-3xl sm:text-2xl pt-2 text-lg font-semibold line-clamp-1"
@@ -48,9 +48,21 @@ export default {
         <a href="/" class="decoration-none text-white">{{ title }}</a>
       </h3>
       <div
-        className="flex flex-row items-center justify-between pr-5 py-0.5 mb-3 rounded-b-md"
+        className="flex flex-col items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"
       >
-        <Details :type="type" :newep="8" :status="status" :view="view" />
+        <Details
+          :type="type"
+          :newep="8"
+          :status="status"
+          :view="view"
+          :check="false"
+        />
+      </div>
+      <div
+        class="w-fit flex justify-start items-center gap-2 rounded-br-xl rounded-l-md rounded-t-md px-2"
+      >
+        <i class="pi pi-eye" />
+        <span class="lg:text-base text-sm">{{ view }}</span>
       </div>
     </div>
   </div>
