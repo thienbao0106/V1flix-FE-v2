@@ -12,5 +12,15 @@ const routes: Array<RouteRecordRaw> = [
     name: "Profile",
     component: defineAsyncComponent(() => import("../views/Profile.vue")),
   },
+  {
+    path: "/series/:title",
+    name: "Series",
+    component: defineAsyncComponent(() => import("../views/Series.vue")),
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: defineAsyncComponent(() => import("../views/NotFound.vue")),
+  },
 ];
 export default routes;

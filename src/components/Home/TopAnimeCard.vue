@@ -45,7 +45,11 @@ export default {
       <h3
         className="xl:text-base lg:text-3xl sm:text-2xl pt-2 text-lg font-semibold line-clamp-1"
       >
-        <a href="/" class="decoration-none text-white">{{ title }}</a>
+        <router-link
+          :to="`/series/${title}?ep=1`"
+          class="decoration-none text-white hover:text-secondColorBrighter"
+          >{{ title }}</router-link
+        >
       </h3>
       <div
         className="flex flex-col items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"

@@ -2,8 +2,10 @@
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 //temp logic
-console.log(window.location.pathname);
-const isValid = window.location.pathname === "/";
+
+const isValid = ["/login", "/register"].some(
+  (route) => !window.location.pathname.includes(route)
+);
 </script>
 
 <template>

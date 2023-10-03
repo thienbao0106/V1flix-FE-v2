@@ -25,14 +25,14 @@ export default {
 <template>
   <div class="flex flex-col w-full">
     <div class="relative group">
-      <a href="/">
+      <router-link :to="`/series/${title}?ep=1`">
         <img
           ref="image"
           class="group-hover:opacity-25 max-w-full"
           :src="getCoverImage(images)"
           :alt="`cover-image-${title}`"
         />
-      </a>
+      </router-link>
       <div
         class="absolute top-1/2 xl:left-[40%] sm:left-[35%] left-[40%] group-hover:translate-x-4 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"
       >
