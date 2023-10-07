@@ -4,6 +4,7 @@ import { findSeriesQuery } from "../queries/series";
 import { useQuery } from "@vue/apollo-composable";
 import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
+import Video from "../components/Series/Video.vue";
 // import { ISeries } from "../types/series";
 
 export default {
@@ -15,17 +16,6 @@ export default {
   setup() {
     const route = useRoute();
     const title: any = route.params.title;
-    console.log(
-      findSeriesQuery(
-        [
-          "title",
-          "episodes { \n _id \n }",
-          "images { \n source \n type \n }",
-          "genres { \n _id name \n}",
-        ],
-        title
-      )
-    );
     const { onResult: resultFn } = useQuery(
       findSeriesQuery(
         [
@@ -37,7 +27,7 @@ export default {
           "view",
           "total_episodes",
           "status",
-          "episodes { \n _id \n }",
+          "episodes { \n _id \n source \n epNum \n }",
           "genres { \n _id \n name \n}",
         ],
         title
@@ -47,15 +37,22 @@ export default {
       resultFn,
       ep: route.query.ep,
       title: route.params.title,
+      source: "",
     };
   },
   mounted() {
     this.resultFn((result) => {
-      console.log(result.data.findSeries[0].genres);
-      if (result.data) this.series = result.data.findSeries[0];
+      console.log(result.data.findSeries[0].episodes);
+      if (result.data) {
+        this.series = result.data.findSeries[0];
+        console.log(this.ep);
+        this.source = this.series.episodes.find((episode: any) => {
+          return episode?.epNum.toString() === this.ep;
+        }).source;
+      }
     });
   },
-  components: { Episodes, Info },
+  components: { Episodes, Info, Video },
 };
 </script>
 
@@ -72,14 +69,33 @@ export default {
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="ep">
-              <div>Test</div>
+              <Video :source="source" />
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
             </section>
           </aside>
           <aside>
-            <Episodes :episodes="series?.episodes" />
+            <ul
+              v-if="series?.episodes?.length > 0"
+              className="flex lg:gap-x-5 gap-x-3 gap-y-3 "
+              role="list"
+            >
+              <router-link
+                :to="`/series/${title}?ep=${episode.epNum + 1}`"
+                :class="
+                  episode.epNum.toString() === ep
+                    ? `bg-secondColor`
+                    : `bg-mainColor`
+                "
+                class="decoration-none py-3 px-4 even:bg-opacity-40 hover:cursor-pointer hover:bg-secondColorBrighter rounded-md"
+                v-for="(episode, index) in series?.episodes"
+                :key="index"
+              >
+                <Episodes :episode="episode" />
+              </router-link>
+            </ul>
+            <div v-else>Coming soon</div>
           </aside>
           <aside className="w-full" aria-label="info-film">
             <Info
