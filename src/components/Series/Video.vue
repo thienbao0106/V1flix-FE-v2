@@ -3,11 +3,8 @@ export default {
   props: ["source"],
   data() {
     return {
-      ggDriveKey: import.meta.env.VITE_GG_DRIVE,
+      ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
     };
-  },
-  setup(props) {
-    console.log(props.source);
   },
 };
 </script>
