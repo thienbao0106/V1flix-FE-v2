@@ -13,44 +13,52 @@ export default {
       series: {} as any,
     };
   },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.fetchSeries();
+      },
+      { immediate: true }
+    );
+  },
   setup() {
     const route = useRoute();
     const title: any = route.params.title;
-    const { onResult: resultFn } = useQuery(
-      findSeriesQuery(
-        [
-          "images { \n source \n type \n }",
-          "_id",
-          "description",
-          "title",
-          "type",
-          "view",
-          "total_episodes",
-          "status",
-          "episodes { \n _id \n source \n epNum \n }",
-          "genres { \n _id \n name \n}",
-        ],
-        title
-      )
-    );
+    const ep = route.query.ep;
+
     return {
-      resultFn,
-      ep: route.query.ep,
-      title: route.params.title,
-      source: "",
+      title,
+      ep,
     };
   },
-  mounted() {
-    this.resultFn((result) => {
-      console.log(result.data.findSeries[0].episodes);
-      if (result.data) {
-        this.series = result.data.findSeries[0];
-        console.log(this.ep);
-        this.source = this.series.episodes.find((episode: any) => {
-          return episode?.epNum.toString() === this.ep;
-        }).source;
-      }
-    });
+  methods: {
+    fetchSeries() {
+      const { onResult } = useQuery(
+        findSeriesQuery(
+          [
+            "images { \n source \n type \n }",
+            "_id",
+            "description",
+            "title",
+            "type",
+            "view",
+            "total_episodes",
+            "status",
+            "episodes { \n _id \n source \n epNum \n }",
+            "genres { \n _id \n name \n}",
+          ],
+          this.title
+        )
+      );
+      onResult((result) => {
+        console.log(result.data.findSeries[0].episodes);
+        if (result.data) {
+          this.series = result.data.findSeries[0];
+          console.log(this.ep);
+        }
+      });
+    },
   },
   components: { Episodes, Info, Video },
 };
@@ -68,8 +76,10 @@ export default {
       <main aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
-            <section v-if="ep">
-              <Video :source="source" />
+            <section v-if="ep && series?.episodes">
+              <Video
+                :source="series?.episodes.find((episode: any) => episode?.epNum.toString() === ep).source || ``"
+              />
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
