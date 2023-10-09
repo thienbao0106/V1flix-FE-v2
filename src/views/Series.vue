@@ -1,16 +1,21 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { findSeriesQuery } from "../queries/series";
 import { useQuery } from "@vue/apollo-composable";
+import moment from "moment";
+import { findSeriesQuery } from "../queries/series";
+
 import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
+import Loading from "../components/Loading.vue";
 // import { ISeries } from "../types/series";
 
 export default {
   data() {
     return {
       series: {} as any,
+      currentEpisode: {} as any,
+      loading: false,
     };
   },
   created() {
@@ -33,8 +38,8 @@ export default {
     };
   },
   methods: {
-    fetchSeries() {
-      const { onResult } = useQuery(
+    fetchSeries: function () {
+      const { onResult, loading } = useQuery(
         findSeriesQuery(
           [
             "images { \n source \n type \n }",
@@ -45,41 +50,57 @@ export default {
             "view",
             "total_episodes",
             "status",
-            "episodes { \n _id \n source \n epNum \n }",
+            "episodes { \n _id \n source \n epNum \n title \n created_at \n }",
             "genres { \n _id \n name \n}",
           ],
           this.title
         )
       );
+      this.loading = loading.value;
+      console.log(loading.value);
       onResult((result) => {
-        console.log(result.data.findSeries[0].episodes);
         if (result.data) {
+          this.loading = loading.value;
+
           this.series = result.data.findSeries[0];
-          console.log(this.ep);
+          this.currentEpisode = this.series?.episodes.find(
+            (episode: any) => episode?.epNum.toString() === this.ep
+          );
         }
       });
     },
+    getCurrentDate: function (dateNum: number): string {
+      return moment(dateNum).fromNow();
+    },
   },
-  components: { Episodes, Info, Video },
+  components: { Episodes, Info, Video, Loading },
 };
 </script>
 
 <template>
-  <section class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16">
+  <div class="text-4xl font-bold text-white" v-if="loading">
+    <Loading message="Getting the data" />
+  </div>
+  <section v-else class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16">
     <section class="md:w-4/6 space-y-5">
       <header class="space-y-4">
-        <h1 class="xl:text-4xl lg:text-2xl text-4xl font-bold">
-          {{ series?.title }}
-        </h1>
-        <p>{{ `Episode: ${ep}` }}</p>
+        <h2>{{ `Episode: ${ep} - ${currentEpisode.title}` }}</h2>
+        <div class="flex flex-row justify-between items-center">
+          <p class="italic">
+            {{ `Uploaded on: ${getCurrentDate(currentEpisode.created_at)}` }}
+          </p>
+          <div
+            class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
+          >
+            Share
+          </div>
+        </div>
       </header>
-      <main aria-label="main">
+      <main class="w-full" aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="ep && series?.episodes">
-              <Video
-                :source="series?.episodes.find((episode: any) => episode?.epNum.toString() === ep).source || ``"
-              />
+              <Video :source="currentEpisode.source || ``" />
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
