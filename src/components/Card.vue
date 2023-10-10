@@ -1,6 +1,5 @@
 <script lang="ts">
 import Details from "./Details.vue";
-import { ref } from "vue";
 
 export default {
   props: ["id", "title", "images", "type", "total_episodes", "status", "view"],
@@ -9,13 +8,6 @@ export default {
       const result = images.find((image) => image.type === "cover");
       return result.source;
     },
-  },
-  setup(props) {
-    console.log(props.view);
-    const imageRef = ref(null);
-    return {
-      imageRef,
-    };
   },
 
   components: { Details },
@@ -27,7 +19,6 @@ export default {
     <div class="relative group">
       <router-link :to="`/series/${title}?ep=1`">
         <img
-          ref="image"
           class="group-hover:opacity-25 max-w-full"
           :src="getCoverImage(images)"
           :alt="`cover-image-${title}`"

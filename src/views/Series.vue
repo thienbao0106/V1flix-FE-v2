@@ -8,6 +8,7 @@ import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
+import ShareModal from "../components/Series/ShareModal.vue";
 // import { ISeries } from "../types/series";
 
 export default {
@@ -16,6 +17,7 @@ export default {
       series: {} as any,
       currentEpisode: {} as any,
       loading: false,
+      isModal: false,
     };
   },
   created() {
@@ -72,12 +74,17 @@ export default {
     getCurrentDate: function (dateNum: number): string {
       return moment(dateNum).fromNow();
     },
+    toggleShareModal: function () {
+      const dialog: any = document.querySelector("dialog");
+      dialog.showModal();
+    },
   },
-  components: { Episodes, Info, Video, Loading },
+  components: { Episodes, Info, Video, Loading, ShareModal },
 };
 </script>
 
 <template>
+  <ShareModal />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
@@ -91,6 +98,7 @@ export default {
           </p>
           <div
             class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
+            @click="toggleShareModal()"
           >
             Share
           </div>
