@@ -9,7 +9,7 @@ import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
-// import { ISeries } from "../types/series";
+import TopAnimeList from "../components/Home/TopAnimeList.vue";
 
 export default {
   data() {
@@ -18,6 +18,8 @@ export default {
       currentEpisode: {} as any,
       loading: false,
       isModal: false,
+      timestamp: "00:00",
+      seconds: 0,
     };
   },
   created() {
@@ -32,11 +34,14 @@ export default {
   setup() {
     const route = useRoute();
     const title: any = route.params.title;
-    const ep = route.query.ep;
+    const { ep, t: time } = route.query;
+    const url = window.location.href;
 
     return {
       title,
       ep,
+      url,
+      time,
     };
   },
   methods: {
@@ -59,7 +64,6 @@ export default {
         )
       );
       this.loading = loading.value;
-      console.log(loading.value);
       onResult((result) => {
         if (result.data) {
           this.loading = loading.value;
@@ -75,16 +79,25 @@ export default {
       return moment(dateNum).fromNow();
     },
     toggleShareModal: function () {
+      const video = document.querySelector("video");
+      if (!video) return;
+      const seconds = video.currentTime;
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+      this.seconds = seconds;
+      this.timestamp = `${String(minutes).padStart(2, "0")}:${String(
+        remainingSeconds
+      ).padStart(2, "0")}`;
       const dialog: any = document.querySelector("dialog");
       dialog.showModal();
     },
   },
-  components: { Episodes, Info, Video, Loading, ShareModal },
+  components: { Episodes, Info, Video, Loading, ShareModal, TopAnimeList },
 };
 </script>
 
 <template>
-  <ShareModal />
+  <ShareModal :seconds="seconds" :timestamp="timestamp" />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
@@ -108,7 +121,7 @@ export default {
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="ep && series?.episodes">
-              <Video :source="currentEpisode.source || ``" />
+              <Video :source="currentEpisode.source || ``" :time="time" />
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
@@ -154,6 +167,7 @@ export default {
     </section>
     <section aria-label="trending" class="md:w-2/6">
       <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
+      <TopAnimeList />
     </section>
   </section>
 </template>

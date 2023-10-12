@@ -1,5 +1,5 @@
 <script lang="ts">
-import Details from "../Details.vue";
+import Details from "./Details.vue";
 
 export default {
   props: ["id", "title", "status", "view", "images", "rank", "type"],

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
-import TopAnimeCard from "./TopAnimeCard.vue";
+import TopAnimeCard from "../TopAnimeCard.vue";
 
 export default {
   data() {
