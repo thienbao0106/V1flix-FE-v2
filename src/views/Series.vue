@@ -110,8 +110,8 @@ export default {
             {{ `Uploaded on: ${getCurrentDate(currentEpisode.created_at)}` }}
           </p>
           <div
-            class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
-            @click="toggleShareModal()"
+            class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
+            @click="toggleShareModal"
           >
             Share
           </div>
