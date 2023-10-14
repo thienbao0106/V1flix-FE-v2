@@ -1,6 +1,9 @@
 import gql from "graphql-tag";
 
-export const findSeriesQuery = (seriesFields: String[], keyword: String) => gql`
+export const findSeriesQuery = (
+  seriesFields: string[],
+  keyword: String | any
+) => gql`
   query findSeriesByName {
     findSeries(title: "${keyword}") {
         ${[...seriesFields].join("\n")}
