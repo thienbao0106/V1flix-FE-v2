@@ -107,20 +107,6 @@ export default {
               },
             ],
           });
-          //meta handler
-          // document
-          //   .querySelector("#og-url")
-          //   ?.setAttribute("content", window.location.href);
-          // document
-          //   .querySelector("#og-title")
-          //   ?.setAttribute("content", `${this.title} - ${this.ep}`);
-          // document
-          //   .querySelector("#og-description")
-          //   ?.setAttribute("content", this.series?.description);
-
-          // document
-          //   .querySelector("#og-image")
-          //   ?.setAttribute("content", image.source);
         }
       });
     },
