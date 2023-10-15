@@ -1,4 +1,4 @@
-import { createApp, h } from "vue";
+import { createSSRApp, h } from "vue";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import App from "./App.vue";
@@ -12,7 +12,7 @@ const apolloClient = new ApolloClient({
   uri: import.meta.env.VITE_API_URL,
 });
 
-const app = createApp({
+const app = createSSRApp({
   setup() {
     provideApolloClient(apolloClient);
   },
