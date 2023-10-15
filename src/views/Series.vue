@@ -10,6 +10,7 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
+import Meta from "../components/Series/Meta.vue";
 
 export default {
   data() {
@@ -92,12 +93,27 @@ export default {
       dialog.showModal();
     },
   },
-  components: { Episodes, Info, Video, Loading, ShareModal, TopAnimeList },
+  components: {
+    Episodes,
+    Info,
+    Video,
+    Loading,
+    ShareModal,
+    TopAnimeList,
+    Meta,
+  },
 };
 </script>
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
+  <Meta
+    v-if="series"
+    :images="series?.images"
+    :description="series?.description"
+    :ep-num="ep"
+    :title="title"
+  />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
