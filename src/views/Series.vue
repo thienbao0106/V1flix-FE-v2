@@ -10,7 +10,6 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
-import Meta from "../components/Series/Meta.vue";
 
 export default {
   data() {
@@ -73,6 +72,27 @@ export default {
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.ep
           );
+          //meta handler
+          document
+            .querySelector("#og-url")
+            ?.setAttribute("content", window.location.href);
+          document
+            .querySelector("#og-title")
+            ?.setAttribute("content", `${this.title} - ${this.ep}`);
+          document
+            .querySelector("#og-description")
+            ?.setAttribute("content", this.series?.description);
+          const image = this.series?.images.find(
+            (image: any) => image.type === "cover"
+          );
+          document.querySelector("#og-image")?.setAttribute(
+            "content",
+
+            image.source
+          );
+          document
+            .querySelector("#og-image-alt")
+            ?.setAttribute("content", image.name);
         }
       });
     },
@@ -100,20 +120,12 @@ export default {
     Loading,
     ShareModal,
     TopAnimeList,
-    Meta,
   },
 };
 </script>
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
-  <Meta
-    v-if="series"
-    :images="series?.images"
-    :description="series?.description"
-    :ep-num="ep"
-    :title="title"
-  />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
