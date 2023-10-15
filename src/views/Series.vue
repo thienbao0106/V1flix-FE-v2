@@ -72,27 +72,6 @@ export default {
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.ep
           );
-          //meta handler
-          document
-            .querySelector("#og-url")
-            ?.setAttribute("content", window.location.href);
-          document
-            .querySelector("#og-title")
-            ?.setAttribute("content", `${this.title} - ${this.ep}`);
-          document
-            .querySelector("#og-description")
-            ?.setAttribute("content", this.series?.description);
-          const image = this.series?.images.find(
-            (image: any) => image.type === "cover"
-          );
-          document.querySelector("#og-image")?.setAttribute(
-            "content",
-
-            image.source
-          );
-          document
-            .querySelector("#og-image-alt")
-            ?.setAttribute("content", image.name);
         }
       });
     },
@@ -113,6 +92,7 @@ export default {
       dialog.showModal();
     },
   },
+
   components: {
     Episodes,
     Info,
@@ -125,6 +105,20 @@ export default {
 </script>
 
 <template>
+  <head>
+    <meta id="og-url" property="og:url" :content="url" />
+    <meta id="og-title" property="og:title" :content="title" />
+    <meta
+      id="og-description"
+      property="og:description"
+      :content="series?.description"
+    />
+    <meta
+      id="og-image"
+      property="og:image"
+      :content="series?.images.find((image: any) => image.type === 'cover').source"
+    />
+  </head>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
