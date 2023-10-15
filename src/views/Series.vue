@@ -10,8 +10,19 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
-
+import { useHead } from "@unhead/vue";
 export default {
+  // head() {
+  //   return {
+  //     title: "Hello World",
+  //     meta: [
+  //       {
+  //         name: "description",
+  //         content: "My page description",
+  //       },
+  //     ],
+  //   };
+  // },
   data() {
     return {
       series: {} as any,
@@ -72,22 +83,44 @@ export default {
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.ep
           );
-          //meta handler
-          document
-            .querySelector("#og-url")
-            ?.setAttribute("content", window.location.href);
-          document
-            .querySelector("#og-title")
-            ?.setAttribute("content", `${this.title} - ${this.ep}`);
-          document
-            .querySelector("#og-description")
-            ?.setAttribute("content", this.series?.description);
           const image = this.series?.images.find(
             (image: any) => image.type === "cover"
           );
-          document
-            .querySelector("#og-image")
-            ?.setAttribute("content", image.source);
+          useHead({
+            title: "My awesome site",
+            meta: [
+              {
+                property: "og:image",
+                content: image.source,
+              },
+              {
+                property: "og:title",
+                content: `${this.title} - ${this.ep}`,
+              },
+              {
+                property: "og:url",
+                content: window.location.href,
+              },
+              {
+                property: "og:description",
+                content: this.series?.description,
+              },
+            ],
+          });
+          //meta handler
+          // document
+          //   .querySelector("#og-url")
+          //   ?.setAttribute("content", window.location.href);
+          // document
+          //   .querySelector("#og-title")
+          //   ?.setAttribute("content", `${this.title} - ${this.ep}`);
+          // document
+          //   .querySelector("#og-description")
+          //   ?.setAttribute("content", this.series?.description);
+
+          // document
+          //   .querySelector("#og-image")
+          //   ?.setAttribute("content", image.source);
         }
       });
     },

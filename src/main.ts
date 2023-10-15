@@ -5,6 +5,7 @@ import App from "./App.vue";
 import "virtual:uno.css";
 import router from "./router";
 import { provideApolloClient } from "@vue/apollo-composable";
+import { VueHeadMixin, createHead } from "@unhead/vue";
 
 const cache = new InMemoryCache();
 const apolloClient = new ApolloClient({
@@ -18,6 +19,9 @@ const app = createSSRApp({
   },
   render: () => h(App),
 });
+const head = createHead();
 
 app.use(router);
 app.mount("#app");
+app.use(head);
+// app.mixin(VueHeadMixin);
