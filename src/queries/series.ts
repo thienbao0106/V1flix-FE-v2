@@ -1,11 +1,19 @@
 import gql from "graphql-tag";
 
+type SeriesFilter = {
+  status?: String;
+  genres?: String;
+};
+
 export const findSeriesQuery = (
   seriesFields: string[],
-  keyword: String | any
-) => gql`
+  keyword: String | any,
+  numOfLimit: number,
+  filters?: SeriesFilter
+) =>
+  gql`
   query findSeriesByName {
-    findSeries(title: "${keyword}") {
+    findSeries(title: "${keyword}", numOfLimit: ${numOfLimit}, status: "${filters?.status || ``}", genresId: "${filters?.genres || ``}") {
         ${[...seriesFields].join("\n")}
     }
   }

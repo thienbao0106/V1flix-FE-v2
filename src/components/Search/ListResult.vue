@@ -26,6 +26,6 @@ export default {
     v-else
     class="font-bold text-white flex justify-center items-center text-4xl h-[26rem]"
   >
-    {{ `  Can't find the data with keyword: ${keyword}` }}
+    {{ `Can't find the data with keyword: ${keyword}` }}
   </aside>
 </template>

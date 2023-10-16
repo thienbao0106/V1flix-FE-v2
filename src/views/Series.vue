@@ -1,8 +1,6 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { useQuery } from "@vue/apollo-composable";
 import moment from "moment";
-import { findSeriesQuery } from "../queries/series";
 
 import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
@@ -11,18 +9,8 @@ import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import { useHead } from "@unhead/vue";
+import { fetchSeries } from "../../utils/handleSeries";
 export default {
-  // head() {
-  //   return {
-  //     title: "Hello World",
-  //     meta: [
-  //       {
-  //         name: "description",
-  //         content: "My page description",
-  //       },
-  //     ],
-  //   };
-  // },
   data() {
     return {
       series: {} as any,
@@ -57,23 +45,7 @@ export default {
   },
   methods: {
     fetchSeries: function () {
-      const { onResult, loading } = useQuery(
-        findSeriesQuery(
-          [
-            "images { \n source \n type \n }",
-            "_id",
-            "description",
-            "title",
-            "type",
-            "view",
-            "total_episodes",
-            "status",
-            "episodes { \n _id \n source \n epNum \n title \n created_at \n }",
-            "genres { \n _id \n name \n}",
-          ],
-          this.title
-        )
-      );
+      const { onResult, loading } = fetchSeries(this.title);
       this.loading = loading.value;
       onResult((result) => {
         if (result.data) {
@@ -87,7 +59,7 @@ export default {
             (image: any) => image.type === "cover"
           );
           useHead({
-            title: "My awesome site",
+            title: this.title,
             meta: [
               {
                 property: "og:image",

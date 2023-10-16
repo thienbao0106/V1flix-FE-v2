@@ -2,9 +2,10 @@
 import { useQuery } from "@vue/apollo-composable";
 import { useRoute } from "vue-router";
 import { getGenres } from "../queries/genres";
-import { findSeriesQuery } from "../queries/series";
+import { fetchSeries } from "../../utils/handleSeries";
 import ListResult from "../components/Search/ListResult.vue";
 import TopAnime from "../components/Search/TopAnime.vue";
+import Loading from "../components/Loading.vue";
 
 export default {
   setup() {
@@ -13,6 +14,7 @@ export default {
 
     return {
       keyword: keyword || "",
+      loading: true,
     };
   },
   methods: {
@@ -24,28 +26,25 @@ export default {
       });
     },
     fetchResults: function () {
-      const { onResult } = useQuery(
-        findSeriesQuery(
-          [
-            "images { \n source \n type \n }",
-            "_id",
-            "description",
-            "title",
-            "type",
-            "view",
-            "total_episodes",
-            "status",
-            "episodes { \n _id \n source \n epNum \n title \n created_at \n }",
-            "genres { \n _id \n name \n}",
-          ],
-          this.keyword
-        )
+      console.log(this.statusValue);
+      const { onResult, loading } = fetchSeries(
+        this.keyword,
+        this.statusValue,
+        this.genresValue
       );
+      this.loading = loading.value;
+
       onResult((result) => {
         if (result.data) {
+          console.log(loading.value);
+          this.loading = loading.value;
           this.result = result.data.findSeries;
         }
       });
+    },
+    handleSubmit: function (e: any) {
+      e.preventDefault();
+      this.fetchResults();
     },
   },
   created() {
@@ -78,16 +77,17 @@ export default {
       genresFilter: [] as any,
     };
   },
-  components: { ListResult, TopAnime },
+  components: { ListResult, TopAnime, Loading },
 };
 </script>
 
 <template>
+  <Loading v-if="loading" message="Getting the data" />
   <main className="xl:px-8 px-4 text-white xl:flex xl:flex-row lg:space-y-8">
     <section aria-label="result-query" className="xl:basis-3/4 space-y-5 pr-8">
       <h1 className="text-3xl font-bold">{{ `Result for ${keyword}` }}</h1>
 
-      <form>
+      <form method="post" @submit="handleSubmit">
         <aside
           aria-label="query"
           class="w-full flex lg:flex-row flex-col gap-2"

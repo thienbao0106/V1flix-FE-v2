@@ -39,6 +39,7 @@ export default {
   </aside>
   <aside class="flex justify-center items-center">
     <div
+      v-if="series.length > 4"
       class="bg-secondColor font-bold rounded-md py-2 px-5 mt-14 cursor-pointer"
     >
       See More

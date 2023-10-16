@@ -2,7 +2,7 @@
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { ref } from "vue";
-import { toastSettings } from "../../../utils/ToastSettings";
+import { toastSettings } from "../../../utils/toastSettings";
 export default {
   props: ["seconds", "timestamp"],
   data() {
@@ -78,3 +78,4 @@ export default {
     </section>
   </dialog>
 </template>
+../../../utils/toastSettings

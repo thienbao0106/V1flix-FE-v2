@@ -29,7 +29,7 @@ export default {
     resultQuery: function () {
       if (this.keyword === "") return;
 
-      const { result } = useQuery(findSeriesQuery(["title"], this.keyword));
+      const { result } = useQuery(findSeriesQuery(["title"], this.keyword, 3));
       console.log(result.value);
       if (result.value) return result.value.findSeries;
     },
