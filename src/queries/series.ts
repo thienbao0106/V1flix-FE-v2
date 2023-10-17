@@ -13,7 +13,9 @@ export const findSeriesQuery = (
 ) =>
   gql`
   query findSeriesByName {
-    findSeries(title: "${keyword}", numOfLimit: ${numOfLimit}, status: "${filters?.status || ``}", genresId: "${filters?.genres || ``}") {
+    findSeries(title: "${keyword}", numOfLimit: ${numOfLimit}, status: "${
+    filters?.status || ``
+  }", genresId: "${filters?.genres || ``}") {
         ${[...seriesFields].join("\n")}
     }
   }
@@ -53,5 +55,11 @@ export const seriesQuery = (limit: number) => gql`
         }
       }
     }
+  }
+`;
+
+export const addViewMutation = () => gql`
+  mutation addView($seriesId: String!, $episodeId: String!) {
+    addView(seriesId: $seriesId, episodeId: $episodeId)
   }
 `;

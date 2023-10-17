@@ -1,6 +1,8 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
 import moment from "moment";
+import { useHead } from "@unhead/vue";
+import { useMutation } from "@vue/apollo-composable";
 
 import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
@@ -8,8 +10,10 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
-import { useHead } from "@unhead/vue";
+
 import { fetchSeries } from "../../utils/handleSeries";
+import { addViewMutation } from "../queries/series";
+
 export default {
   data() {
     return {
@@ -49,15 +53,18 @@ export default {
       this.loading = loading.value;
       onResult((result) => {
         if (result.data) {
+          //Update value
           this.loading = loading.value;
-
           this.series = result.data.findSeries[0];
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.ep
           );
+
+          this.addView(this.series._id, this.currentEpisode._id);
           const image = this.series?.images.find(
             (image: any) => image.type === "cover"
           );
+          //Update head metadata
           useHead({
             title: this.title,
             meta: [
@@ -98,8 +105,15 @@ export default {
       const dialog: any = document.querySelector("dialog");
       dialog.showModal();
     },
+    addView: function (seriesId: string, episodeId: string) {
+      const { mutate } = useMutation(addViewMutation);
+      mutate({
+        seriesId,
+        episodeId,
+      });
+    },
   },
-  mounted() {},
+
   components: {
     Episodes,
     Info,
@@ -122,9 +136,14 @@ export default {
       <header class="space-y-4">
         <h2>{{ `Episode: ${ep} - ${currentEpisode.title}` }}</h2>
         <div class="flex flex-row justify-between items-center">
-          <p class="italic">
-            {{ `Uploaded on: ${getCurrentDate(currentEpisode.created_at)}` }}
-          </p>
+          <div class="space-y-2 text-lg">
+            <p>
+              {{ `View: ${currentEpisode.view + 1}` }}
+            </p>
+            <p class="italic">
+              {{ `Uploaded on: ${getCurrentDate(currentEpisode.created_at)} ` }}
+            </p>
+          </div>
           <div
             class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
             @click="toggleShareModal"
@@ -175,7 +194,7 @@ export default {
               :title="series?.title"
               :total_episodes="series?.total_episodes"
               :type="series?.type"
-              :view="series?.view"
+              :view="series?.view + 1"
             ></Info>
           </aside>
         </section>
