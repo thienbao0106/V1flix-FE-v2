@@ -17,6 +17,7 @@
     "moment": "^2.29.4",
     "primeicons": "^6.0.1",
     "swiper": "^10.3.0",
+    "vite-plugin-mkcert": "^1.16.0",
     "vue": "^3.3.4",
     "vue-router": "4",
     "vue3-toastify": "^0.1.13"

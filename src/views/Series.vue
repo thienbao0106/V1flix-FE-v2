@@ -156,7 +156,11 @@ export default {
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="ep && series?.episodes">
-              <Video :source="currentEpisode.source || ``" :time="time" />
+              <Video
+                :source="currentEpisode.source || ``"
+                :time="time"
+                :subtitles="currentEpisode.subtitles"
+              />
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
