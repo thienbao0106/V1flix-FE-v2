@@ -26,6 +26,7 @@ export default {
       height="760"
       controls
       preload="metadata"
+      crossorigin="anonymous"
     >
       <source
         :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`"
