@@ -58,6 +58,24 @@ export const seriesQuery = (limit: number) => gql`
   }
 `;
 
+export const randomSeriesQuery = () => gql`
+  query randomSeries {
+    randomSeries {
+      _id
+      title
+      status
+      total_episodes
+      type
+      view
+      images {
+        _id
+        source
+        type
+      }
+    }
+  }
+`;
+
 export const addViewMutation = () => gql`
   mutation addView($seriesId: String!, $episodeId: String!) {
     addView(seriesId: $seriesId, episodeId: $episodeId)
