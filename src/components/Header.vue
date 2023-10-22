@@ -81,13 +81,13 @@ export default {
               v-for="film in resultQuery"
               className="bg-mainColor text-left py-2 pl-2 even:bg-black-500 list-none"
             >
-              <router-link
+              <a
                 class="text-white decoration-none hover:text-secondColorBrighter"
-                :to="`/series/${film.title}?ep=1`"
+                :href="`/series/${film.title}?ep=1`"
                 @click="setKeyword(film.title)"
               >
                 {{ film.title }}
-              </router-link>
+              </a>
             </li>
             <li
               v-if="resultQuery.length === 3"

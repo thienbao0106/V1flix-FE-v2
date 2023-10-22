@@ -2,7 +2,7 @@
 import Details from "./Details.vue";
 
 export default {
-  props: ["id", "title", "status", "view", "images", "rank", "type"],
+  props: ["id", "title", "status", "view", "images", "rank", "type", "newep"],
   methods: {
     getCoverImage: function (images: any[]): string {
       const result = images.find((image) => image.type === "cover");
@@ -45,10 +45,10 @@ export default {
       <h3
         className="xl:text-base lg:text-3xl sm:text-2xl pt-2 text-lg font-semibold line-clamp-1"
       >
-        <router-link
-          :to="`/series/${title}?ep=1`"
+        <a
+          :href="`/series/${title}?ep=1`"
           class="decoration-none text-white hover:text-secondColorBrighter"
-          >{{ title }}</router-link
+          >{{ title }}</a
         >
       </h3>
       <div
@@ -56,7 +56,7 @@ export default {
       >
         <Details
           :type="type"
-          :newep="8"
+          :newep="newep"
           :status="status"
           :view="view"
           :check="false"

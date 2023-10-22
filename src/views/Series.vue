@@ -1,5 +1,4 @@
 <script lang="ts">
-import { useRoute } from "vue-router";
 import moment from "moment";
 import { useHead } from "@unhead/vue";
 import { useMutation } from "@vue/apollo-composable";
@@ -30,26 +29,27 @@ export default {
       () => this.$route.params,
       () => {
         this.fetchSeries();
+        this.getInfoUrl;
       },
       { immediate: true }
     );
   },
+  computed: {
+    getInfoUrl: function () {
+      const { ep, t: time } = this.$route.query;
+      const { title } = this.$route.params;
+      return { ep, time, title };
+    },
+  },
   setup() {
-    const route = useRoute();
-    const title: any = route.params.title;
-    const { ep, t: time } = route.query;
     const url = window.location.href;
-
     return {
-      title,
-      ep,
       url,
-      time,
     };
   },
   methods: {
     fetchSeries: function () {
-      const { onResult, loading } = fetchSeries(this.title);
+      const { onResult, loading } = fetchSeries(this.getInfoUrl.title);
       this.loading = loading.value;
       onResult((result) => {
         if (result.data) {
@@ -57,7 +57,7 @@ export default {
           this.loading = loading.value;
           this.series = result.data.findSeries[0];
           this.currentEpisode = this.series?.episodes.find(
-            (episode: any) => episode?.epNum.toString() === this.ep
+            (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );
 
           this.addView(this.series._id, this.currentEpisode._id);
@@ -127,14 +127,15 @@ export default {
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
-
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
   <section v-else class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16">
     <section class="md:w-4/6 space-y-5">
       <header class="space-y-4">
-        <h2>{{ `Episode: ${ep} - ${currentEpisode.title}` }}</h2>
+        <h2>
+          {{ `Episode: ${getInfoUrl.ep} - ${currentEpisode.title || ``}` }}
+        </h2>
         <div class="flex flex-row justify-between items-center">
           <div class="space-y-2 text-lg">
             <p>
@@ -155,10 +156,10 @@ export default {
       <main class="w-full" aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
-            <section v-if="ep && series?.episodes">
+            <section v-if="getInfoUrl.ep && series?.episodes">
               <Video
                 :source="currentEpisode.source || ``"
-                :time="time"
+                :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
               />
             </section>
@@ -173,9 +174,9 @@ export default {
               role="list"
             >
               <router-link
-                :to="`/series/${title}?ep=${episode.epNum + 1}`"
+                :to="`/series/${getInfoUrl.title}?ep=${episode.epNum}`"
                 :class="
-                  episode.epNum.toString() === ep
+                  episode.epNum.toString() === getInfoUrl.ep
                     ? `bg-secondColor`
                     : `bg-mainColor`
                 "

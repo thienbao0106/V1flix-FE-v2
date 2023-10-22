@@ -35,7 +35,7 @@ export default {
   <div class="xl:px-10 lg:px-5 px-4 space-y-3">
     <h1 class="text-center text-4xl">Series Of The Day</h1>
     <div class="relative group decoration-none">
-      <router-link class="text-white" :to="`/series/${series.title}?ep=1`">
+      <a class="text-white" :href="`/series/${series.title}?ep=1`">
         <img
           class="w-full rounded-md group-hover:opacity-25"
           :src="getBannerImage(series.images)"
@@ -63,7 +63,7 @@ export default {
             <span class="font-bold"> {{ series.type }}</span>
           </div>
         </div>
-      </router-link>
+      </a>
     </div>
   </div>
 </template>

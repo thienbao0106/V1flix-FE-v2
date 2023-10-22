@@ -48,6 +48,9 @@ export const seriesQuery = (limit: number) => gql`
         total_episodes
         type
         view
+        episodes {
+          epNum
+        }
         images {
           _id
           source

@@ -99,12 +99,12 @@ export default {
           <li>
             Genres:
             <span v-for="(g, index) in genres">
-              <router-link
+              <a
                 class="text-secondColor hover:text-secondColorBrighter decoration-none ml-3 font-bold"
-                :to="`/genres/${g.name}`"
+                :href="`/genres/${g.name}`"
               >
                 {{ `${g.name} ${index === genres.length ? "," : ""} ` }}
-              </router-link>
+              </a>
             </span>
           </li>
           <li>
