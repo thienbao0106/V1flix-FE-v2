@@ -66,7 +66,7 @@ export default {
           );
           //Update head metadata
           useHead({
-            title: this.title,
+            title: `${this.getInfoUrl.title}`,
             meta: [
               {
                 property: "og:image",
@@ -74,7 +74,7 @@ export default {
               },
               {
                 property: "og:title",
-                content: `${this.title} - ${this.ep}`,
+                content: `${this.getInfoUrl.title} - ${this.getInfoUrl.ep}`,
               },
               {
                 property: "og:url",
