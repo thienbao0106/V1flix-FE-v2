@@ -1,14 +1,30 @@
-<script setup lang="ts">
+<script lang="ts">
 import Banner from "../components/Home/Banner.vue";
 import Recommendations from "../components/Home/Recommendations.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import RandomSeries from "../components/Home/RandomSeries.vue";
+import Loading from "../components/Loading.vue";
+
+export default {
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  methods: {
+    setLoading: function (loading: boolean) {
+      this.loading = loading;
+    },
+  },
+  components: { Banner, Recommendations, TopAnimeList, RandomSeries, Loading },
+};
 </script>
 
 <template>
+  <Loading v-if="loading" message="Getting data..." />
   <main class="space-y-5">
     <section class="text-white">
-      <Banner />
+      <Banner :setLoading="setLoading" />
     </section>
     <section class="text-white">
       <RandomSeries />

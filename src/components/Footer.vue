@@ -23,13 +23,13 @@
           <h2 class="text-xl">Communities</h2>
           <div class="flex gap-x-10 text-2xl">
             <div class="hover:text-secondColor hover:cursor-pointer">
-              <i class="pi pi-discord" />
+              <font-awesome-icon icon="fa-brands fa-discord" />
             </div>
             <div class="hover:text-secondColor hover:cursor-pointer">
-              <i class="pi pi-facebook" />
+              <font-awesome-icon icon="fa-brands fa-facebook" />
             </div>
             <div class="hover:text-secondColor hover:cursor-pointer">
-              <i class="pi pi-youtube" />
+              <font-awesome-icon icon="fa-brands fa-youtube" />
             </div>
           </div>
         </div>

@@ -6,19 +6,24 @@ import BannerCard from "./BannerCard.vue";
 
 register();
 export default {
+  props: ["setLoading"],
   data() {
     return {
       series: [] as any[],
     };
   },
   setup() {
-    const { onResult: resultFn } = useQuery(seriesBannerQuery(2));
+    const { onResult: resultFn, loading } = useQuery(seriesBannerQuery(2));
     return {
       resultFn,
+      loading,
     };
   },
   mounted() {
+    this.setLoading(this.loading);
     this.resultFn((result) => {
+      this.setLoading(this.loading);
+
       if (result.data) this.series = result.data.series.series;
     });
   },

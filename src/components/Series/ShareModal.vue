@@ -55,7 +55,7 @@ export default {
           @click="copyClipboard(urlInput.value)"
           class="bg-secondColor cursor-pointer p-4 rounded-md"
         >
-          <i class="pi pi-copy"></i>
+          <font-awesome-icon icon="fa-regular fa-copy" />
         </div>
       </div>
       <h4>{{ `Timestamp: ${timestamp}` }}</h4>
@@ -72,7 +72,7 @@ export default {
           @click="copyClipboard(timestampInput.value)"
           class="bg-secondColor cursor-pointer p-4 rounded-md"
         >
-          <i class="pi pi-copy"></i>
+          <font-awesome-icon icon="fa-regular fa-copy" />
         </div>
       </div>
     </section>

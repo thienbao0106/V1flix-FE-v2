@@ -61,7 +61,7 @@ export default {
             </a>
             <input
               type="text"
-              class="2xl:w-[33rem] xl:w-[24rem] lg:w-[16rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
+              class="2xl:w-[29vw] xl:w-[24rem] lg:w-[16rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
               placeholder="Search"
               v-model="keyword"
               @change="toggleDropdown()"
@@ -104,12 +104,21 @@ export default {
           </ul>
         </div>
       </aside>
-      <div class="w-1/6 flex flex-1 justify-center items-center">
-        <i
+      <div class="w-1/6 flex flex-1 justify-center items-center cursor-pointer">
+        <font-awesome-icon
+          v-if="theme === 'dark'"
           @click="toggleTheme(theme)"
-          class="pi text-2xl cursor-pointer hover:text-secondColorBrighter"
-          :class="theme === 'dark' ? 'pi-sun' : 'pi-moon'"
-        ></i>
+          icon="fa-regular fa-sun "
+          size="2x"
+          class="hover:text-secondColorBrighter"
+        />
+        <font-awesome-icon
+          v-else
+          @click="toggleTheme(theme)"
+          icon="fa-regular fa-moon "
+          size="2x"
+          class="hover:text-secondColorBrighter"
+        />
       </div>
       <a
         href="/login"

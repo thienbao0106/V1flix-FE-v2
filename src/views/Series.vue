@@ -134,7 +134,7 @@ export default {
     <section class="md:w-4/6 space-y-5">
       <header class="space-y-4">
         <h2>
-          {{ `Episode: ${getInfoUrl.ep} - ${currentEpisode.title || ``}` }}
+          {{ `Episode ${getInfoUrl.ep} - ${currentEpisode.title || ``}` }}
         </h2>
         <div class="flex flex-row justify-between items-center">
           <div class="space-y-2 text-lg">
@@ -149,7 +149,7 @@ export default {
             class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
             @click="toggleShareModal"
           >
-            Share
+            <font-awesome-icon icon="fa-solid fa-share" />
           </div>
         </div>
       </header>

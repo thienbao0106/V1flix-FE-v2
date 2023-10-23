@@ -52,7 +52,7 @@ export default {
         >
       </h3>
       <div
-        className="flex flex-col items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"
+        className="flex flex-row items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"
       >
         <Details
           :type="type"
@@ -63,10 +63,14 @@ export default {
         />
       </div>
       <div
-        class="w-fit flex justify-start items-center gap-2 rounded-br-xl rounded-l-md rounded-t-md px-2"
+        class="w-fit flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
       >
-        <i class="pi pi-eye" />
-        <span class="lg:text-base text-sm">{{ view }}</span>
+        <font-awesome-icon
+          icon="fa-solid fa-eye"
+          size="1x"
+          class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+        />
+        <span class="lg:text-base md:text-md text-lg">{{ view }}</span>
       </div>
     </div>
   </div>

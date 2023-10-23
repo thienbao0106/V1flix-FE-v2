@@ -35,7 +35,11 @@ export default {
         :href="`/series/${title}?ep=1`"
         class="decoration-none cursor-pointer bg-secondColor text-white hover:bg-opacity-70 xl:px-10 px-5 font-bold lg:py-4 py-2 xl:text-2xl lg:text-lg text-base rounded-md flex justify-center items-center gap-x-3"
       >
-        <i class="pi pi-play xl:text-2xl lg:text-lg text-base" />
+        <font-awesome-icon
+          icon="fa-solid fa-play "
+          size="1x"
+          class="text-white"
+        />
         PLAY NOW
       </a>
     </aside>
