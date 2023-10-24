@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { randomSeriesQuery } from "../../queries/series";
-
+import { getImageType } from "../../../utils/handleImage";
 export default {
   data() {
     return {
@@ -23,10 +23,7 @@ export default {
     });
   },
   methods: {
-    getBannerImage: function (images: any[]): string {
-      if (!images || images.length === 0) return "";
-      return images.find((image) => image.type === "banner").source;
-    },
+    getImageType,
   },
 };
 </script>
@@ -38,7 +35,7 @@ export default {
       <a class="text-white" :href="`/series/${series.title}?ep=1`">
         <img
           class="w-full md:h-full h-[20rem] rounded-md group-hover:opacity-25"
-          :src="getBannerImage(series.images)"
+          :src="getImageType(series.images, `banner`)"
           :alt="series._id"
         />
 

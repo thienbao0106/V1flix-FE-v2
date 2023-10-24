@@ -16,6 +16,9 @@ export default {
       this.loading = loading;
     },
   },
+  setup() {
+    document.title = "Home";
+  },
   components: { Banner, Recommendations, TopAnimeList, RandomSeries, Loading },
 };
 </script>

@@ -1,14 +1,13 @@
 <script lang="ts">
+import { getImageType } from "../../utils/handleImage";
 import Details from "./Details.vue";
 
 export default {
   props: ["id", "title", "status", "view", "images", "rank", "type", "newep"],
   methods: {
-    getCoverImage: function (images: any[]): string {
-      const result = images.find((image) => image.type === "cover");
-      return result.source;
-    },
+    getImageType,
   },
+
   components: { Details },
 };
 </script>
@@ -35,7 +34,7 @@ export default {
       <img
         loading="lazy"
         class="h-full w-full"
-        :src="getCoverImage(images)"
+        :src="getImageType(images, `cover`)"
         alt="placeholder-img"
       />
     </div>

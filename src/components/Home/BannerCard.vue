@@ -1,10 +1,10 @@
 <script lang="ts">
+import { getImageType } from "../../../utils/handleImage";
 export default {
   props: ["images", "id", "title", "description"],
+
   methods: {
-    getBannerImage: function (images: any[]): string {
-      return images.find((image) => image.type === "banner").source;
-    },
+    getImageType,
   },
 };
 </script>
@@ -14,7 +14,7 @@ export default {
     class="lg:flex lg:flex-row-reverse xl:px-10 lg:px-5 lg:gap-x-5 px-4 flex-none"
   >
     <img
-      :src="getBannerImage(images)"
+      :src="getImageType(images, `banner`)"
       alt="test"
       class="lg:static absolute inset-0 lg:basis-1/2 lg:w-1/2 lg:h-1/2 lg:rounded-3xl lg:shadow-black lg:shadow-sm lg:opacity-100 opacity-60"
     />

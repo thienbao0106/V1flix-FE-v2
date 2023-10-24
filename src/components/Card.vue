@@ -1,13 +1,19 @@
 <script lang="ts">
 import Details from "./Details.vue";
-
+import { getImageType } from "../../utils/handleImage";
 export default {
-  props: ["id", "title", "images", "type", "total_episodes", "status", "view"],
+  props: [
+    "id",
+    "title",
+    "images",
+    "type",
+    "total_episodes",
+    "status",
+    "view",
+    "epNum",
+  ],
   methods: {
-    getCoverImage: function (images: any[]): string {
-      const result = images.find((image) => image.type === "cover");
-      return result.source;
-    },
+    getImageType,
   },
 
   components: { Details },
@@ -17,10 +23,10 @@ export default {
 <template>
   <div class="flex flex-col w-full">
     <div class="relative group">
-      <router-link :to="`/series/${title}?ep=1`">
+      <router-link :to="`/series/${title}?ep=${epNum ? epNum : 1}`">
         <img
           class="group-hover:opacity-25 max-w-full"
-          :src="getCoverImage(images)"
+          :src="getImageType(images, `cover`)"
           :alt="`cover-image-${title}`"
         />
 
@@ -38,7 +44,19 @@ export default {
     <div
       class="max-w-full flex flex-row items-center justify-between bg-mainColor px-2 py-0.5 mb-3 rounded-b-md"
     >
+      <div
+        v-if="epNum"
+        class="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
+      >
+        <font-awesome-icon
+          icon="fa-solid fa-eye"
+          size="1x"
+          class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+        />
+        <span class="lg:text-base md:text-md text-lg">{{ epNum }}</span>
+      </div>
       <Details
+        v-else
         :newep="total_episodes"
         :type="type"
         :status="status"

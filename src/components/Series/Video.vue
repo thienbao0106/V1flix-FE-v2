@@ -26,6 +26,7 @@ export default {
       height="760"
       controls
       preload="metadata"
+      controlsList="nodownload"
       crossorigin="anonymous"
     >
       <source
@@ -36,7 +37,7 @@ export default {
         v-for="(sub, index) in subtitles"
         :key="index"
         :id="sub.source"
-        label="English"
+        :label="sub.label"
         kind="subtitles"
         :srclang="sub.lang"
         :src="`https://www.googleapis.com/drive/v3/files/${sub.source}?key=${ggDriveKey}&alt=media`"

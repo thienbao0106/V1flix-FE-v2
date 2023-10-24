@@ -41,7 +41,7 @@ export default {
           :type="s.type"
           :rank="index + 1"
           :view="s.view"
-          :newep="s.episodes[s.episodes.length - 1].epNum"
+          :newep="s.episodes[s.episodes.length - 1]?.epNum || 0"
         />
       </li>
     </ul>

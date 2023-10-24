@@ -41,7 +41,9 @@ export default {
   <nav
     class="max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
   >
-    <section class="flex-none w-1/6">Logo</section>
+    <router-link to="/" class="decoration-none text-white flex-none w-1/6"
+      >Logo</router-link
+    >
     <section class="flex-1 w-2/6">Genres</section>
 
     <section

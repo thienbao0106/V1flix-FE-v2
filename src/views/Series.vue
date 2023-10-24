@@ -12,6 +12,7 @@ import TopAnimeList from "../components/Home/TopAnimeList.vue";
 
 import { fetchSeries } from "../../utils/handleSeries";
 import { addViewMutation } from "../queries/series";
+import { defaultImage } from "../../utils/handleImage";
 
 export default {
   data() {
@@ -59,8 +60,8 @@ export default {
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );
-
-          this.addView(this.series._id, this.currentEpisode._id);
+          if (this.currentEpisode)
+            this.addView(this.series._id, this.currentEpisode._id);
           const image = this.series?.images.find(
             (image: any) => image.type === "cover"
           );
@@ -70,7 +71,7 @@ export default {
             meta: [
               {
                 property: "og:image",
-                content: image.source,
+                content: image?.source || defaultImage,
               },
               {
                 property: "og:title",
@@ -133,16 +134,21 @@ export default {
   <section v-else class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16">
     <section class="md:w-4/6 space-y-5">
       <header class="space-y-4">
-        <h2>
-          {{ `Episode ${getInfoUrl.ep} - ${currentEpisode.title || ``}` }}
+        <h2 v-if="currentEpisode">
+          {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
         </h2>
-        <div class="flex flex-row justify-between items-center">
+        <div
+          v-if="currentEpisode"
+          class="flex flex-row justify-between items-center"
+        >
           <div class="space-y-2 text-lg">
             <p>
-              {{ `View: ${currentEpisode.view + 1}` }}
+              {{ `View: ${currentEpisode?.view + 1 || 0}` }}
             </p>
-            <p class="italic">
-              {{ `Uploaded on: ${getCurrentDate(currentEpisode.created_at)} ` }}
+            <p v-if="currentEpisode?.created_at" class="italic">
+              {{
+                `Uploaded on: ${getCurrentDate(currentEpisode?.created_at)} `
+              }}
             </p>
           </div>
           <div
@@ -158,6 +164,7 @@ export default {
           <aside aria-label="video" class="text-white">
             <section v-if="getInfoUrl.ep && series?.episodes">
               <Video
+                v-if="currentEpisode"
                 :source="currentEpisode.source || ``"
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
@@ -177,17 +184,19 @@ export default {
                 :to="`/series/${getInfoUrl.title}?ep=${episode.epNum}`"
                 :class="
                   episode.epNum.toString() === getInfoUrl.ep
-                    ? `bg-secondColor`
+                    ? `bg-secondColorBrighter`
                     : `bg-mainColor`
                 "
-                class="decoration-none py-3 px-4 even:bg-opacity-40 hover:cursor-pointer hover:bg-secondColorBrighter rounded-md"
+                class="decoration-none py-3 px-4 hover:cursor-pointer hover:bg-secondColorBrighter rounded-md"
                 v-for="(episode, index) in series?.episodes"
                 :key="index"
               >
                 <Episodes :episode="episode" />
               </router-link>
             </ul>
-            <div v-else>Coming soon</div>
+            <div v-else>
+              <h1 class="text-4xl font-extrabold">Coming soon</h1>
+            </div>
           </aside>
           <aside className="w-full" aria-label="info-film">
             <Info
@@ -199,7 +208,7 @@ export default {
               :title="series?.title"
               :total_episodes="series?.total_episodes"
               :type="series?.type"
-              :view="series?.view + 1"
+              :view="series?.view"
             ></Info>
           </aside>
         </section>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { getImageType } from "../../../utils/handleImage";
 export default {
   props: [
     "images",
@@ -26,10 +27,7 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
-    getCoverImage: function (images: any[]): string {
-      if (!images) return "";
-      return images.find((image) => image.type === "cover").source;
-    },
+    getImageType,
     onResize: function () {
       this.width = window.innerWidth;
     },
@@ -46,7 +44,7 @@ export default {
   >
     <section aria-label="image" class="basis-1/5 xl:pl-4 md:px-0 px-4">
       <img
-        :src="getCoverImage(images)"
+        :src="getImageType(images, `cover`)"
         :alt="`img-${id}`"
         class="w-full md:h-full h-[200px] object-cover"
       />

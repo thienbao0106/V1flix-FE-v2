@@ -23,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
     component: defineAsyncComponent(() => import("../views/Search.vue")),
   },
   {
+    path: "/latest",
+    name: "Latest Anime",
+    component: defineAsyncComponent(() => import("../views/Latest.vue")),
+  },
+  {
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: defineAsyncComponent(() => import("../views/NotFound.vue")),
