@@ -1,4 +1,6 @@
 <script lang="ts">
+import moment from "moment";
+
 import Details from "./Details.vue";
 import { getImageType } from "../../utils/handleImage";
 export default {
@@ -11,9 +13,27 @@ export default {
     "status",
     "view",
     "epNum",
+    "epCreatedAt",
   ],
+  data() {
+    return {
+      isNew: false,
+    };
+  },
   methods: {
     getImageType,
+    checkNewEpisode: function (time: any) {
+      const currentDay = moment();
+      const filmDay = moment(time);
+      const result: number = moment
+        .duration(currentDay.diff(filmDay))
+        .as("hours");
+
+      return result < 24 ? true : false;
+    },
+    getDate: function (time: any) {
+      return moment(time).fromNow();
+    },
   },
 
   components: { Details },
@@ -45,16 +65,46 @@ export default {
       class="max-w-full flex flex-row items-center justify-between bg-mainColor px-2 py-0.5 mb-3 rounded-b-md"
     >
       <div
+        class="flex flex-row items-center justify-between w-full"
         v-if="epNum"
-        class="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
       >
-        <font-awesome-icon
-          icon="fa-solid fa-eye"
-          size="1x"
-          class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
-        />
-        <span class="lg:text-base md:text-md text-lg">{{ epNum }}</span>
+        <div
+          class="gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 max-w-1/2"
+        >
+          <div class="space-x-2 flex justify-center items-center">
+            <font-awesome-icon
+              icon="fa-solid fa-eye"
+              size="1x"
+              class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+            />
+            <span class="lg:text-base md:text-md text-lg">{{ epNum }}</span>
+          </div>
+          <div
+            class="space-x-2 flex justify-center items-center"
+            v-if="checkNewEpisode(epCreatedAt)"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-eye"
+              size="1x"
+              class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+            />
+            <span class="lg:text-base md:text-md text-lg">New</span>
+          </div>
+        </div>
+        <div
+          class="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 max-w-1/2"
+        >
+          <font-awesome-icon
+            icon="fa-regular fa-calendar"
+            size="1x"
+            class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+          />
+          <span class="lg:text-base md:text-md text-lg">{{
+            getDate(epCreatedAt)
+          }}</span>
+        </div>
       </div>
+
       <Details
         v-else
         :newep="total_episodes"

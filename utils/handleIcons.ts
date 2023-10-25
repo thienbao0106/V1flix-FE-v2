@@ -10,8 +10,14 @@ import {
   faPersonRunning,
   faSpinner,
   faTriangleExclamation,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCopy, faSun, faMoon } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCopy,
+  faSun,
+  faMoon,
+  faCalendar,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faDiscord,
   faFacebook,
@@ -34,6 +40,8 @@ export const addIcon = () => {
     faFacebook,
     faYoutube,
     faSun,
-    faMoon
+    faMoon,
+    faMagnifyingGlass,
+    faCalendar
   );
 };

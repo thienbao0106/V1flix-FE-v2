@@ -55,6 +55,7 @@ export default {
         :id="ep._id"
         :images="ep.series.images"
         :ep-num="ep.epNum"
+        :ep-created-at="ep.created_at"
         :title="ep.series.title"
       />
     </section>

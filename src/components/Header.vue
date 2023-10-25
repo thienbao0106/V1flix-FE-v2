@@ -41,9 +41,11 @@ export default {
   <nav
     class="max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
   >
-    <router-link to="/" class="decoration-none text-white flex-none w-1/6"
-      >Logo</router-link
-    >
+    <div class="flex-none w-1/6">
+      <router-link to="/" class="w-fit text-white decoration-none"
+        >Logo
+      </router-link>
+    </div>
     <section class="flex-1 w-2/6">Genres</section>
 
     <section
@@ -59,7 +61,10 @@ export default {
               href="/search"
               class="no-underline text-white hover:text-secondColorBrighter flex justify-between items-center"
             >
-              <span class="pi pi-search"></span>
+              <font-awesome-icon
+                class="text-white"
+                icon="fa-solid fa-magnifying-glass"
+              />
             </a>
             <input
               type="text"
@@ -106,7 +111,9 @@ export default {
           </ul>
         </div>
       </aside>
-      <div class="w-1/6 flex flex-1 justify-center items-center cursor-pointer">
+      <div
+        class="w-1/6 flex flex-1 justify-center items-center cursor-pointer text-white"
+      >
         <font-awesome-icon
           v-if="theme === 'dark'"
           @click="toggleTheme(theme)"

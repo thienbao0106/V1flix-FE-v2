@@ -29,7 +29,8 @@ export default {
     <section class="text-white">
       <Banner :setLoading="setLoading" />
     </section>
-    <section class="text-white">
+    <!-- temp fix for loading-->
+    <section v-if="!loading" class="text-white">
       <RandomSeries />
     </section>
     <main

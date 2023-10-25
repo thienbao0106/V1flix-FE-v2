@@ -17,7 +17,10 @@ export default {
   },
   mounted() {
     this.resultFn((result) => {
-      if (result.data) this.series = result.data.series.series;
+      if (result.data) {
+        const listSeries = [...result.data.series.series];
+        this.series = listSeries.sort((a: any, b: any) => b.view - a.view);
+      }
     });
   },
   components: { TopAnimeCard },

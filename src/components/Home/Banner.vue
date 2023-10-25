@@ -35,10 +35,13 @@ export default {
   <section aria-label="banner" className="lg:h-auto ">
     <swiper-container
       :centered-slides="true"
+      :autoplay="{
+        delay: 2500,
+        disableOnInteraction: false,
+      }"
       :pagination="{
         hideOnClick: true,
       }"
-      loop="true"
     >
       <swiper-slide v-for="s in series">
         <BannerCard
@@ -75,6 +78,11 @@ swiper-container::part(bullet-active) {
     padding-left: 0.5rem;
   }
   swiper-container::part(bullet) {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+  swiper-container::part(bullet-active) {
+    background-color: #e89b26 !important;
     width: 1rem !important;
     height: 1rem !important;
   }

@@ -35,6 +35,7 @@ export default {
       />
       <track
         v-for="(sub, index) in subtitles"
+        :default="sub.lang === `en` ? true : false"
         :key="index"
         :id="sub.source"
         :label="sub.label"
