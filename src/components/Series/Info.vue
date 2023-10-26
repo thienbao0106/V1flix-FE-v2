@@ -40,6 +40,7 @@ export default {
 
 <template>
   <main
+    id="info-main"
     class="flex md:flex-row flex-col w-full gap-x-4 bg-opacityText py-4 md:px-0 rounded-lg"
   >
     <section aria-label="image" class="basis-1/5 xl:pl-4 md:px-0 px-4">

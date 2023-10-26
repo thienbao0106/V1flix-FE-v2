@@ -119,14 +119,14 @@ export default {
           @click="toggleTheme(theme)"
           icon="fa-regular fa-sun "
           size="2x"
-          class="hover:text-secondColorBrighter"
+          class="hover:text-secondColorBrighter text-white"
         />
         <font-awesome-icon
           v-else
           @click="toggleTheme(theme)"
           icon="fa-regular fa-moon "
           size="2x"
-          class="hover:text-secondColorBrighter"
+          class="hover:text-secondColorBrighter text-white"
         />
       </div>
       <a

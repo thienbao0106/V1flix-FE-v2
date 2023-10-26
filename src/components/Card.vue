@@ -48,6 +48,7 @@ export default {
           class="group-hover:opacity-25 max-w-full"
           :src="getImageType(images, `cover`)"
           :alt="`cover-image-${title}`"
+          loading="lazy"
         />
 
         <div

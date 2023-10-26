@@ -31,6 +31,7 @@ export default {
       () => {
         this.fetchSeries();
         this.getInfoUrl;
+        this.getTheaterMode;
       },
       { immediate: true }
     );
@@ -41,9 +42,15 @@ export default {
       const { title } = this.$route.params;
       return { ep, time, title };
     },
+    getTheaterMode: function () {
+      const test = document.querySelector(".theater");
+      console.log(test);
+    },
   },
+
   setup() {
     const url = window.location.href;
+
     return {
       url,
     };
@@ -93,6 +100,7 @@ export default {
     getCurrentDate: function (dateNum: number): string {
       return moment(dateNum).fromNow();
     },
+
     toggleShareModal: function () {
       const video = document.querySelector("video");
       if (!video) return;
@@ -131,8 +139,12 @@ export default {
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
-  <section v-else class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16">
-    <section class="md:w-4/6 space-y-5">
+  <section
+    id="main-video"
+    v-else
+    class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16"
+  >
+    <section id="main-left-section" class="md:w-4/6 space-y-5">
       <header class="space-y-4">
         <h2 v-if="currentEpisode">
           {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
@@ -198,7 +210,7 @@ export default {
               <h1 class="text-4xl font-extrabold">Coming soon</h1>
             </div>
           </aside>
-          <aside className="w-full" aria-label="info-film">
+          <aside class="w-full" aria-label="info-film">
             <Info
               :description="series?.description"
               :images="series?.images"

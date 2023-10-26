@@ -11,12 +11,15 @@ import {
   faSpinner,
   faTriangleExclamation,
   faMagnifyingGlass,
+  faExpand,
+  faVolumeHigh,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
   faSun,
   faMoon,
   faCalendar,
+  faClosedCaptioning,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faDiscord,
@@ -42,6 +45,9 @@ export const addIcon = () => {
     faSun,
     faMoon,
     faMagnifyingGlass,
-    faCalendar
+    faCalendar,
+    faExpand,
+    faVolumeHigh,
+    faClosedCaptioning
   );
 };
