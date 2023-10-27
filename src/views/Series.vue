@@ -23,6 +23,7 @@ export default {
       isModal: false,
       timestamp: "00:00",
       seconds: 0,
+      isTheaterMode: false,
     };
   },
   created() {
@@ -31,7 +32,6 @@ export default {
       () => {
         this.fetchSeries();
         this.getInfoUrl;
-        this.getTheaterMode;
       },
       { immediate: true }
     );
@@ -41,10 +41,6 @@ export default {
       const { ep, t: time } = this.$route.query;
       const { title } = this.$route.params;
       return { ep, time, title };
-    },
-    getTheaterMode: function () {
-      const test = document.querySelector(".theater");
-      console.log(test);
     },
   },
 
@@ -100,6 +96,10 @@ export default {
     getCurrentDate: function (dateNum: number): string {
       return moment(dateNum).fromNow();
     },
+    setTheaterMode: function (isTheaterMode: boolean) {
+      console.log(isTheaterMode);
+      this.isTheaterMode = isTheaterMode;
+    },
 
     toggleShareModal: function () {
       const video = document.querySelector("video");
@@ -142,9 +142,14 @@ export default {
   <section
     id="main-video"
     v-else
-    class="text-white space-y-5 px-8 pt-5 md:flex md:gap-x-16"
+    class="text-white space-y-5 px-8 pt-5 md:gap-x-16"
+    :class="isTheaterMode ? `md:flex-none` : ` md:flex`"
   >
-    <section id="main-left-section" class="md:w-4/6 space-y-5">
+    <section
+      id="main-left-section"
+      class="space-y-5"
+      :class="isTheaterMode ? `md:w-full` : `md:w-4/6`"
+    >
       <header class="space-y-4">
         <h2 v-if="currentEpisode">
           {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
@@ -180,6 +185,7 @@ export default {
                 :source="currentEpisode.source || ``"
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
+                :set-theater-mode="setTheaterMode"
               />
             </section>
             <section v-else>
@@ -210,7 +216,14 @@ export default {
               <h1 class="text-4xl font-extrabold">Coming soon</h1>
             </div>
           </aside>
-          <aside class="w-full" aria-label="info-film">
+          <aside
+            :class="
+              isTheaterMode
+                ? `flex lg:flex-row flex-col justify-center items-center gap-x-8 `
+                : `flex-none w-full`
+            "
+            aria-label="info-film"
+          >
             <Info
               :description="series?.description"
               :images="series?.images"
@@ -222,11 +235,20 @@ export default {
               :type="series?.type"
               :view="series?.view"
             ></Info>
+            <section
+              v-if="isTheaterMode"
+              aria-label="trending"
+              class="md:w-3/6 mt-10"
+            >
+              <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
+              <TopAnimeList />
+            </section>
           </aside>
         </section>
       </main>
     </section>
-    <section aria-label="trending" class="md:w-2/6">
+
+    <section v-if="!isTheaterMode" aria-label="trending" class="md:w-2/6">
       <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
       <TopAnimeList />
     </section>

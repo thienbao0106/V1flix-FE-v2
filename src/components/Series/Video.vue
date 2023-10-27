@@ -1,37 +1,280 @@
 <script lang="ts">
-import { onMounted } from "vue";
-import { handleVideo } from "./handleVideo";
+// import { onMounted } from "vue";
+import { ref } from "vue";
+import { formatDuration } from "../../../utils/handleVideo";
 export default {
-  props: ["source", "time", "subtitles", "isTheaterMode"],
+  props: ["source", "time", "subtitles", "setTheaterMode"],
   setup(props) {
-    onMounted(() => {
-      const video = document.querySelector("video");
-      if (!video) return;
-      video.currentTime = parseFloat(props.time || 0);
-    });
+    const videoRef = ref<HTMLVideoElement>();
+    const theaterBtnRef = ref<HTMLButtonElement>();
+    const fullScreenBtnRef = ref<HTMLButtonElement>();
+    const miniPlayerBtnRef = ref<HTMLButtonElement>();
+    const muteBtnRef = ref<HTMLButtonElement>();
+    const captionsBtnRef = ref<HTMLButtonElement>();
+    const speedBtnRef = ref<HTMLButtonElement>();
+    const currentTimeElemRef = ref<HTMLDivElement>();
+    const totalTimeElemRef = ref<HTMLDivElement>();
+    const previewImgRef = ref<HTMLImageElement>();
+    const thumbnailImgRef = ref<HTMLImageElement>();
+    const volumeSliderRef = ref<HTMLInputElement>();
+    const videoContainerRef = ref<HTMLDivElement>();
+    const timelineContainerRef = ref<HTMLDivElement>();
+
     return {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
+      captions: {} as any,
+      wasPaused: null as any,
+      isScrubbing: false,
       source: props.source,
+      videoRef,
+      theaterBtnRef,
+      fullScreenBtnRef,
+      miniPlayerBtnRef,
+      muteBtnRef,
+      captionsBtnRef,
+      speedBtnRef,
+      currentTimeElemRef,
+      totalTimeElemRef,
+      previewImgRef,
+      thumbnailImgRef,
+      volumeSliderRef,
+      videoContainerRef,
+      timelineContainerRef,
     };
   },
   mounted() {
-    handleVideo();
+    if (!document || !this.videoRef) return;
+    this.videoRef.currentTime = parseFloat(this.time || 0);
+    this.captions = this.videoRef.textTracks[0];
+    this.captions.mode = "hidden";
+    //Handle keydown
+    document.addEventListener("keydown", (e: any) => {
+      const tagName = document?.activeElement?.tagName.toLowerCase();
+      if (tagName === "input") return;
+      console.log(e.key.toLowerCase());
+      switch (e.key.toLowerCase()) {
+        case "k":
+          this.togglePlay();
+          break;
+        case "f":
+          this.toggleFullScreenMode();
+          break;
+        case "i":
+          this.toggleMiniPlayerMode();
+          break;
+        case "t":
+          this.toggleTheaterMode();
+          break;
+        case "m":
+          this.toggleMute();
+          break;
+        case "c":
+          this.toggleCaptions();
+          break;
+        case "arrowleft":
+        case "j":
+          this.skip(-5);
+          break;
+        case "arrowright":
+        case "l":
+          this.skip(5);
+          break;
+        default:
+          break;
+      }
+    });
+    document.addEventListener("mouseup", (e) => {
+      if (this.isScrubbing) this.toggleScrubbing(e);
+    });
+    this.videoRef.addEventListener("enterpictureinpicture", () => {
+      if (!this.videoContainerRef) return;
+      this.videoContainerRef.classList.add("mini-player");
+    });
+
+    this.videoRef.addEventListener("leavepictureinpicture", () => {
+      if (!this.videoContainerRef) return;
+      this.videoContainerRef.classList.remove("mini-player");
+    });
+  },
+  methods: {
+    togglePlay: function () {
+      if (!this.videoRef) return;
+      this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+    },
+    handleVideoPlaying: function () {
+      if (!this.videoContainerRef) return;
+      this.videoContainerRef.classList.remove("paused");
+    },
+    loadedData: function () {
+      if (!this.totalTimeElemRef || !this.videoRef) return;
+      this.totalTimeElemRef.textContent = formatDuration(
+        this.videoRef.duration
+      );
+    },
+    handleVideoPause: function () {
+      if (!this.videoContainerRef) return;
+      this.videoContainerRef.classList.add("paused");
+    },
+    toggleFullScreenMode: function () {
+      document.fullscreenElement === null
+        ? this.videoContainerRef?.requestFullscreen()
+        : document.exitFullscreen();
+    },
+    toggleMiniPlayerMode: function () {
+      if (!this.videoContainerRef || !document || !this.videoRef) return;
+      this.videoContainerRef.classList.contains("mini-player")
+        ? document.exitPictureInPicture()
+        : this.videoRef.requestPictureInPicture();
+    },
+    toggleTheaterMode: function () {
+      if (!this.videoContainerRef) return;
+
+      const isTheater: boolean = this.videoContainerRef.classList.contains(
+        "theater"
+      )
+        ? true
+        : false;
+      this.setTheaterMode(!isTheater);
+      this.videoContainerRef.classList.toggle("theater");
+    },
+    toggleMute: function () {
+      if (!this.videoRef) return;
+      this.videoRef.muted = !this.videoRef.muted;
+    },
+    handleVolumeSlider: function (e: any) {
+      if (!this.videoRef) return;
+      this.videoRef.volume = e.target.value;
+      this.videoRef.muted = e.target.value === 0;
+    },
+    handleChangingVolume: function () {
+      if (!this.volumeSliderRef || !this.videoRef || !this.videoContainerRef)
+        return;
+      this.volumeSliderRef.value = this.videoRef.volume.toString();
+      let volumeLevel: string = "";
+      if (this.videoRef.muted || this.videoRef.volume === 0) {
+        this.volumeSliderRef.value = "0";
+        volumeLevel = "muted";
+      } else if (this.videoRef.volume >= 0.5) {
+        volumeLevel = "high";
+      } else {
+        volumeLevel = "low";
+      }
+
+      this.videoContainerRef.dataset.volumeLevel = volumeLevel;
+    },
+    changePlaybackSpeed: function () {
+      if (!this.videoRef || !this.speedBtnRef) return;
+      let newPlaybackRate = this.videoRef.playbackRate + 0.25;
+      if (newPlaybackRate > 2) newPlaybackRate = 0.25;
+      this.videoRef.playbackRate = newPlaybackRate;
+      this.speedBtnRef.textContent = `${newPlaybackRate}x`;
+    },
+    toggleCaptions: function () {
+      if (!this.videoContainerRef) return;
+      const isHidden = this.captions.mode === "hidden";
+      this.captions.mode = isHidden ? "showing" : "hidden";
+      this.videoContainerRef.classList.toggle("captions", isHidden);
+      console.log(isHidden);
+    },
+    skip: function (duration: number) {
+      if (!this.videoRef) return;
+      this.videoRef.currentTime += duration;
+    },
+    handleTimeUpdate: function () {
+      if (
+        !this.timelineContainerRef ||
+        !this.videoRef ||
+        !this.currentTimeElemRef
+      )
+        return;
+      this.currentTimeElemRef.textContent = formatDuration(
+        this.videoRef.currentTime
+      );
+      const percent = this.videoRef.currentTime / this.videoRef.duration;
+      this.timelineContainerRef.style.setProperty(
+        "--progress-position",
+        percent.toString()
+      );
+    },
+    toggleScrubbing: function (e: any) {
+      if (
+        !this.timelineContainerRef ||
+        !this.videoContainerRef ||
+        !this.videoRef
+      )
+        return;
+
+      const rect = this.timelineContainerRef.getBoundingClientRect();
+      const percent =
+        Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+      this.isScrubbing = (e.buttons & 1) === 1;
+      this.videoContainerRef.classList.toggle("scrubbing", this.isScrubbing);
+      if (this.isScrubbing) {
+        this.wasPaused = this.videoRef.paused;
+        this.videoRef.pause();
+      } else {
+        this.videoRef.currentTime = percent * this.videoRef.duration;
+        if (!this.wasPaused) this.videoRef.play();
+      }
+
+      this.handleTimelineUpdate(e);
+    },
+    handleTimelineUpdate: function (e: any) {
+      if (
+        !this.timelineContainerRef ||
+        !this.videoRef ||
+        !this.previewImgRef ||
+        !this.timelineContainerRef
+      )
+        return;
+      const rect = this.timelineContainerRef.getBoundingClientRect();
+      const percent =
+        Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+      // const previewImgNumber = Math.max(
+      //   1,
+      //   Math.floor((percent * video.duration) / 10)
+      // );
+      // const previewImgSrc: any = `assets/previewImgs/preview${previewImgNumber}.jpg`;
+      // previewImg.src = previewImgSrc;
+      this.timelineContainerRef.style.setProperty(
+        "--preview-position",
+        percent.toString()
+      );
+
+      if (this.isScrubbing) {
+        e.preventDefault();
+        // thumbnailImg.src = previewImgSrc;
+        this.timelineContainerRef.style.setProperty(
+          "--progress-position",
+          percent.toString()
+        );
+      }
+    },
   },
 };
 </script>
 <template>
   <section>
-    <div class="video-container paused w-full" data-volume-level="high">
-      <img class="thumbnail-img" />
+    <div
+      ref="videoContainerRef"
+      class="video-container paused w-full"
+      data-volume-level="high"
+    >
+      <img ref="thumbnailImg" class="thumbnail-img" />
       <div class="video-controls-container">
-        <div class="timeline-container">
+        <div
+          @mousemove="handleTimelineUpdate"
+          @mousedown="toggleScrubbing"
+          ref="timelineContainerRef"
+          class="timeline-container"
+        >
           <div class="timeline">
-            <img class="preview-img" />
+            <img ref="previewImgRef" class="preview-img" />
             <div class="thumb-indicator"></div>
           </div>
         </div>
         <div class="controls">
-          <button class="play-pause-btn">
+          <button @click="togglePlay" class="play-pause-btn">
             <svg class="play-icon" viewBox="0 0 24 24">
               <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
             </svg>
@@ -40,7 +283,7 @@ export default {
             </svg>
           </button>
           <div class="volume-container">
-            <button class="mute-btn">
+            <button @click="toggleMute" ref="muteBtnRef" class="mute-btn">
               <svg class="volume-high-icon" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -61,20 +304,26 @@ export default {
               </svg>
             </button>
             <input
+              ref="volumeSliderRef"
               class="volume-slider"
               type="range"
               min="0"
               max="1"
               step="any"
               value="1"
+              @input="handleVolumeSlider"
             />
           </div>
           <div class="duration-container">
-            <div class="current-time">0:00</div>
+            <div ref="currentTimeElemRef" class="current-time">0:00</div>
             /
-            <div class="total-time"></div>
+            <div ref="totalTimeElemRef" class="total-time"></div>
           </div>
-          <button class="captions-btn">
+          <button
+            @click="toggleCaptions"
+            ref="captionsBtnRef"
+            class="captions-btn"
+          >
             <svg viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -82,8 +331,18 @@ export default {
               />
             </svg>
           </button>
-          <button class="speed-btn wide-btn">1x</button>
-          <button class="mini-player-btn">
+          <button
+            @click="changePlaybackSpeed"
+            ref="speedBtnRef"
+            class="speed-btn wide-btn"
+          >
+            1x
+          </button>
+          <button
+            @click="toggleMiniPlayerMode"
+            ref="miniPlayerBtnRef"
+            class="mini-player-btn"
+          >
             <svg viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -91,7 +350,11 @@ export default {
               />
             </svg>
           </button>
-          <button class="theater-btn">
+          <button
+            @click="toggleTheaterMode"
+            ref="theaterBtnRef"
+            class="theater-btn"
+          >
             <svg class="tall" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -105,7 +368,11 @@ export default {
               />
             </svg>
           </button>
-          <button class="full-screen-btn">
+          <button
+            @click="toggleFullScreenMode"
+            ref="fullScreenBtnRef"
+            class="full-screen-btn"
+          >
             <svg class="open" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -121,7 +388,17 @@ export default {
           </button>
         </div>
       </div>
-      <video preload="metadata" crossorigin="anonymous">
+      <video
+        @play="handleVideoPlaying"
+        @pause="handleVideoPause"
+        @click="togglePlay"
+        @loadeddata="loadedData"
+        @volumechange="handleChangingVolume"
+        @timeupdate="handleTimeUpdate"
+        ref="videoRef"
+        preload="metadata"
+        crossorigin="anonymous"
+      >
         <source
           :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`"
           type="video/mp4"
