@@ -86,6 +86,10 @@ export default {
     document.addEventListener("mouseup", (e) => {
       if (this.isScrubbing) this.toggleScrubbing(e);
     });
+    document.addEventListener("mousemove", (e) => {
+      if (this.isScrubbing) this.handleTimelineUpdate(e);
+    });
+
     this.videoRef.addEventListener("enterpictureinpicture", () => {
       if (!this.videoContainerRef) return;
       this.videoContainerRef.classList.add("mini-player");
@@ -208,6 +212,7 @@ export default {
       const percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
       this.isScrubbing = (e.buttons & 1) === 1;
+      console.log(this.isScrubbing);
       this.videoContainerRef.classList.toggle("scrubbing", this.isScrubbing);
       if (this.isScrubbing) {
         this.wasPaused = this.videoRef.paused;
@@ -236,7 +241,8 @@ export default {
       const canvas: any = document.querySelector("#canvas");
 
       const context = canvas.getContext("2d");
-      context.drawImage(this, 0, 0, imgRect.width, imgRect.height);
+      context.drawImage(this.videoRef, 0, 0, imgRect.width, 80);
+
       const dataURL = canvas.toDataURL();
 
       this.timelineContainerRef.style.setProperty(
