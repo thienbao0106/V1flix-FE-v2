@@ -238,9 +238,9 @@ export default {
             <section
               v-if="isTheaterMode"
               aria-label="trending"
-              class="md:w-3/6 mt-10"
+              class="md:w-3/6"
             >
-              <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
+              <h2 class="lg:text-3xl text-xl mb-5 font-bold">Top Trending</h2>
               <TopAnimeList />
             </section>
           </aside>

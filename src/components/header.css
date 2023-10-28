@@ -1,0 +1,47 @@
+.sun-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.sun-icon path,
+.sun-icon polygon,
+.sun-icon rect {
+  fill: white;
+}
+
+.sun-icon circle {
+  stroke: white;
+  stroke-width: 1;
+}
+
+.moon-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.moon-icon path,
+.moon-icon polygon,
+.moon-icon rect {
+  fill: white;
+}
+
+.moon-icon circle {
+  stroke: white;
+  stroke-width: 1;
+}
+
+.search-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.search-icon path,
+.search-icon polygon,
+.search-icon rect {
+  fill: white;
+}
+
+.search-icon circle {
+  stroke: white;
+  stroke-width: 1;
+}
