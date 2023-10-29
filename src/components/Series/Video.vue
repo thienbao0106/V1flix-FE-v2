@@ -402,8 +402,10 @@ export default {
         preload="metadata"
         crossorigin="anonymous"
       >
-        <!-- :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`" -->
-        <source src="/test/test.mp4" type="video/mp4" />
+        <source
+          :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`"
+          type="video/mp4"
+        />
         <track
           v-for="(sub, index) in subtitles"
           :default="sub.lang === `en` ? true : false"
