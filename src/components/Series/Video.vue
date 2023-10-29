@@ -2,8 +2,9 @@
 // import { onMounted } from "vue";
 import { ref } from "vue";
 import { formatDuration } from "../../../utils/handleVideo";
+import { createCanvas, loadImage } from "canvas";
 export default {
-  props: ["source", "time", "subtitles", "setTheaterMode"],
+  props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();
     const speedBtnRef = ref<HTMLButtonElement>();
@@ -19,6 +20,7 @@ export default {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
       wasPaused: null as any,
+      frames: [] as any,
       isScrubbing: false,
       source: props.source,
       videoRef,
@@ -43,6 +45,10 @@ export default {
       if (tagName === "input") return;
 
       switch (e.key.toLowerCase()) {
+        case " ":
+          e.preventDefault();
+          this.togglePlay();
+          break;
         case "k":
           this.togglePlay();
           break;
@@ -90,8 +96,32 @@ export default {
       if (!this.videoContainerRef) return;
       this.videoContainerRef.classList.remove("mini-player");
     });
+
+    this.cutImage(this.keyframe);
   },
   methods: {
+    cutImage: function (image: string) {
+      if (!image) return;
+      loadImage(image).then((image) => {
+        const canvas = createCanvas(100, 50);
+        const ctx = canvas.getContext("2d");
+
+        this.frames = []; // Clear previous frames
+
+        const numRows = Math.floor(image.height / 50);
+        const numFrames = 10 * numRows;
+
+        for (let i = 0; i < numFrames; i++) {
+          const row = Math.floor(i / 10);
+          const col = i % 10;
+
+          ctx.drawImage(image, -col * 100, -row * 50);
+
+          const frameDataUrl = canvas.toDataURL("image/png");
+          this.frames.push(frameDataUrl);
+        }
+      });
+    },
     togglePlay: function () {
       if (!this.videoRef) return;
       this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
@@ -226,41 +256,40 @@ export default {
         return;
       const rect = this.timelineContainerRef.getBoundingClientRect();
       const imgRect = this.previewImgRef.getBoundingClientRect();
-
+      let imgSrc = "";
       const percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
-      const previewImgNumber = Math.max(
-        1,
-        Math.floor((percent * this.videoRef.duration) / 10)
-      ).toString();
-      console.log(previewImgNumber);
-      //Temp location
-      // const imgSrc = `/test/yurucamp_ep5/frame${previewImgNumber.padStart(
-      //   4,
-      //   "0"
-      // )}1.png`;
-      // console.log(imgSrc);
-      const canvas: any = document.querySelector("#canvas");
-      const context = canvas.getContext("2d");
+      if (this.keyframe) {
+        const previewImgNumber = Math.max(
+          1,
+          Math.floor(percent * this.videoRef.duration * 2.36)
+        ).toString();
+        console.log(previewImgNumber);
+        //Temp location
+        console.log(this.frames.length);
+        imgSrc = this.frames[previewImgNumber];
+      } else {
+        const canvas: any = document.querySelector("#canvas");
+        const context = canvas.getContext("2d");
+        console.log(this.frames.length);
+        context.drawImage(
+          this.videoRef,
+          0,
+          0,
+          imgRect.width * 2.2,
+          imgRect.height * 2
+        );
+        imgSrc = canvas.toDataURL();
+      }
 
-      context.drawImage(
-        this.videoRef,
-        0,
-        0,
-        imgRect.width * 2.2,
-        imgRect.height * 2
-      );
-
-      const dataURL = canvas.toDataURL();
-
-      this.previewImgRef.src = dataURL;
+      this.previewImgRef.src = imgSrc;
       this.timelineContainerRef.style.setProperty(
         "--preview-position",
         percent.toString()
       );
       if (this.isScrubbing) {
         e.preventDefault();
-        this.previewImgRef.src = dataURL;
+        this.previewImgRef.src = imgSrc;
 
         this.timelineContainerRef.style.setProperty(
           "--progress-position",

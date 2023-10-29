@@ -150,32 +150,6 @@ export default {
       class="space-y-5"
       :class="isTheaterMode ? `md:w-full` : `md:w-4/6`"
     >
-      <header class="space-y-4">
-        <h2 v-if="currentEpisode">
-          {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
-        </h2>
-        <div
-          v-if="currentEpisode"
-          class="flex flex-row justify-between items-center"
-        >
-          <div class="space-y-2 text-lg">
-            <p>
-              {{ `View: ${currentEpisode?.view + 1 || 0}` }}
-            </p>
-            <p v-if="currentEpisode?.created_at" class="italic">
-              {{
-                `Uploaded on: ${getCurrentDate(currentEpisode?.created_at)} `
-              }}
-            </p>
-          </div>
-          <div
-            class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
-            @click="toggleShareModal"
-          >
-            <font-awesome-icon icon="fa-solid fa-share" />
-          </div>
-        </div>
-      </header>
       <main class="w-full" aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
@@ -187,11 +161,40 @@ export default {
                 :subtitles="currentEpisode.subtitles"
                 :set-theater-mode="setTheaterMode"
               />
+              <!-- :keyframe="`/test/merged_image.png`" -->
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
             </section>
           </aside>
+          <header class="space-y-4">
+            <h2 v-if="currentEpisode">
+              {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
+            </h2>
+            <div
+              v-if="currentEpisode"
+              class="flex flex-row justify-between items-center"
+            >
+              <div class="space-y-2 text-lg">
+                <p>
+                  {{ `View: ${currentEpisode?.view + 1 || 0}` }}
+                </p>
+                <p v-if="currentEpisode?.created_at" class="italic">
+                  {{
+                    `Uploaded on: ${getCurrentDate(
+                      currentEpisode?.created_at
+                    )} `
+                  }}
+                </p>
+              </div>
+              <div
+                class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
+                @click="toggleShareModal"
+              >
+                <font-awesome-icon icon="fa-solid fa-share" />
+              </div>
+            </div>
+          </header>
           <aside>
             <ul
               v-if="series?.episodes?.length > 0"
