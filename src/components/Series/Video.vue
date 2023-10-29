@@ -6,11 +6,6 @@ export default {
   props: ["source", "time", "subtitles", "setTheaterMode"],
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();
-    const theaterBtnRef = ref<HTMLButtonElement>();
-    const fullScreenBtnRef = ref<HTMLButtonElement>();
-    const miniPlayerBtnRef = ref<HTMLButtonElement>();
-    const muteBtnRef = ref<HTMLButtonElement>();
-    const captionsBtnRef = ref<HTMLButtonElement>();
     const speedBtnRef = ref<HTMLButtonElement>();
     const currentTimeElemRef = ref<HTMLDivElement>();
     const totalTimeElemRef = ref<HTMLDivElement>();
@@ -27,11 +22,6 @@ export default {
       isScrubbing: false,
       source: props.source,
       videoRef,
-      theaterBtnRef,
-      fullScreenBtnRef,
-      miniPlayerBtnRef,
-      muteBtnRef,
-      captionsBtnRef,
       speedBtnRef,
       currentTimeElemRef,
       totalTimeElemRef,
@@ -51,7 +41,7 @@ export default {
     document.addEventListener("keydown", (e: any) => {
       const tagName = document?.activeElement?.tagName.toLowerCase();
       if (tagName === "input") return;
-      console.log(e.key.toLowerCase());
+
       switch (e.key.toLowerCase()) {
         case "k":
           this.togglePlay();
@@ -87,9 +77,10 @@ export default {
       if (this.isScrubbing) this.toggleScrubbing(e);
     });
     document.addEventListener("mousemove", (e) => {
-      if (this.isScrubbing) this.handleTimelineUpdate(e);
+      if (this.isScrubbing) {
+        this.handleTimelineUpdate(e);
+      }
     });
-
     this.videoRef.addEventListener("enterpictureinpicture", () => {
       if (!this.videoContainerRef) return;
       this.videoContainerRef.classList.add("mini-player");
@@ -212,7 +203,6 @@ export default {
       const percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
       this.isScrubbing = (e.buttons & 1) === 1;
-      console.log(this.isScrubbing);
       this.videoContainerRef.classList.toggle("scrubbing", this.isScrubbing);
       if (this.isScrubbing) {
         this.wasPaused = this.videoRef.paused;
@@ -230,7 +220,8 @@ export default {
         !this.videoRef ||
         !this.previewImgRef ||
         !this.timelineContainerRef ||
-        !this.thumbnailImgRef
+        !this.thumbnailImgRef ||
+        !this.videoContainerRef
       )
         return;
       const rect = this.timelineContainerRef.getBoundingClientRect();
@@ -238,21 +229,39 @@ export default {
 
       const percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+      const previewImgNumber = Math.max(
+        1,
+        Math.floor((percent * this.videoRef.duration) / 10)
+      ).toString();
+      console.log(previewImgNumber);
+      //Temp location
+      // const imgSrc = `/test/yurucamp_ep5/frame${previewImgNumber.padStart(
+      //   4,
+      //   "0"
+      // )}1.png`;
+      // console.log(imgSrc);
       const canvas: any = document.querySelector("#canvas");
-
       const context = canvas.getContext("2d");
-      context.drawImage(this.videoRef, 0, 0, imgRect.width, 80);
+
+      context.drawImage(
+        this.videoRef,
+        0,
+        0,
+        imgRect.width * 2.2,
+        imgRect.height * 2
+      );
 
       const dataURL = canvas.toDataURL();
 
+      this.previewImgRef.src = dataURL;
       this.timelineContainerRef.style.setProperty(
         "--preview-position",
         percent.toString()
       );
-
       if (this.isScrubbing) {
         e.preventDefault();
         this.previewImgRef.src = dataURL;
+
         this.timelineContainerRef.style.setProperty(
           "--progress-position",
           percent.toString()
@@ -293,7 +302,7 @@ export default {
             </svg>
           </button>
           <div class="volume-container">
-            <button @click="toggleMute" ref="muteBtnRef" class="mute-btn">
+            <button @click="toggleMute" class="mute-btn">
               <svg class="volume-high-icon" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -329,11 +338,7 @@ export default {
             /
             <div ref="totalTimeElemRef" class="total-time"></div>
           </div>
-          <button
-            @click="toggleCaptions"
-            ref="captionsBtnRef"
-            class="captions-btn"
-          >
+          <button @click="toggleCaptions" class="captions-btn">
             <svg viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -343,16 +348,12 @@ export default {
           </button>
           <button
             @click="changePlaybackSpeed"
-            ref="speedBtnRef"
+            ref="speedBtnRe f"
             class="speed-btn wide-btn"
           >
             1x
           </button>
-          <button
-            @click="toggleMiniPlayerMode"
-            ref="miniPlayerBtnRef"
-            class="mini-player-btn"
-          >
+          <button @click="toggleMiniPlayerMode" class="mini-player-btn">
             <svg viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -360,11 +361,7 @@ export default {
               />
             </svg>
           </button>
-          <button
-            @click="toggleTheaterMode"
-            ref="theaterBtnRef"
-            class="theater-btn"
-          >
+          <button @click="toggleTheaterMode" class="theater-btn">
             <svg class="tall" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -378,11 +375,7 @@ export default {
               />
             </svg>
           </button>
-          <button
-            @click="toggleFullScreenMode"
-            ref="fullScreenBtnRef"
-            class="full-screen-btn"
-          >
+          <button @click="toggleFullScreenMode" class="full-screen-btn">
             <svg class="open" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -409,10 +402,8 @@ export default {
         preload="metadata"
         crossorigin="anonymous"
       >
-        <source
-          :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`"
-          type="video/mp4"
-        />
+        <!-- :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`" -->
+        <source src="/test/test.mp4" type="video/mp4" />
         <track
           v-for="(sub, index) in subtitles"
           :default="sub.lang === `en` ? true : false"
