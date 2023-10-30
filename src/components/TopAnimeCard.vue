@@ -42,7 +42,7 @@ export default {
       className="flex flex-col basis-3/5  w-full  my-auto space-y-3 xl:mx-0 lg:mx-2 md:mx-0 "
     >
       <h3
-        className="xl:text-base lg:text-3xl sm:text-2xl pt-2 text-lg font-semibold line-clamp-1"
+        className="xl:text-base lg:text-xl sm:text-lg pt-2 text-lg font-semibold line-clamp-1"
       >
         <a
           :href="`/series/${title}?ep=1`"

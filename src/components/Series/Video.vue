@@ -2,7 +2,7 @@
 // import { onMounted } from "vue";
 import { ref } from "vue";
 import { formatDuration } from "../../../utils/handleVideo";
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas } from "canvas";
 export default {
   props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
   setup(props) {
@@ -35,92 +35,105 @@ export default {
     };
   },
   mounted() {
-    if (!document || !this.videoRef) return;
-    this.videoRef.currentTime = parseFloat(this.time || 0);
-    this.captions = this.videoRef.textTracks[0];
-    this.captions.mode = "hidden";
-    //Handle keydown
-    document.addEventListener("keydown", (e: any) => {
-      const tagName = document?.activeElement?.tagName.toLowerCase();
-      if (tagName === "input") return;
+    setTimeout(() => {
+      if (!document || !this.videoRef) return;
+      this.videoRef.currentTime = parseFloat(this.time || 0);
+      this.captions = this.videoRef.textTracks[0];
+      this.captions.mode = "hidden";
 
-      switch (e.key.toLowerCase()) {
-        case " ":
-          e.preventDefault();
-          this.togglePlay();
-          break;
-        case "k":
-          this.togglePlay();
-          break;
-        case "f":
-          this.toggleFullScreenMode();
-          break;
-        case "i":
-          this.toggleMiniPlayerMode();
-          break;
-        case "t":
-          this.toggleTheaterMode();
-          break;
-        case "m":
-          this.toggleMute();
-          break;
-        case "c":
-          this.toggleCaptions();
-          break;
-        case "arrowleft":
-        case "j":
-          this.skip(-5);
-          break;
-        case "arrowright":
-        case "l":
-          this.skip(5);
-          break;
-        default:
-          break;
-      }
-    });
-    document.addEventListener("mouseup", (e) => {
-      if (this.isScrubbing) this.toggleScrubbing(e);
-    });
-    document.addEventListener("mousemove", (e) => {
-      if (this.isScrubbing) {
-        this.handleTimelineUpdate(e);
-      }
-    });
-    this.videoRef.addEventListener("enterpictureinpicture", () => {
-      if (!this.videoContainerRef) return;
-      this.videoContainerRef.classList.add("mini-player");
-    });
+      //Handle keydown
+      document.addEventListener("keydown", (e: any) => {
+        const tagName = document?.activeElement?.tagName.toLowerCase();
+        if (tagName === "input") return;
 
-    this.videoRef.addEventListener("leavepictureinpicture", () => {
-      if (!this.videoContainerRef) return;
-      this.videoContainerRef.classList.remove("mini-player");
-    });
+        switch (e.key.toLowerCase()) {
+          case " ":
+            e.preventDefault();
+            this.togglePlay();
+            break;
+          case "k":
+            this.togglePlay();
+            break;
+          case "f":
+            this.toggleFullScreenMode();
+            break;
+          case "i":
+            this.toggleMiniPlayerMode();
+            break;
+          case "t":
+            this.toggleTheaterMode();
+            break;
+          case "m":
+            this.toggleMute();
+            break;
+          case "c":
+            this.toggleCaptions();
+            break;
+          case "arrowleft":
+          case "j":
+            this.skip(-5);
+            break;
+          case "arrowright":
+          case "l":
+            this.skip(5);
+            break;
+          default:
+            break;
+        }
+      });
+      document.addEventListener("mouseup", (e) => {
+        if (this.isScrubbing) this.toggleScrubbing(e);
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (this.isScrubbing) {
+          this.handleTimelineUpdate(e);
+        }
+      });
+      this.videoRef.addEventListener("enterpictureinpicture", () => {
+        if (!this.videoContainerRef) return;
+        this.videoContainerRef.classList.add("mini-player");
+      });
 
-    this.cutImage(this.keyframe);
+      this.videoRef.addEventListener("leavepictureinpicture", () => {
+        if (!this.videoContainerRef) return;
+        this.videoContainerRef.classList.remove("mini-player");
+      });
+
+      this.cutImage(this.keyframe);
+    }, 1500);
   },
   methods: {
     cutImage: function (image: string) {
-      if (!image) return;
-      loadImage(image).then((image) => {
-        const canvas = createCanvas(100, 50);
-        const ctx = canvas.getContext("2d");
+      if (!image || image === "") return;
+      const imageUrl = `https://www.googleapis.com/drive/v3/files/${image}?key=${this.ggDriveKey}&alt=media`;
+      fetch(imageUrl)
+        .then((response) => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.blob();
+        })
+        .then((imageBlob) => {
+          return createImageBitmap(imageBlob);
+        })
+        .then((image: any) => {
+          if (!image) return;
+          const canvas = createCanvas(100, 50);
+          const ctx = canvas.getContext("2d");
 
-        this.frames = []; // Clear previous frames
+          this.frames = []; // Clear previous frames
 
-        const numRows = Math.floor(image.height / 50);
-        const numFrames = 10 * numRows;
+          const numRows = Math.floor(image.height / 50);
+          const numFrames = 10 * numRows;
 
-        for (let i = 0; i < numFrames; i++) {
-          const row = Math.floor(i / 10);
-          const col = i % 10;
+          for (let i = 0; i < numFrames; i++) {
+            const row = Math.floor(i / 10);
+            const col = i % 10;
 
-          ctx.drawImage(image, -col * 100, -row * 50);
+            ctx.drawImage(image, -col * 100, -row * 50);
 
-          const frameDataUrl = canvas.toDataURL("image/png");
-          this.frames.push(frameDataUrl);
-        }
-      });
+            const frameDataUrl = canvas.toDataURL("image/png");
+            this.frames.push(frameDataUrl);
+          }
+        });
     },
     togglePlay: function () {
       if (!this.videoRef) return;
@@ -264,7 +277,7 @@ export default {
           1,
           Math.floor(percent * this.videoRef.duration * 2.36)
         ).toString();
-        console.log(previewImgNumber);
+
         //Temp location
         console.log(this.frames.length);
         imgSrc = this.frames[previewImgNumber];

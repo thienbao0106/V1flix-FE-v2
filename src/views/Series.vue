@@ -94,7 +94,7 @@ export default {
       });
     },
     getCurrentDate: function (dateNum: number): string {
-      return moment(dateNum).fromNow();
+      return moment(dateNum).format("MMM Do YYYY");
     },
     setTheaterMode: function (isTheaterMode: boolean) {
       console.log(isTheaterMode);
@@ -143,12 +143,12 @@ export default {
     id="main-video"
     v-else
     class="text-white space-y-5 px-8 pt-5 md:gap-x-16"
-    :class="isTheaterMode ? `md:flex-none` : ` md:flex`"
+    :class="isTheaterMode ? `md:flex-none` : ` lg:flex md:flex-none`"
   >
     <section
       id="main-left-section"
       class="space-y-5"
-      :class="isTheaterMode ? `md:w-full` : `md:w-4/6`"
+      :class="isTheaterMode ? `md:w-full` : `lg:w-4/6 md:w-full`"
     >
       <main class="w-full" aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
@@ -160,38 +160,37 @@ export default {
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
                 :set-theater-mode="setTheaterMode"
+                :keyframe="currentEpisode.keyframe"
               />
-              <!-- :keyframe="`/test/merged_image.png`" -->
             </section>
             <section v-else>
               <div>This episode doesn't exist</div>
             </section>
           </aside>
-          <header class="space-y-4">
-            <h2 v-if="currentEpisode">
+          <header class="space-y-2">
+            <h2 class="lg:text-2xl text-base" v-if="currentEpisode">
               {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
             </h2>
             <div
               v-if="currentEpisode"
               class="flex flex-row justify-between items-center"
             >
-              <div class="space-y-2 text-lg">
+              <div
+                class="text-lg flex flex-row justify-center items-center gap-x-5"
+              >
                 <p>
-                  {{ `View: ${currentEpisode?.view + 1 || 0}` }}
+                  {{ `${currentEpisode?.view + 1 || 0} views` }}
                 </p>
-                <p v-if="currentEpisode?.created_at" class="italic">
-                  {{
-                    `Uploaded on: ${getCurrentDate(
-                      currentEpisode?.created_at
-                    )} `
-                  }}
+                <p v-if="currentEpisode?.created_at">
+                  {{ ` ${getCurrentDate(currentEpisode?.created_at)} ` }}
                 </p>
               </div>
               <div
                 class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
                 @click="toggleShareModal"
               >
-                <font-awesome-icon icon="fa-solid fa-share" />
+                <font-awesome-icon class="mr-2" icon="fa-solid fa-share" />
+                Share
               </div>
             </div>
           </header>
@@ -251,7 +250,11 @@ export default {
       </main>
     </section>
 
-    <section v-if="!isTheaterMode" aria-label="trending" class="md:w-2/6">
+    <section
+      v-if="!isTheaterMode"
+      aria-label="trending"
+      class="lg:w-2/6 md:w-full"
+    >
       <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
       <TopAnimeList />
     </section>
