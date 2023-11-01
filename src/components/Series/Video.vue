@@ -3,8 +3,32 @@
 import { ref } from "vue";
 import { formatDuration } from "../../../utils/handleVideo";
 import { createCanvas } from "canvas";
+import Loading from "../Loading.vue";
+import Settings from "./Settings.vue";
+
 export default {
   props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
+  data() {
+    return {
+      isCompleted: false,
+      settingBox: false,
+      currentSubtitle: {} as any,
+    };
+  },
+  created() {
+    this.$watch(
+      () => this.$data.isCompleted,
+      () => {
+        if (this.isCompleted) {
+          const container: any = document.querySelector("#container");
+          if (!container) return;
+          container.style.visibility = "visible";
+          this.handelRenderVideo();
+        }
+      },
+      { immediate: true }
+    );
+  },
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();
     const speedBtnRef = ref<HTMLButtonElement>();
@@ -15,7 +39,6 @@ export default {
     const volumeSliderRef = ref<HTMLInputElement>();
     const videoContainerRef = ref<HTMLDivElement>();
     const timelineContainerRef = ref<HTMLDivElement>();
-
     return {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
@@ -35,17 +58,28 @@ export default {
     };
   },
   mounted() {
-    setTimeout(() => {
-      if (!document || !this.videoRef) return;
-      this.videoRef.currentTime = parseFloat(this.time || 0);
+    if (!document || !this.videoRef) return;
+    this.videoRef.currentTime = parseFloat(this.time || 0);
+
+    this.currentSubtitle = this.subtitles.find((sub: any) => sub.lang === "en");
+    if (this.keyframe !== "") {
+      this.cutImage(this.keyframe);
+    } else {
+      const container: any = document.querySelector("#container");
+      if (!container) return;
+      container.style.visibility = "visible";
+      this.handelRenderVideo();
+    }
+  },
+  methods: {
+    handelRenderVideo: function () {
+      if (!document || !this.videoRef || !this.videoContainerRef) return;
       this.captions = this.videoRef.textTracks[0];
       this.captions.mode = "hidden";
-
       //Handle keydown
       document.addEventListener("keydown", (e: any) => {
         const tagName = document?.activeElement?.tagName.toLowerCase();
         if (tagName === "input") return;
-
         switch (e.key.toLowerCase()) {
           case " ":
             e.preventDefault();
@@ -82,6 +116,7 @@ export default {
         }
       });
       document.addEventListener("mouseup", (e) => {
+        console.log("test");
         if (this.isScrubbing) this.toggleScrubbing(e);
       });
       document.addEventListener("mousemove", (e) => {
@@ -89,26 +124,25 @@ export default {
           this.handleTimelineUpdate(e);
         }
       });
+
       this.videoRef.addEventListener("enterpictureinpicture", () => {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.add("mini-player");
       });
-
       this.videoRef.addEventListener("leavepictureinpicture", () => {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.remove("mini-player");
       });
-
-      this.cutImage(this.keyframe);
-    }, 1500);
-  },
-  methods: {
+      this.videoContainerRef.addEventListener("mouseleave", () => {
+        this.settingBox = false;
+      });
+    },
     cutImage: function (image: string) {
       if (!image || image === "") return;
-      const imageUrl = `https://www.googleapis.com/drive/v3/files/${image}?key=${this.ggDriveKey}&alt=media`;
-      fetch(imageUrl)
+      // const imageUrl = `https://www.googleapis.com/drive/v3/files/${image}?key=${this.ggDriveKey}&alt=media`;
+      fetch("/test/merged_image.png", { mode: "no-cors" })
         .then((response) => {
-          if (!response.ok) throw new Error("Network response was not ok");
+          if (!response.ok) throw new Error("Can't load this image");
           return response.blob();
         })
         .then((imageBlob) => {
@@ -118,21 +152,17 @@ export default {
           if (!image) return;
           const canvas = createCanvas(100, 50);
           const ctx = canvas.getContext("2d");
-
           this.frames = []; // Clear previous frames
-
           const numRows = Math.floor(image.height / 50);
           const numFrames = 10 * numRows;
-
           for (let i = 0; i < numFrames; i++) {
             const row = Math.floor(i / 10);
             const col = i % 10;
-
             ctx.drawImage(image, -col * 100, -row * 50);
-
             const frameDataUrl = canvas.toDataURL("image/png");
             this.frames.push(frameDataUrl);
           }
+          this.isCompleted = true;
         });
     },
     togglePlay: function () {
@@ -166,7 +196,6 @@ export default {
     },
     toggleTheaterMode: function () {
       if (!this.videoContainerRef) return;
-
       const isTheater: boolean = this.videoContainerRef.classList.contains(
         "theater"
       )
@@ -197,7 +226,6 @@ export default {
       } else {
         volumeLevel = "low";
       }
-
       this.videoContainerRef.dataset.volumeLevel = volumeLevel;
     },
     changePlaybackSpeed: function () {
@@ -241,7 +269,6 @@ export default {
         !this.videoRef
       )
         return;
-
       const rect = this.timelineContainerRef.getBoundingClientRect();
       const percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
@@ -254,7 +281,6 @@ export default {
         this.videoRef.currentTime = percent * this.videoRef.duration;
         if (!this.wasPaused) this.videoRef.play();
       }
-
       this.handleTimelineUpdate(e);
     },
     handleTimelineUpdate: function (e: any) {
@@ -264,27 +290,27 @@ export default {
         !this.previewImgRef ||
         !this.timelineContainerRef ||
         !this.thumbnailImgRef ||
-        !this.videoContainerRef
+        !this.videoContainerRef ||
+        !this.currentTimeElemRef
       )
         return;
       const rect = this.timelineContainerRef.getBoundingClientRect();
       const imgRect = this.previewImgRef.getBoundingClientRect();
+
       let imgSrc = "";
-      const percent =
+      let percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+
       if (this.keyframe) {
         const previewImgNumber = Math.max(
           1,
           Math.floor(percent * this.videoRef.duration * 2.36)
         ).toString();
-
         //Temp location
-        console.log(this.frames.length);
         imgSrc = this.frames[previewImgNumber];
       } else {
         const canvas: any = document.querySelector("#canvas");
         const context = canvas.getContext("2d");
-        console.log(this.frames.length);
         context.drawImage(
           this.videoRef,
           0,
@@ -294,27 +320,43 @@ export default {
         );
         imgSrc = canvas.toDataURL();
       }
-
       this.previewImgRef.src = imgSrc;
+      if (percent > 0.93) percent = 0.93;
       this.timelineContainerRef.style.setProperty(
         "--preview-position",
         percent.toString()
       );
       if (this.isScrubbing) {
         e.preventDefault();
+        let percent =
+          Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+        this.currentTimeElemRef.textContent = formatDuration(
+          percent * this.videoRef.duration
+        );
         this.previewImgRef.src = imgSrc;
-
         this.timelineContainerRef.style.setProperty(
           "--progress-position",
           percent.toString()
         );
       }
     },
+    toggleSettings: function () {
+      this.settingBox = !this.settingBox;
+    },
+    setSubtitle: function (subtitle: any) {
+      console.log(subtitle);
+      this.currentSubtitle = subtitle;
+    },
   },
+  components: { Loading, Settings },
 };
 </script>
 <template>
-  <section>
+  <div v-if="!isCompleted && keyframe !== ''" class="h-[100px]">
+    <Loading message="Getting the video" />
+  </div>
+
+  <section id="container" style="visibility: hidden">
     <div
       ref="videoContainerRef"
       class="video-container paused w-full"
@@ -388,9 +430,12 @@ export default {
               />
             </svg>
           </button>
+          <button @click="toggleSettings">
+            <font-awesome-icon icon="fa-solid fa-gear" />
+          </button>
           <button
             @click="changePlaybackSpeed"
-            ref="speedBtnRe f"
+            ref="speedBtnRef"
             class="speed-btn wide-btn"
           >
             1x
@@ -432,6 +477,11 @@ export default {
             </svg>
           </button>
         </div>
+        <Settings
+          v-if="settingBox"
+          :list-languages="subtitles"
+          :set-subtitle="setSubtitle"
+        />
       </div>
       <video
         @play="handleVideoPlaying"
@@ -449,15 +499,15 @@ export default {
           type="video/mp4"
         />
         <track
-          v-for="(sub, index) in subtitles"
-          :default="sub.lang === `en` ? true : false"
-          :key="index"
-          :id="sub.source"
-          :label="sub.label"
+          :default="currentSubtitle.lang === `en` ? true : false"
+          :id="currentSubtitle.source"
+          :label="currentSubtitle.label"
           kind="subtitles"
-          :srclang="sub.lang"
-          :src="`https://www.googleapis.com/drive/v3/files/${sub.source}?key=${ggDriveKey}&alt=media`"
+          :srclang="currentSubtitle.lang"
+          :src="`https://www.googleapis.com/drive/v3/files/${currentSubtitle.source}?key=${ggDriveKey}&alt=media`"
         />
+        <!-- :src="`/test/test.vtt`" -->
+        <!-- :src="`/test/test.mp4`" -->
 
         This video type can't be supported
       </video>

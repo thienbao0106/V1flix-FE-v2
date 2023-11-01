@@ -13,6 +13,7 @@ import {
   faMagnifyingGlass,
   faExpand,
   faVolumeHigh,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -48,6 +49,7 @@ export const addIcon = () => {
     faCalendar,
     faExpand,
     faVolumeHigh,
-    faClosedCaptioning
+    faClosedCaptioning,
+    faGear
   );
 };

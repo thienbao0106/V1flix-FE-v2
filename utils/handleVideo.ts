@@ -3,7 +3,6 @@ const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 });
 
 export const formatDuration = (time: number) => {
-  console.log(time);
   const seconds = Math.floor(time % 60);
   const minutes = Math.floor(time / 60) % 60;
   const hours = Math.floor(time / 3600);
