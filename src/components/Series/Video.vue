@@ -140,7 +140,8 @@ export default {
     cutImage: function (image: string) {
       if (!image || image === "") return;
       const imageUrl = `https://www.googleapis.com/drive/v3/files/${image}?key=${this.ggDriveKey}&alt=media`;
-      fetch(imageUrl, { mode: "no-cors" })
+      console.log(imageUrl);
+      fetch(imageUrl)
         .then((response) => {
           if (!response.ok) throw new Error("Can't load this image");
           return response.blob();
