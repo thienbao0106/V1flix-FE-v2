@@ -1,10 +1,11 @@
 <script lang="ts">
 // import { onMounted } from "vue";
 import { ref } from "vue";
-import { formatDuration } from "../../../utils/handleVideo";
+import { formatDuration, handlePercent } from "../../../utils/handleVideo";
 import { createCanvas } from "canvas";
 import Loading from "../Loading.vue";
 import Settings from "./Settings.vue";
+import { URL_TYPE } from "../../constants/video.ts";
 
 export default {
   props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
@@ -12,18 +13,20 @@ export default {
     return {
       isCompleted: false,
       settingBox: false,
-      currentSubtitle: {} as any,
+      frames: [] as any,
+      currentSubtitle: this.subtitles.find((sub: any) => sub.lang === "en"),
+      isDevEnv: import.meta.env.DEV,
     };
   },
   created() {
     this.$watch(
       () => this.$data.isCompleted,
       () => {
-        if (this.isCompleted) {
+        if (this.isCompleted && this.keyframe !== "") {
           const container: any = document.querySelector("#container");
           if (!container) return;
           container.style.visibility = "visible";
-          this.handelRenderVideo();
+          this.handleRenderVideo();
         }
       },
       { immediate: true }
@@ -39,11 +42,11 @@ export default {
     const volumeSliderRef = ref<HTMLInputElement>();
     const videoContainerRef = ref<HTMLDivElement>();
     const timelineContainerRef = ref<HTMLDivElement>();
+
     return {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
       wasPaused: null as any,
-      frames: [] as any,
       isScrubbing: false,
       source: props.source,
       videoRef,
@@ -59,20 +62,31 @@ export default {
   },
   mounted() {
     if (!document || !this.videoRef) return;
+
     this.videoRef.currentTime = parseFloat(this.time || 0);
 
-    this.currentSubtitle = this.subtitles.find((sub: any) => sub.lang === "en");
     if (this.keyframe !== "") {
       this.cutImage(this.keyframe);
     } else {
       const container: any = document.querySelector("#container");
       if (!container) return;
       container.style.visibility = "visible";
-      this.handelRenderVideo();
+      this.handleRenderVideo();
     }
   },
   methods: {
-    handelRenderVideo: function () {
+    getSource: function () {
+      return this.isDevEnv
+        ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
+        : {
+            video: URL_TYPE.ggDriveUrl(this.source, this.ggDriveKey),
+            subtitle: URL_TYPE.ggDriveUrl(
+              this.currentSubtitle.source,
+              this.ggDriveKey
+            ),
+          };
+    },
+    handleRenderVideo: function () {
       if (!document || !this.videoRef || !this.videoContainerRef) return;
       this.captions = this.videoRef.textTracks[0];
       this.captions.mode = "hidden";
@@ -116,7 +130,6 @@ export default {
         }
       });
       document.addEventListener("mouseup", (e) => {
-        console.log("test");
         if (this.isScrubbing) this.toggleScrubbing(e);
       });
       document.addEventListener("mousemove", (e) => {
@@ -137,10 +150,12 @@ export default {
         this.settingBox = false;
       });
     },
-    cutImage: function (image: string) {
-      if (!image || image === "") return;
-      const imageUrl = `https://www.googleapis.com/drive/v3/files/${image}?key=${this.ggDriveKey}&alt=media`;
-      console.log(imageUrl);
+    cutImage: function (imageId: string) {
+      if (imageId === "") return;
+      const imageUrl = this.isDevEnv
+        ? URL_TYPE.ggDriveUrl(imageId, this.ggDriveKey)
+        : URL_TYPE.keyframe;
+
       fetch(imageUrl)
         .then((response) => {
           if (!response.ok) throw new Error("Can't load this image");
@@ -295,6 +310,7 @@ export default {
         !this.currentTimeElemRef
       )
         return;
+
       const rect = this.timelineContainerRef.getBoundingClientRect();
       const imgRect = this.previewImgRef.getBoundingClientRect();
 
@@ -310,7 +326,7 @@ export default {
         //Temp location
         imgSrc = this.frames[previewImgNumber];
       } else {
-        const canvas: any = document.querySelector("#canvas");
+        const canvas: any = createCanvas(100, 50);
         const context = canvas.getContext("2d");
         context.drawImage(
           this.videoRef,
@@ -322,11 +338,11 @@ export default {
         imgSrc = canvas.toDataURL();
       }
       this.previewImgRef.src = imgSrc;
-      if (percent > 0.93) percent = 0.93;
-      this.timelineContainerRef.style.setProperty(
-        "--preview-position",
-        percent.toString()
-      );
+
+      const finalPercent = handlePercent(rect.width, percent);
+
+      this.previewImgRef.style.setProperty("--preview-position", finalPercent);
+      //
       if (this.isScrubbing) {
         e.preventDefault();
         let percent =
@@ -342,7 +358,9 @@ export default {
       }
     },
     toggleSettings: function () {
-      this.settingBox = !this.settingBox;
+      const settingBox: any = document.querySelector("#setting-box");
+      if (!settingBox) return;
+      settingBox.classList.toggle("hidden");
     },
     setSubtitle: function (subtitle: any) {
       console.log(subtitle);
@@ -372,7 +390,6 @@ export default {
           class="timeline-container"
         >
           <div class="timeline">
-            <canvas id="canvas" style="display: none" />
             <img ref="previewImgRef" class="preview-img" />
             <div class="thumb-indicator"></div>
           </div>
@@ -479,7 +496,7 @@ export default {
           </button>
         </div>
         <Settings
-          v-if="settingBox"
+          class="hidden"
           :list-languages="subtitles"
           :set-subtitle="setSubtitle"
         />
@@ -495,20 +512,15 @@ export default {
         preload="metadata"
         crossorigin="anonymous"
       >
-        <source
-          :src="`https://www.googleapis.com/drive/v3/files/${source}?key=${ggDriveKey}&alt=media`"
-          type="video/mp4"
-        />
+        <source :src="getSource().video" type="video/mp4" />
         <track
-          :default="currentSubtitle.lang === `en` ? true : false"
+          :default="currentSubtitle.source === `en` ? true : false"
           :id="currentSubtitle.source"
           :label="currentSubtitle.label"
           kind="subtitles"
           :srclang="currentSubtitle.lang"
-          :src="`https://www.googleapis.com/drive/v3/files/${currentSubtitle.source}?key=${ggDriveKey}&alt=media`"
+          :src="getSource().subtitle"
         />
-        <!-- :src="`/test/test.vtt`" -->
-        <!-- :src="`/test/test.mp4`" -->
 
         This video type can't be supported
       </video>

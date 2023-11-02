@@ -208,6 +208,7 @@ video {
   top: -1rem;
   transform: translate(-50%, -100%);
   left: calc(var(--preview-position) * 100%);
+
   border-radius: 0.25rem;
   border: 2px solid white;
   display: none;

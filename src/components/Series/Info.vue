@@ -55,7 +55,9 @@ export default {
       class="basis-4/5 space-y-4 h-full xl:mt-0 mt-5 xl:pr-4 md:px-0 px-4"
     >
       <div class="flex justify-between">
-        <h3 class="lg:text-4xl text-xl font-bold">{{ title }}</h3>
+        <h3 class="lg:text-4xl md:text-2xl sm:text-xl font-bold">
+          {{ title }}
+        </h3>
       </div>
       <h4 class="font-extralight">{{ title }}</h4>
       <p
