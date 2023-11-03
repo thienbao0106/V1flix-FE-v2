@@ -21,12 +21,6 @@ export default {
       >
         {{ `${lang.label} - ${lang.lang}` }}
       </li>
-      <li
-        class="cursor-pointer hover:text-secondColor"
-        @click="setSubtitle({ lang: 'vn', source: 'vn', label: 'Vietnam' })"
-      >
-        Vietnamese
-      </li>
     </ul>
   </section>
 </template>

@@ -1,11 +1,11 @@
 <script lang="ts">
-// import { onMounted } from "vue";
 import { ref } from "vue";
 import { formatDuration, handlePercent } from "../../../utils/handleVideo";
 import { createCanvas } from "canvas";
+import { URL_TYPE } from "../../constants/video.ts";
+
 import Loading from "../Loading.vue";
 import Settings from "./Settings.vue";
-import { URL_TYPE } from "../../constants/video.ts";
 
 export default {
   props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
@@ -42,7 +42,7 @@ export default {
     const volumeSliderRef = ref<HTMLInputElement>();
     const videoContainerRef = ref<HTMLDivElement>();
     const timelineContainerRef = ref<HTMLDivElement>();
-
+    const settingBoxRef = ref<HTMLDivElement>();
     return {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
@@ -58,6 +58,7 @@ export default {
       volumeSliderRef,
       videoContainerRef,
       timelineContainerRef,
+      settingBoxRef,
     };
   },
   mounted() {
@@ -87,7 +88,13 @@ export default {
           };
     },
     handleRenderVideo: function () {
-      if (!document || !this.videoRef || !this.videoContainerRef) return;
+      if (
+        !document ||
+        !this.timelineContainerRef ||
+        !this.videoRef ||
+        !this.videoContainerRef
+      )
+        return;
       this.captions = this.videoRef.textTracks[0];
       this.captions.mode = "hidden";
       //Handle keydown
@@ -129,13 +136,11 @@ export default {
             break;
         }
       });
-      document.addEventListener("mouseup", (e) => {
+      this.videoContainerRef.addEventListener("mouseup", (e) => {
         if (this.isScrubbing) this.toggleScrubbing(e);
       });
-      document.addEventListener("mousemove", (e) => {
-        if (this.isScrubbing) {
-          this.handleTimelineUpdate(e);
-        }
+      this.videoContainerRef.addEventListener("mousemove", (e) => {
+        if (this.isScrubbing) this.handleTimelineUpdate(e);
       });
 
       this.videoRef.addEventListener("enterpictureinpicture", () => {
@@ -147,15 +152,17 @@ export default {
         this.videoContainerRef.classList.remove("mini-player");
       });
       this.videoContainerRef.addEventListener("mouseleave", () => {
-        this.settingBox = false;
+        if (!this.settingBoxRef) return;
+        if (!this.settingBoxRef.classList.contains("hidden"))
+          this.settingBoxRef.classList.add("hidden");
       });
     },
     cutImage: function (imageId: string) {
       if (imageId === "") return;
-      const imageUrl = this.isDevEnv
+      const imageUrl = !this.isDevEnv
         ? URL_TYPE.ggDriveUrl(imageId, this.ggDriveKey)
         : URL_TYPE.keyframe;
-
+      console.log(imageUrl);
       fetch(imageUrl)
         .then((response) => {
           if (!response.ok) throw new Error("Can't load this image");
@@ -337,12 +344,21 @@ export default {
         );
         imgSrc = canvas.toDataURL();
       }
+
+      if (!this.settingBoxRef) return;
+      //Handle when user scrubs and video container is still playing
+      if (!this.settingBoxRef.classList.contains("hidden")) {
+        this.previewImgRef.classList.remove("preview-img");
+        this.previewImgRef.classList.add("hidden");
+      } else {
+        this.previewImgRef.classList.add("preview-img");
+        this.previewImgRef.classList.remove("hidden");
+      }
+
       this.previewImgRef.src = imgSrc;
-
       const finalPercent = handlePercent(rect.width, percent);
-
       this.previewImgRef.style.setProperty("--preview-position", finalPercent);
-      //
+
       if (this.isScrubbing) {
         e.preventDefault();
         let percent =
@@ -358,9 +374,8 @@ export default {
       }
     },
     toggleSettings: function () {
-      const settingBox: any = document.querySelector("#setting-box");
-      if (!settingBox) return;
-      settingBox.classList.toggle("hidden");
+      if (!this.settingBoxRef) return;
+      this.settingBoxRef.classList.toggle("hidden");
     },
     setSubtitle: function (subtitle: any) {
       console.log(subtitle);
@@ -495,11 +510,9 @@ export default {
             </svg>
           </button>
         </div>
-        <Settings
-          class="hidden"
-          :list-languages="subtitles"
-          :set-subtitle="setSubtitle"
-        />
+        <div ref="settingBoxRef" class="hidden">
+          <Settings :list-languages="subtitles" :set-subtitle="setSubtitle" />
+        </div>
       </div>
       <video
         @play="handleVideoPlaying"

@@ -113,7 +113,7 @@ export default {
               See more
             </li>
             <li
-              v-if="keyword !== `` && resultQuery.length === 0"
+              v-if="keyword !== `` && resultQuery.length === 0 && !loading"
               className="bg-mainColor rounded-b-md text-center font-bold py-2 px-2 list-none"
             >
               Can't find the data with {{ keyword }}

@@ -9,6 +9,7 @@ export default {
     };
   },
   setup() {
+    console.log("called");
     const { onResult: resultFn } = useQuery(randomSeriesQuery);
     return {
       resultFn,
@@ -32,15 +33,15 @@ export default {
   <div class="xl:px-10 lg:px-5 px-4 space-y-3">
     <h1 class="text-center text-4xl">Series Of The Day</h1>
     <div class="relative group decoration-none">
-      <a class="text-white" :href="`/series/${series.title}?ep=1`">
+      <router-link class="text-white" :to="`/series/${series.title}?ep=1`">
         <img
-          class="w-full md:h-full h-[20rem] rounded-md group-hover:opacity-25"
+          class="w-full md:h-full h-[10rem] rounded-md group-hover:opacity-25"
           :src="getImageType(series.images, `banner`)"
           :alt="series._id"
         />
 
         <div
-          class="absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:duration-1000 top-0 md:h-full h-[20rem] w-full flex justify-center items-center flex-col"
+          class="absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:duration-1000 top-0 md:h-full h-[10rem] w-full flex justify-center items-center flex-col"
         >
           <h2 class="lg:text-4xl md:text-2xl font-extrabold">
             {{ series.title }}
@@ -62,7 +63,7 @@ export default {
             <span class="font-bold"> {{ series.type }}</span>
           </div>
         </div>
-      </a>
+      </router-link>
     </div>
   </div>
 </template>

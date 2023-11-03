@@ -9,10 +9,12 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
+import VideoMobile from "../components/Series/VideoMobile.vue";
 
 import { fetchSeries } from "../../utils/handleSeries";
 import { addViewMutation } from "../queries/series";
 import { defaultImage } from "../../utils/handleImage";
+import { isIOS } from "../../utils/handleVersion";
 
 export default {
   data() {
@@ -24,6 +26,7 @@ export default {
       timestamp: "00:00",
       seconds: 0,
       isTheaterMode: false,
+      isIOS: null as any,
     };
   },
   created() {
@@ -43,7 +46,9 @@ export default {
       return { ep, time, title };
     },
   },
-
+  mounted() {
+    this.handleIOS();
+  },
   setup() {
     const url = window.location.href;
 
@@ -52,6 +57,10 @@ export default {
     };
   },
   methods: {
+    handleIOS: function () {
+      console.log(isIOS());
+      this.isIOS = isIOS();
+    },
     fetchSeries: function () {
       const { onResult, loading } = fetchSeries(this.getInfoUrl.title);
       this.loading = loading.value;
@@ -130,6 +139,7 @@ export default {
     Loading,
     ShareModal,
     TopAnimeList,
+    VideoMobile,
   },
 };
 </script>
@@ -155,12 +165,18 @@ export default {
           <aside aria-label="video" class="text-white">
             <section v-if="getInfoUrl.ep && series?.episodes">
               <Video
-                v-if="currentEpisode"
+                v-if="currentEpisode && !isIOS"
                 :source="currentEpisode.source || ``"
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
                 :set-theater-mode="setTheaterMode"
                 :keyframe="currentEpisode.keyframe"
+              />
+              <VideoMobile
+                v-if="currentEpisode && isIOS"
+                :source="currentEpisode.source || ``"
+                :time="getInfoUrl.time"
+                :subtitles="currentEpisode.subtitles"
               />
             </section>
             <section v-else>
