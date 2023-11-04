@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       isCompleted: false,
-      settingBox: false,
       frames: [] as any,
       currentSubtitle: this.subtitles.find((sub: any) => sub.lang === "en"),
       isDevEnv: import.meta.env.DEV,
@@ -32,7 +31,7 @@ export default {
       { immediate: true }
     );
   },
-  setup(props) {
+  setup() {
     const videoRef = ref<HTMLVideoElement>();
     const speedBtnRef = ref<HTMLButtonElement>();
     const currentTimeElemRef = ref<HTMLDivElement>();
@@ -43,12 +42,12 @@ export default {
     const videoContainerRef = ref<HTMLDivElement>();
     const timelineContainerRef = ref<HTMLDivElement>();
     const settingBoxRef = ref<HTMLDivElement>();
+    const previewTimeRef = ref<HTMLDivElement>();
     return {
       ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
       wasPaused: null as any,
       isScrubbing: false,
-      source: props.source,
       videoRef,
       speedBtnRef,
       currentTimeElemRef,
@@ -59,6 +58,7 @@ export default {
       videoContainerRef,
       timelineContainerRef,
       settingBoxRef,
+      previewTimeRef,
     };
   },
   mounted() {
@@ -314,13 +314,14 @@ export default {
         !this.timelineContainerRef ||
         !this.thumbnailImgRef ||
         !this.videoContainerRef ||
-        !this.currentTimeElemRef
+        !this.currentTimeElemRef ||
+        !this.previewTimeRef ||
+        !this.settingBoxRef
       )
         return;
 
       const rect = this.timelineContainerRef.getBoundingClientRect();
       const imgRect = this.previewImgRef.getBoundingClientRect();
-
       let imgSrc = "";
       let percent =
         Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
@@ -345,27 +346,33 @@ export default {
         imgSrc = canvas.toDataURL();
       }
 
-      if (!this.settingBoxRef) return;
       //Handle when user scrubs and video container is still playing
       if (!this.settingBoxRef.classList.contains("hidden")) {
         this.previewImgRef.classList.remove("preview-img");
         this.previewImgRef.classList.add("hidden");
+        this.previewTimeRef.classList.add("hidden");
       } else {
         this.previewImgRef.classList.add("preview-img");
         this.previewImgRef.classList.remove("hidden");
+        this.previewTimeRef.classList.remove("hidden");
       }
+      const timeline = formatDuration(percent * this.videoRef.duration);
 
       this.previewImgRef.src = imgSrc;
+      this.previewTimeRef.textContent = timeline;
+
       const finalPercent = handlePercent(rect.width, percent);
       this.previewImgRef.style.setProperty("--preview-position", finalPercent);
+      this.previewTimeRef.style.setProperty("--preview-position", finalPercent);
+      this.previewTimeRef.textContent = timeline;
 
       if (this.isScrubbing) {
         e.preventDefault();
         let percent =
           Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
-        this.currentTimeElemRef.textContent = formatDuration(
-          percent * this.videoRef.duration
-        );
+        this.currentTimeElemRef.textContent = timeline;
+        this.previewTimeRef.textContent = timeline;
+
         this.previewImgRef.src = imgSrc;
         this.timelineContainerRef.style.setProperty(
           "--progress-position",
@@ -380,6 +387,8 @@ export default {
     setSubtitle: function (subtitle: any) {
       console.log(subtitle);
       this.currentSubtitle = subtitle;
+      if (!this.settingBoxRef) return;
+      this.settingBoxRef.classList.add("hidden");
     },
   },
   components: { Loading, Settings },
@@ -406,7 +415,8 @@ export default {
         >
           <div class="timeline">
             <img ref="previewImgRef" class="preview-img" />
-            <div class="thumb-indicator"></div>
+            <div ref="previewTimeRef" class="time-preview"></div>
+            <!-- <div class="thumb-indicator"></div> -->
           </div>
         </div>
         <div class="controls">
@@ -511,7 +521,11 @@ export default {
           </button>
         </div>
         <div ref="settingBoxRef" class="hidden">
-          <Settings :list-languages="subtitles" :set-subtitle="setSubtitle" />
+          <Settings
+            :list-languages="subtitles"
+            :set-subtitle="setSubtitle"
+            :current-subtitle="currentSubtitle.label"
+          />
         </div>
       </div>
       <video
