@@ -4,24 +4,14 @@ import { URL_TYPE } from "../../constants/video";
 export default {
   props: ["source", "time", "subtitles"],
   setup(props) {
+    console.log(props.subtitles);
     return {
-      ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
-      currentSubtitle: props.subtitles.find((sub: any) => sub.lang === "en"),
-
       isDevEnv: import.meta.env.DEV,
     };
   },
   methods: {
     getSource: function () {
-      return this.isDevEnv
-        ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
-        : {
-            video: URL_TYPE.ggDriveUrl(this.source, this.ggDriveKey),
-            subtitle: URL_TYPE.ggDriveUrl(
-              this.currentSubtitle.source,
-              this.ggDriveKey
-            ),
-          };
+      return this.isDevEnv ? URL_TYPE.video : this.source;
     },
   },
 };
@@ -37,14 +27,14 @@ export default {
       preload="metadata"
       crossorigin="anonymous"
     >
-      <source :src="getSource().video" type="video/mp4" />
+      <source :src="getSource()" type="video/mp4" />
       <track
-        :default="currentSubtitle.source === `en` ? true : false"
-        :id="currentSubtitle.source"
-        :label="currentSubtitle.label"
+        v-for="sub in subtitles"
+        :id="sub.source"
+        :label="sub.label"
         kind="subtitles"
-        :srclang="currentSubtitle.lang"
-        :src="getSource().subtitle"
+        :srclang="sub.lang"
+        :src="sub.source"
       />
     </video>
   </section>

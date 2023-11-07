@@ -80,11 +80,8 @@ export default {
       return this.isDevEnv
         ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
         : {
-            video: URL_TYPE.ggDriveUrl(this.source, this.ggDriveKey),
-            subtitle: URL_TYPE.ggDriveUrl(
-              this.currentSubtitle.source,
-              this.ggDriveKey
-            ),
+            video: this.source,
+            subtitle: this.currentSubtitle.source,
           };
     },
     handleRenderVideo: function () {
@@ -159,9 +156,7 @@ export default {
     },
     cutImage: function (imageId: string) {
       if (imageId === "") return;
-      const imageUrl = !this.isDevEnv
-        ? URL_TYPE.ggDriveUrl(imageId, this.ggDriveKey)
-        : URL_TYPE.keyframe;
+      const imageUrl = !this.isDevEnv ? imageId : URL_TYPE.keyframe;
       console.log(imageUrl);
       fetch(imageUrl)
         .then((response) => {
