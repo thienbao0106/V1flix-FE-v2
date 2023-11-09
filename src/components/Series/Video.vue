@@ -18,7 +18,7 @@ export default {
       isCompleted: false,
       frames: [] as any,
       currentSubtitle: this.subtitles.find((sub: any) => sub.lang === "en"),
-      isDevEnv: !import.meta.env.DEV,
+      isDevEnv: import.meta.env.DEV,
     };
   },
   created() {
