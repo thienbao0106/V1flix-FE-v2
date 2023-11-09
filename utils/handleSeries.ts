@@ -14,7 +14,7 @@ export const fetchSeries = (keyword: any, status?: string, genres?: string) => {
         "total_episodes",
         "status",
 
-        "episodes { \n _id \n source \n epNum \n title \n keyframe \n created_at \n view \n subtitles { \n lang \n source \n label \n } \n }",
+        "episodes { \n _id \n source { \n kind \n value \n } \n epNum \n title \n keyframe { \n kind \n value \n } \n created_at \n view \n subtitles { \n lang \n source { \n kind \n value \n } \n label \n } \n }",
         "genres { \n _id \n name \n}",
       ],
       keyword,
@@ -29,6 +29,7 @@ export const fetchSeries = (keyword: any, status?: string, genres?: string) => {
       fetchPolicy: "no-cache",
     }
   );
+  console.log("test");
   return {
     onResult,
     loading,

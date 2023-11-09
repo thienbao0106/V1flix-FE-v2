@@ -1,6 +1,10 @@
 <script lang="ts">
 import { ref } from "vue";
-import { formatDuration, handlePercent } from "../../../utils/handleVideo";
+import {
+  checkSource,
+  formatDuration,
+  handlePercent,
+} from "../../../utils/handleVideo";
 import { createCanvas } from "canvas";
 import { URL_TYPE } from "../../constants/video.ts";
 
@@ -14,7 +18,7 @@ export default {
       isCompleted: false,
       frames: [] as any,
       currentSubtitle: this.subtitles.find((sub: any) => sub.lang === "en"),
-      isDevEnv: import.meta.env.DEV,
+      isDevEnv: !import.meta.env.DEV,
     };
   },
   created() {
@@ -31,7 +35,7 @@ export default {
       { immediate: true }
     );
   },
-  setup() {
+  setup(props) {
     const videoRef = ref<HTMLVideoElement>();
     const speedBtnRef = ref<HTMLButtonElement>();
     const currentTimeElemRef = ref<HTMLDivElement>();
@@ -44,7 +48,6 @@ export default {
     const settingBoxRef = ref<HTMLDivElement>();
     const previewTimeRef = ref<HTMLDivElement>();
     return {
-      ggDriveKey: import.meta.env.VITE_GG_DRIVE || "",
       captions: {} as any,
       wasPaused: null as any,
       isScrubbing: false,
@@ -59,6 +62,8 @@ export default {
       timelineContainerRef,
       settingBoxRef,
       previewTimeRef,
+      source: checkSource(props.source),
+      keyframe: checkSource(props.keyframe),
     };
   },
   mounted() {
@@ -77,11 +82,12 @@ export default {
   },
   methods: {
     getSource: function () {
+      console.log(checkSource(this.currentSubtitle.source));
       return this.isDevEnv
         ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
         : {
             video: this.source,
-            subtitle: this.currentSubtitle.source,
+            subtitle: checkSource(this.currentSubtitle.source),
           };
     },
     handleRenderVideo: function () {
@@ -155,6 +161,7 @@ export default {
       });
     },
     cutImage: function (imageId: string) {
+      console.log(imageId);
       if (imageId === "") return;
       const imageUrl = !this.isDevEnv ? imageId : URL_TYPE.keyframe;
       console.log(imageUrl);
@@ -536,8 +543,6 @@ export default {
       >
         <source :src="getSource().video" type="video/mp4" />
         <track
-          :default="currentSubtitle.source === `en` ? true : false"
-          :id="currentSubtitle.source"
           :label="currentSubtitle.label"
           kind="subtitles"
           :srclang="currentSubtitle.lang"
