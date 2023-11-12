@@ -1,6 +1,6 @@
 import { createSSRApp, h } from "vue";
 
-import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client/core";
 import App from "./App.vue";
 import "virtual:uno.css";
 import router from "./router";
@@ -13,7 +13,12 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const cache = new InMemoryCache();
 const apolloClient = new ApolloClient({
   cache,
-  uri: import.meta.env.VITE_API_URL,
+  link: new HttpLink({
+    uri: import.meta.env.VITE_API_URL,
+    fetchOptions: {
+      mode: import.meta.env.DEV ? "cors" : "no-cors",
+    },
+  }),
 });
 
 /* import font awesome icon component */

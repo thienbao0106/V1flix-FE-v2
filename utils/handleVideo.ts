@@ -45,5 +45,8 @@ export const checkSource = (sources: any[]): string => {
   if (sources.length === 0) return "";
   if (sources.length < 2) return sources[0].value;
   const source = sources.filter((src) => src.value.includes("https://"));
+  const hasOneDrive = source.find((src) => src.kind === "onedrive");
+  if (hasOneDrive) return hasOneDrive.value;
+  console.log(source[0]);
   return source[0].value;
 };
