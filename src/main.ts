@@ -16,7 +16,7 @@ const apolloClient = new ApolloClient({
   link: new HttpLink({
     uri: import.meta.env.VITE_API_URL,
     fetchOptions: {
-      mode: import.meta.env.DEV ? "cors" : "no-cors",
+      mode: "cors",
     },
   }),
 });
