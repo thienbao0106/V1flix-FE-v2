@@ -5,7 +5,6 @@ export const getEpisodes = () => gql`
     episodes {
       _id
       epNum
-      source
       created_at
       series {
         _id

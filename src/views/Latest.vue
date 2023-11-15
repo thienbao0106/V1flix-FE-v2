@@ -43,12 +43,12 @@ export default {
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
-  <main className="h-screen text-white mx-8 mt-2">
+  <main className="h-full text-white mx-8 mt-2">
     <header className="font-bold  xl:text-3xl lg:text-2xl text-xl">
       Latest Episodes
     </header>
     <section
-      className="w-full grid xl:grid-cols-6 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4 lg:mt-4 mt-7"
+      className="w-full grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >
       <Card
         v-for="ep in episodes"

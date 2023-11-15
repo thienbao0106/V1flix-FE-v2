@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../queries/series";
-
+import SubNav from "./SubNav.vue";
 export default {
   data() {
     return {
@@ -9,11 +9,23 @@ export default {
       keyword: "",
       isDropdown: false,
       loading: false,
+      isSubNav: false,
     };
   },
+
   methods: {
     toggleTheme: function (theme: string) {
       this.theme = theme === "dark" ? "light" : "dark";
+      return;
+    },
+    toggleSubNav: function (isSubNav: boolean) {
+      this.isSubNav = !isSubNav;
+      if (this.isSubNav) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+
       return;
     },
     setKeyword: function (keyword: string) {
@@ -43,19 +55,34 @@ export default {
       return [];
     },
   },
+  components: { SubNav },
 };
 </script>
 
 <template>
+  <SubNav v-if="isSubNav" :toggle-sub-nav="toggleSubNav" />
   <nav
     class="max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
   >
-    <div class="flex-none w-1/6">
+    <div class="flex-none w-3/6 flex gap-x-8 justify-start items-center">
+      <svg
+        class="cursor-pointer menu-burger-icon wi"
+        @click="toggleSubNav(isSubNav)"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fill="none"
+          d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314
+								c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743
+								s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314
+								c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"
+        ></path>
+      </svg>
+
       <router-link to="/" class="w-fit text-white decoration-none"
         >Logo
       </router-link>
     </div>
-    <section class="flex-1 w-2/6">Genres</section>
 
     <section
       aria-label="search"
@@ -98,19 +125,24 @@ export default {
               v-for="film in resultQuery"
               class="bg-mainColor text-left py-2 pl-2 even:bg-black-500 list-none"
             >
-              <a
+              <router-link
                 class="text-white decoration-none hover:text-secondColorBrighter"
-                :href="`/series/${film.title}?ep=1`"
+                :to="`/series/${film.title}?ep=1`"
                 @click="setKeyword(film.title)"
               >
                 {{ film.title }}
-              </a>
+              </router-link>
             </li>
             <li
               v-if="resultQuery && resultQuery.length === 3"
               className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2 list-none"
             >
-              See more
+              <router-link
+                class="text-white decoration-none"
+                :to="`/search?keyword=${keyword}`"
+              >
+                See more
+              </router-link>
             </li>
             <li
               v-if="keyword !== `` && resultQuery.length === 0 && !loading"

@@ -10,16 +10,17 @@ export const findSeriesQuery = (
   keyword: String | any,
   numOfLimit: number,
   filters?: SeriesFilter
-) =>
-  gql`
+) => {
+  const status = filters?.status || ``;
+  const genres = filters?.genres || ``;
+  return gql`
   query findSeriesByName {
-    findSeries(title: "${keyword}", numOfLimit: ${numOfLimit}, status: "${
-    filters?.status || ``
-  }", genresId: "${filters?.genres || ``}") {
+    findSeries(title: "${keyword}", numOfLimit: ${numOfLimit}, status: "${status}", genresId: "${genres}") {
         ${[...seriesFields].join("\n")}
     }
   }
 `;
+};
 
 export const seriesBannerQuery = (limit: number) => gql`
   query getBannerSeries {

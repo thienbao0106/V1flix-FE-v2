@@ -62,7 +62,7 @@ export default {
       this.isIOS = isIOS();
     },
     fetchSeries: function () {
-      const { onResult, loading } = fetchSeries(this.getInfoUrl.title);
+      const { onResult, loading } = fetchSeries(this.getInfoUrl.title, "video");
       this.loading = loading.value;
       onResult((result) => {
         if (result.data) {

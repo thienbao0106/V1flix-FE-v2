@@ -22,13 +22,16 @@ export default {
       console.log("test");
       const { onResult } = useQuery(getGenres);
       onResult((result) => {
-        if (result.data) this.genresFilter = result.data.genres;
+        if (result.data) {
+          console.log(result.data.genres);
+          this.genresFilter = result.data.genres;
+        }
       });
     },
     fetchResults: function () {
-      console.log(this.statusValue);
       const { onResult, loading } = fetchSeries(
         this.keyword,
+        "search",
         this.statusValue,
         this.genresValue
       );
@@ -66,12 +69,12 @@ export default {
       css: "bg-opacity-40 bg-gray-500 p-2 rounded-md lg:w-fit focus:outline-none focus:bg-gray-700 text-white",
       statusFilter: [
         {
-          id: "completed",
-          name: "completed",
+          id: "Completed",
+          name: "Completed",
         },
         {
-          id: "releasing",
-          name: "releasing",
+          id: "Releasing",
+          name: "Releasing",
         },
       ],
       genresFilter: [] as any,
@@ -82,7 +85,6 @@ export default {
 </script>
 
 <template>
-  <Loading v-if="loading" message="Getting the data" />
   <main className="xl:px-8 px-4 text-white xl:flex xl:flex-row lg:space-y-8">
     <section aria-label="result-query" className="xl:basis-3/4 space-y-5 pr-8">
       <h1 className="text-3xl font-bold">{{ `Result for ${keyword}` }}</h1>
@@ -119,10 +121,12 @@ export default {
           />
         </aside>
       </form>
-      <aside aria-label="result">
+      <Loading v-if="loading" message="Getting the data" />
+      <aside v-else aria-label="result">
         <ListResult :keyword="keyword" :results="result" />
       </aside>
     </section>
+
     <section
       aria-label="top-anime-query"
       className="lg:basis-1/4 space-y-4 lg:mt-0 mt-5"
