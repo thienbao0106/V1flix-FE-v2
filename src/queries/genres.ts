@@ -9,3 +9,12 @@ export const getGenres = () => gql`
     }
   }
 `;
+
+export const getGenresMenu = () => gql`
+  query getGenres {
+    genres {
+      _id
+      name
+    }
+  }
+`;

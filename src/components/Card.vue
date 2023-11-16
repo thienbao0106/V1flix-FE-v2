@@ -43,6 +43,14 @@ export default {
 <template>
   <div class="flex flex-col w-full">
     <div class="relative group">
+      <div
+        class="absolute bg-red-500 rounded-lg -top-3 -right-3 py-2 px-4 group-hover:hidden"
+        v-if="checkNewEpisode(epCreatedAt) && epNum"
+      >
+        <span class="lg:text-base md:text-md text-lg font-bold text-lg"
+          >New</span
+        >
+      </div>
       <router-link :to="`/series/${title}?ep=${epNum ? epNum : 1}`">
         <img
           class="group-hover:opacity-25 max-w-full"
@@ -74,22 +82,11 @@ export default {
         >
           <div class="space-x-2 flex justify-center items-center">
             <font-awesome-icon
-              icon="fa-solid fa-eye"
+              icon="fa-solid fa-tv"
               size="1x"
               class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
             />
             <span class="lg:text-base md:text-md text-lg">{{ epNum }}</span>
-          </div>
-          <div
-            class="space-x-2 flex justify-center items-center"
-            v-if="checkNewEpisode(epCreatedAt)"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-eye"
-              size="1x"
-              class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
-            />
-            <span class="lg:text-base md:text-md text-lg">New</span>
           </div>
         </div>
         <div
@@ -100,7 +97,7 @@ export default {
             size="1x"
             class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
           />
-          <span class="lg:text-base md:text-md text-lg">{{
+          <span class="lg:text-base md:text-md text-lg line-clamp-1">{{
             getDate(epCreatedAt)
           }}</span>
         </div>
@@ -112,7 +109,6 @@ export default {
         :type="type"
         :status="status"
         :view="view"
-        :check="true"
       />
     </div>
     <h3 class="lg:text-xl text-lg w-full line-clamp-2">{{ title }}</h3>

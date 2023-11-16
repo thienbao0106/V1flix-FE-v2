@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../queries/series";
-import SubNav from "./SubNav.vue";
+import SubNav from "./SubNav/SubNav.vue";
 export default {
   data() {
     return {

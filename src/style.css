@@ -27,16 +27,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-.first {
-  text-shadow: 1px 0 #8789c0, -1px 0 #8789c0, 0 1px #8789c0, 0 -1px #8789c0;
-}
-.second {
-  text-shadow: 1px 0 #5dfdcb, -1px 0 #5dfdcb, 0 1px #5dfdcb, 0 -1px #5dfdcb;
-}
-.third {
-  text-shadow: 1px 0 #7cc6fe, -1px 0 #7cc6fe, 0 1px #7cc6fe, 0 -1px #7cc6fe;
-}
-.other {
-  text-shadow: 1px 0 #c2cae8, -1px 0 #c2cae8, 0 1px #c2cae8, 0 -1px #c2cae8;
-}

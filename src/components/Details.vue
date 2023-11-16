@@ -1,18 +1,18 @@
 <script lang="ts">
 export default {
-  props: ["newep", "type", "status", "view", "check"],
+  props: ["newep", "type", "status", "view"],
 };
 </script>
 
 <template>
   <main class="flex flex-row items-center justify-between w-full">
     <div class="flex flex-row justify-start items-center gap-2">
-      <div v-if="check" class="flex flex-row justify-start gap-0.5">
+      <div class="flex flex-row justify-start gap-0.5">
         <div
           class="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
         >
           <font-awesome-icon
-            icon="fa-solid fa-eye"
+            icon="fa-solid fa-tv"
             size="1x"
             class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
           />

@@ -3,11 +3,19 @@ import { getImageType } from "../../utils/handleImage";
 import Details from "./Details.vue";
 
 export default {
-  props: ["id", "title", "status", "view", "images", "rank", "type", "newep"],
+  props: [
+    "id",
+    "title",
+    "status",
+    "view",
+    "images",
+    "rank",
+    "type",
+    "totalEpisodes",
+  ],
   methods: {
     getImageType,
   },
-
   components: { Details },
 };
 </script>
@@ -44,21 +52,21 @@ export default {
       <h3
         className="xl:text-base lg:text-xl sm:text-lg pt-2 text-lg font-semibold line-clamp-1"
       >
-        <a
-          :href="`/series/${title}?ep=1`"
+        <router-link
+          :to="`/series/${title}?ep=1`"
           class="decoration-none text-white hover:text-secondColorBrighter"
-          >{{ title }}</a
         >
+          {{ title }}
+        </router-link>
       </h3>
       <div
         className="flex flex-row items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"
       >
         <Details
           :type="type"
-          :newep="newep"
+          :newep="totalEpisodes"
           :status="status"
           :view="view"
-          :check="false"
         />
       </div>
       <div
@@ -74,3 +82,18 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.first {
+  text-shadow: 1px 0 #8789c0, -1px 0 #8789c0, 0 1px #8789c0, 0 -1px #8789c0;
+}
+.second {
+  text-shadow: 1px 0 #5dfdcb, -1px 0 #5dfdcb, 0 1px #5dfdcb, 0 -1px #5dfdcb;
+}
+.third {
+  text-shadow: 1px 0 #7cc6fe, -1px 0 #7cc6fe, 0 1px #7cc6fe, 0 -1px #7cc6fe;
+}
+.other {
+  text-shadow: 1px 0 #c2cae8, -1px 0 #c2cae8, 0 1px #c2cae8, 0 -1px #c2cae8;
+}
+</style>

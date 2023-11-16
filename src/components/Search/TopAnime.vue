@@ -14,14 +14,14 @@ export default {
       <li
         v-for="(s, index) in result"
         :key="s._id"
-        className="list-none rounded-lg [&:nth-child(1)]:border-r-fistAnime [&:nth-child(2)]:border-r-secondAnime [&:nth-child(3)]:border-r-thirdAnime border-r-other border-r-4"
+        class="list-none rounded-lg border-solid border-l-0 border-t-0 border-b-0 [&:nth-child(1)]:border-r-fistAnime [&:nth-child(2)]:border-r-secondAnime [&:nth-child(3)]:border-r-thirdAnime border-r-other border-r-4"
       >
         <TopAnimeCard
           :id="s._id"
           :images="s.images"
           :status="s.status"
           :title="s.title"
-          :total_episodes="s.total_episodes"
+          :totalEpisodes="s.total_episodes"
           :type="s.type"
           :rank="index + 1"
           :view="s.view"
