@@ -17,7 +17,9 @@ export default {
     return {
       isCompleted: false,
       frames: [] as any,
-      currentSubtitle: this.subtitles.find((sub: any) => sub.lang === "en"),
+      currentSubtitle:
+        this.subtitles.find((sub: any) => sub.lang === "en") ||
+        this.subtitles[0],
       isDevEnv: import.meta.env.DEV,
     };
   },
@@ -82,12 +84,14 @@ export default {
   },
   methods: {
     getSource: function () {
-      console.log(checkSource(this.currentSubtitle.source));
       return this.isDevEnv
         ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
         : {
             video: this.source,
-            subtitle: checkSource(this.currentSubtitle.source),
+            subtitle:
+              this.subtitles.length > 0
+                ? checkSource(this.currentSubtitle.source)
+                : "",
           };
     },
     handleRenderVideo: function () {
@@ -98,8 +102,10 @@ export default {
         !this.videoContainerRef
       )
         return;
-      this.captions = this.videoRef.textTracks[0];
-      this.captions.mode = "hidden";
+      if (this.subtitles.length > 0) {
+        this.captions = this.videoRef.textTracks[0];
+        this.captions.mode = "hidden";
+      }
       //Handle keydown
       document.addEventListener("keydown", (e: any) => {
         const tagName = document?.activeElement?.tagName.toLowerCase();
@@ -526,6 +532,7 @@ export default {
           <Settings
             :list-languages="subtitles"
             :set-subtitle="setSubtitle"
+            v-if="subtitles.length > 0"
             :current-subtitle="currentSubtitle.label"
           />
         </div>
@@ -543,6 +550,7 @@ export default {
       >
         <source :src="getSource().video" type="video/mp4" />
         <track
+          v-if="subtitles.length > 0"
           :label="currentSubtitle.label"
           kind="subtitles"
           :srclang="currentSubtitle.lang"

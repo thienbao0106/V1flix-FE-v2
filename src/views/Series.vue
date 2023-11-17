@@ -164,17 +164,24 @@ export default {
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="getInfoUrl.ep && series?.episodes">
+              <div v-if="currentEpisode.source.length === 0">
+                This episode doesn't have a source yet.
+              </div>
               <Video
-                v-if="currentEpisode && !isIOS"
-                :source="currentEpisode.source || ``"
+                v-if="
+                  currentEpisode && currentEpisode.source.length > 0 && !isIOS
+                "
+                :source="currentEpisode.source"
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
                 :set-theater-mode="setTheaterMode"
                 :keyframe="currentEpisode.keyframe"
               />
               <VideoMobile
-                v-if="currentEpisode && isIOS"
-                :source="currentEpisode.source || ``"
+                v-if="
+                  currentEpisode && currentEpisode.source.length > 0 && isIOS
+                "
+                :source="currentEpisode.source"
                 :time="getInfoUrl.time"
                 :subtitles="currentEpisode.subtitles"
               />
