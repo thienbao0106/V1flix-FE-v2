@@ -217,10 +217,10 @@ export default {
               </div>
             </div>
           </header>
-          <aside>
+          <aside class="max-w-full">
             <ul
               v-if="series?.episodes?.length > 0"
-              className="flex lg:gap-x-5 gap-x-3 gap-y-3 "
+              className="flex lg:gap-x-5 gap-x-3 gap-y-3 max-w-full flex-wrap"
               role="list"
             >
               <router-link

@@ -1,18 +1,21 @@
 <script lang="ts">
+import { checkSource } from "../../../utils/handleVideo";
 import { URL_TYPE } from "../../constants/video";
 
 export default {
   props: ["source", "time", "subtitles"],
   setup(props) {
-    console.log(props.subtitles);
+    console.log(props.source);
     return {
       isDevEnv: import.meta.env.DEV,
     };
   },
+  data() {},
   methods: {
     getSource: function () {
-      return this.isDevEnv ? URL_TYPE.video : this.source;
+      return !this.isDevEnv ? URL_TYPE.video : checkSource(this.source);
     },
+    checkSubtitleSource: checkSource,
   },
 };
 </script>
@@ -34,7 +37,7 @@ export default {
         :label="sub.label"
         kind="subtitles"
         :srclang="sub.lang"
-        :src="sub.source"
+        :src="checkSubtitleSource(sub.source)"
       />
     </video>
   </section>
