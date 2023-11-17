@@ -13,7 +13,7 @@ export default {
   data() {},
   methods: {
     getSource: function () {
-      return !this.isDevEnv ? URL_TYPE.video : checkSource(this.source);
+      return this.isDevEnv ? URL_TYPE.video : checkSource(this.source);
     },
     checkSubtitleSource: checkSource,
   },
