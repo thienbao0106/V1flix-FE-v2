@@ -1,10 +1,7 @@
 <script lang="ts">
 import { ref } from "vue";
-import {
-  checkSource,
-  formatDuration,
-  handlePercent,
-} from "../../../utils/handleVideo";
+import handleVideo from "../../../utils/video/index";
+
 import { createCanvas } from "canvas";
 import { URL_TYPE } from "../../constants/video.ts";
 
@@ -21,6 +18,7 @@ export default {
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
       isDevEnv: import.meta.env.DEV,
+      timeout: null as any,
     };
   },
   created() {
@@ -49,6 +47,7 @@ export default {
     const timelineContainerRef = ref<HTMLDivElement>();
     const settingBoxRef = ref<HTMLDivElement>();
     const previewTimeRef = ref<HTMLDivElement>();
+    const controlContainerRef = ref<HTMLDivElement>();
     return {
       captions: {} as any,
       wasPaused: null as any,
@@ -64,8 +63,9 @@ export default {
       timelineContainerRef,
       settingBoxRef,
       previewTimeRef,
-      source: checkSource(props.source),
-      keyframe: checkSource(props.keyframe),
+      controlContainerRef,
+      source: handleVideo.checkSource(props.source),
+      keyframe: handleVideo.checkSource(props.keyframe),
     };
   },
   mounted() {
@@ -84,15 +84,12 @@ export default {
   },
   methods: {
     getSource: function () {
-      return this.isDevEnv
-        ? { video: URL_TYPE.video, subtitle: URL_TYPE.subtitles }
-        : {
-            video: this.source,
-            subtitle:
-              this.subtitles.length > 0
-                ? checkSource(this.currentSubtitle.source)
-                : "",
-          };
+      return handleVideo.getSource(
+        this.isDevEnv,
+        this.source,
+        this.subtitles,
+        this.currentSubtitle
+      );
     },
     handleRenderVideo: function () {
       if (
@@ -152,6 +149,14 @@ export default {
         if (this.isScrubbing) this.handleTimelineUpdate(e);
       });
 
+      this.videoContainerRef.addEventListener("mouseleave", () => {
+        if (!this.settingBoxRef || !this.controlContainerRef || !this.videoRef)
+          return;
+        if (!this.videoRef.paused) this.controlContainerRef.style.opacity = "0";
+        if (!this.settingBoxRef.classList.contains("hidden"))
+          this.settingBoxRef.classList.add("hidden");
+      });
+
       this.videoRef.addEventListener("enterpictureinpicture", () => {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.add("mini-player");
@@ -160,10 +165,15 @@ export default {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.remove("mini-player");
       });
-      this.videoContainerRef.addEventListener("mouseleave", () => {
-        if (!this.settingBoxRef) return;
-        if (!this.settingBoxRef.classList.contains("hidden"))
-          this.settingBoxRef.classList.add("hidden");
+      this.videoRef.addEventListener("mousemove", () => {
+        if (!this.controlContainerRef || !this.videoRef) return;
+        const controller: HTMLDivElement = this.controlContainerRef;
+        const video: HTMLVideoElement = this.videoRef;
+        if (controller.style.opacity === "0") controller.style.opacity = "1";
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(function () {
+          if (!video.paused) controller.style.opacity = "0";
+        }, 5000);
       });
     },
     cutImage: function (imageId: string) {
@@ -197,206 +207,93 @@ export default {
         });
     },
     togglePlay: function () {
-      if (!this.videoRef) return;
-      this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+      handleVideo.togglePlay(this.videoRef);
     },
     handleVideoPlaying: function () {
-      if (!this.videoContainerRef) return;
-      this.videoContainerRef.classList.remove("paused");
+      handleVideo.handleVideoPlaying(this.videoContainerRef);
     },
     loadedData: function () {
-      if (!this.totalTimeElemRef || !this.videoRef) return;
-      this.totalTimeElemRef.textContent = formatDuration(
-        this.videoRef.duration
-      );
+      handleVideo.loadedData(this.totalTimeElemRef, this.videoRef);
     },
     handleVideoPause: function () {
-      if (!this.videoContainerRef) return;
-      this.videoContainerRef.classList.add("paused");
+      handleVideo.handleVideoPause(this.videoContainerRef);
     },
     toggleFullScreenMode: function () {
-      document.fullscreenElement === null
-        ? this.videoContainerRef?.requestFullscreen()
-        : document.exitFullscreen();
+      handleVideo.toggleFullScreenMode(this.videoContainerRef);
     },
     toggleMiniPlayerMode: function () {
-      if (!this.videoContainerRef || !document || !this.videoRef) return;
-      this.videoContainerRef.classList.contains("mini-player")
-        ? document.exitPictureInPicture()
-        : this.videoRef.requestPictureInPicture();
+      handleVideo.toggleMiniPlayerMode(this.videoContainerRef, this.videoRef);
     },
     toggleTheaterMode: function () {
-      if (!this.videoContainerRef) return;
-      const isTheater: boolean = this.videoContainerRef.classList.contains(
-        "theater"
-      )
-        ? true
-        : false;
-      this.setTheaterMode(!isTheater);
-      this.videoContainerRef.classList.toggle("theater");
+      handleVideo.toggleTheatherMode(
+        this.videoContainerRef,
+        this.setTheaterMode
+      );
     },
     toggleMute: function () {
-      if (!this.videoRef) return;
-      this.videoRef.muted = !this.videoRef.muted;
+      handleVideo.toggleMute(this.videoRef);
     },
     handleVolumeSlider: function (e: any) {
-      if (!this.videoRef) return;
-      this.videoRef.volume = e.target.value;
-      this.videoRef.muted = e.target.value === 0;
+      handleVideo.handleVolumeSlider(e, this.videoRef);
     },
     handleChangingVolume: function () {
-      if (!this.volumeSliderRef || !this.videoRef || !this.videoContainerRef)
-        return;
-      this.volumeSliderRef.value = this.videoRef.volume.toString();
-      let volumeLevel: string = "";
-      if (this.videoRef.muted || this.videoRef.volume === 0) {
-        this.volumeSliderRef.value = "0";
-        volumeLevel = "muted";
-      } else if (this.videoRef.volume >= 0.5) {
-        volumeLevel = "high";
-      } else {
-        volumeLevel = "low";
-      }
-      this.videoContainerRef.dataset.volumeLevel = volumeLevel;
+      handleVideo.handleChangingVolume(
+        this.volumeSliderRef,
+        this.videoRef,
+        this.videoContainerRef
+      );
     },
     changePlaybackSpeed: function () {
-      if (!this.videoRef || !this.speedBtnRef) return;
-      let newPlaybackRate = this.videoRef.playbackRate + 0.25;
-      if (newPlaybackRate > 2) newPlaybackRate = 0.25;
-      this.videoRef.playbackRate = newPlaybackRate;
-      this.speedBtnRef.textContent = `${newPlaybackRate}x`;
+      handleVideo.changePlaybackSpeed(this.videoRef, this.speedBtnRef);
     },
     toggleCaptions: function () {
-      if (!this.videoContainerRef) return;
-      const isHidden = this.captions.mode === "hidden";
-      this.captions.mode = isHidden ? "showing" : "hidden";
-      this.videoContainerRef.classList.toggle("captions", isHidden);
-      console.log(isHidden);
+      handleVideo.toggleCaption(this.videoContainerRef, this.captions);
     },
     skip: function (duration: number) {
       if (!this.videoRef) return;
       this.videoRef.currentTime += duration;
     },
     handleTimeUpdate: function () {
-      if (
-        !this.timelineContainerRef ||
-        !this.videoRef ||
-        !this.currentTimeElemRef
-      )
-        return;
-      this.currentTimeElemRef.textContent = formatDuration(
-        this.videoRef.currentTime
-      );
-      const percent = this.videoRef.currentTime / this.videoRef.duration;
-      this.timelineContainerRef.style.setProperty(
-        "--progress-position",
-        percent.toString()
+      handleVideo.handleTimeUpdate(
+        this.timelineContainerRef,
+        this.videoRef,
+        this.currentTimeElemRef
       );
     },
     toggleScrubbing: function (e: any) {
-      if (
-        !this.timelineContainerRef ||
-        !this.videoContainerRef ||
-        !this.videoRef
-      )
-        return;
-      const rect = this.timelineContainerRef.getBoundingClientRect();
-      const percent =
-        Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
       this.isScrubbing = (e.buttons & 1) === 1;
-      this.videoContainerRef.classList.toggle("scrubbing", this.isScrubbing);
-      if (this.isScrubbing) {
-        this.wasPaused = this.videoRef.paused;
-        this.videoRef.pause();
-      } else {
-        this.videoRef.currentTime = percent * this.videoRef.duration;
-        if (!this.wasPaused) this.videoRef.play();
-      }
-      this.handleTimelineUpdate(e);
+      handleVideo.toggleScrubbing(
+        this.wasPaused,
+        this.isScrubbing,
+        e,
+        this.timelineContainerRef,
+        this.videoContainerRef,
+        this.videoRef,
+        this.handleTimelineUpdate
+      );
     },
     handleTimelineUpdate: function (e: any) {
-      if (
-        !this.timelineContainerRef ||
-        !this.videoRef ||
-        !this.previewImgRef ||
-        !this.timelineContainerRef ||
-        !this.thumbnailImgRef ||
-        !this.videoContainerRef ||
-        !this.currentTimeElemRef ||
-        !this.previewTimeRef ||
-        !this.settingBoxRef
-      )
-        return;
-
-      const rect = this.timelineContainerRef.getBoundingClientRect();
-      const imgRect = this.previewImgRef.getBoundingClientRect();
-      let imgSrc = "";
-      let percent =
-        Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
-
-      if (this.keyframe) {
-        const previewImgNumber = Math.max(
-          1,
-          Math.floor(percent * this.videoRef.duration * 2.36)
-        ).toString();
-        //Temp location
-        imgSrc = this.frames[previewImgNumber];
-      } else {
-        const canvas: any = createCanvas(100, 50);
-        const context = canvas.getContext("2d");
-        context.drawImage(
-          this.videoRef,
-          0,
-          0,
-          imgRect.width * 2.2,
-          imgRect.height * 2
-        );
-        imgSrc = canvas.toDataURL();
-      }
-
-      //Handle when user scrubs and video container is still playing
-      if (!this.settingBoxRef.classList.contains("hidden")) {
-        this.previewImgRef.classList.remove("preview-img");
-        this.previewImgRef.classList.add("hidden");
-        this.previewTimeRef.classList.add("hidden");
-      } else {
-        this.previewImgRef.classList.add("preview-img");
-        this.previewImgRef.classList.remove("hidden");
-        this.previewTimeRef.classList.remove("hidden");
-      }
-      const timeline = formatDuration(percent * this.videoRef.duration);
-
-      this.previewImgRef.src = imgSrc;
-      this.previewTimeRef.textContent = timeline;
-
-      const finalPercent = handlePercent(rect.width, percent);
-      this.previewImgRef.style.setProperty("--preview-position", finalPercent);
-      this.previewTimeRef.style.setProperty("--preview-position", finalPercent);
-      this.previewTimeRef.textContent = timeline;
-
-      if (this.isScrubbing) {
-        e.preventDefault();
-        let percent =
-          Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
-        this.currentTimeElemRef.textContent = timeline;
-        this.previewTimeRef.textContent = timeline;
-
-        this.previewImgRef.src = imgSrc;
-        this.timelineContainerRef.style.setProperty(
-          "--progress-position",
-          percent.toString()
-        );
-      }
+      handleVideo.handleTimelineUpdate(
+        this.timelineContainerRef,
+        this.videoRef,
+        this.previewImgRef,
+        this.thumbnailImgRef,
+        this.videoContainerRef,
+        this.currentTimeElemRef,
+        this.previewTimeRef,
+        this.settingBoxRef,
+        this.isScrubbing,
+        e,
+        this.keyframe,
+        this.frames
+      );
     },
     toggleSettings: function () {
-      if (!this.settingBoxRef) return;
-      this.settingBoxRef.classList.toggle("hidden");
+      handleVideo.toggleSettings(this.settingBoxRef);
     },
     setSubtitle: function (subtitle: any) {
-      console.log(subtitle);
+      handleVideo.setSubtitle(this.settingBoxRef);
       this.currentSubtitle = subtitle;
-      if (!this.settingBoxRef) return;
-      this.settingBoxRef.classList.add("hidden");
     },
   },
   components: { Loading, Settings },
@@ -414,7 +311,7 @@ export default {
       data-volume-level="high"
     >
       <img ref="thumbnailImgRef" class="thumbnail-img" />
-      <div class="video-controls-container">
+      <div ref="controlContainerRef" class="video-controls-container">
         <div
           @mousemove="handleTimelineUpdate"
           @mousedown="toggleScrubbing"

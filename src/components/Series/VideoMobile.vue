@@ -1,5 +1,6 @@
 <script lang="ts">
-import { checkSource } from "../../../utils/handleVideo";
+import handleVideo from "../../../utils/video/index";
+
 import { URL_TYPE } from "../../constants/video";
 
 export default {
@@ -13,9 +14,11 @@ export default {
   data() {},
   methods: {
     getSource: function () {
-      return this.isDevEnv ? URL_TYPE.video : checkSource(this.source);
+      return this.isDevEnv
+        ? URL_TYPE.video
+        : handleVideo.checkSource(this.source);
     },
-    checkSubtitleSource: checkSource,
+    checkSubtitleSource: handleVideo.checkSource,
   },
 };
 </script>
@@ -42,3 +45,4 @@ export default {
     </video>
   </section>
 </template>
+../../../utils/video/handleVideo
