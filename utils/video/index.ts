@@ -15,6 +15,7 @@ import { handleVolumeSlider, handleChangingVolume } from "./handleVolume";
 import { checkSource, formatDuration, handlePercent } from "./handleVideo";
 import { setSubtitle } from "./handleSubtitle";
 import { changePlaybackSpeed } from "./handlePlayback";
+import { handleKeydown } from "./handleKeydown";
 
 export default {
   checkSource,
@@ -38,4 +39,5 @@ export default {
   loadedData,
   setSubtitle,
   changePlaybackSpeed,
+  handleKeydown,
 };

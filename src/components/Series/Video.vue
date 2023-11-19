@@ -104,44 +104,17 @@ export default {
         this.captions.mode = "hidden";
       }
       //Handle keydown
-      document.addEventListener("keydown", (e: any) => {
-        const tagName = document?.activeElement?.tagName.toLowerCase();
-        if (tagName === "input") return;
-        switch (e.key.toLowerCase()) {
-          case " ":
-            e.preventDefault();
-            this.togglePlay();
-            break;
-          case "k":
-            this.togglePlay();
-            break;
-          case "f":
-            this.toggleFullScreenMode();
-            break;
-          case "i":
-            this.toggleMiniPlayerMode();
-            break;
-          case "t":
-            this.toggleTheaterMode();
-            break;
-          case "m":
-            this.toggleMute();
-            break;
-          case "c":
-            this.toggleCaptions();
-            break;
-          case "arrowleft":
-          case "j":
-            this.skip(-5);
-            break;
-          case "arrowright":
-          case "l":
-            this.skip(5);
-            break;
-          default:
-            break;
-        }
-      });
+      document.addEventListener("keydown", (e) =>
+        handleVideo.handleKeydown(e, [
+          this.togglePlay,
+          this.toggleFullScreenMode,
+          this.toggleMiniPlayerMode,
+          this.toggleTheaterMode,
+          this.toggleMute,
+          this.toggleCaptions,
+          this.skip,
+        ])
+      );
       this.videoContainerRef.addEventListener("mouseup", (e) => {
         if (this.isScrubbing) this.toggleScrubbing(e);
       });
@@ -176,6 +149,7 @@ export default {
         }, 5000);
       });
     },
+    //Unchangeable
     cutImage: function (imageId: string) {
       console.log(imageId);
       if (imageId === "") return;
@@ -250,7 +224,7 @@ export default {
       handleVideo.toggleCaption(this.videoContainerRef, this.captions);
     },
     skip: function (duration: number) {
-      if (!this.videoRef) return;
+      if (!this.videoRef || !duration) return;
       this.videoRef.currentTime += duration;
     },
     handleTimeUpdate: function () {

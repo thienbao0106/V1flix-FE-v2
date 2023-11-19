@@ -45,7 +45,10 @@ export default {
       class="inset-0 absolute bg-mainColor -z-50 opacity-20"
     ></div>
     <div class="w-fit z-20 relative">
-      <div id="menu" class="h-screen w-[14rem] bg-mainColor">
+      <div
+        id="menu"
+        class="h-screen w-[14rem] bg-mainColor translate-x transition duration-1000"
+      >
         <div class="sticky top-0 pt-5">
           <div class="text-3xl font-bold flex gap-x-5 pl-4">
             <svg
@@ -70,7 +73,7 @@ export default {
           </div>
           <ul class="list-none pl-4 space-y-4 pt-4 font-bold">
             <li
-              @mouseenter="toggleGenresList(isGenresList)"
+              @click="toggleGenresList(isGenresList)"
               class="hover:text-secondColorBrighter cursor-pointer"
             >
               Genres

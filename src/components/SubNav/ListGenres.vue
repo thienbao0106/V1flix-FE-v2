@@ -14,7 +14,6 @@ export default {
   },
   methods: {
     fetchGenres: function () {
-      console.log("test");
       const { onResult } = useQuery(getGenresMenu);
       onResult((result) => {
         if (result.data) {
@@ -32,12 +31,13 @@ export default {
       @mouseleave="toggleGenresMenu(true)"
       class="w-full bg-mainColor grid grid-cols-4 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
     >
-      <div
-        class="hover:bg-secondColorBrighter font-bold cursor-pointer p-4"
+      <router-link
+        :to="`/genres/${genres._id}/${genres.name}`"
+        class="hover:bg-secondColorBrighter font-bold cursor-pointer p-4 text-white decoration-none"
         v-for="genres in listGenres"
       >
         {{ genres.name }}
-      </div>
+      </router-link>
     </div>
   </div>
 </template>

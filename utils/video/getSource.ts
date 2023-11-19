@@ -1,6 +1,5 @@
 import { Source } from "../../src/types/video";
 import { URL_TYPE } from "./../../src/constants/video";
-import { handleTimelineUpdate } from "./handleTimeline";
 import { checkSource, formatDuration } from "./handleVideo";
 
 export function getSource(

@@ -6,7 +6,7 @@ export const fetchSeries = (
   keyword: any,
   kind: string,
   status?: string,
-  genres?: string
+  genres?: any
 ) => {
   const { onResult, loading } = useQuery(
     findSeriesQuery(QUERIES[kind], keyword, 0, {
@@ -18,7 +18,7 @@ export const fetchSeries = (
       fetchPolicy: "no-cache",
     }
   );
-  console.log("test");
+
   return {
     onResult,
     loading,
