@@ -24,12 +24,12 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/latest",
-    name: "Latest Anime",
+    name: "Latest",
     component: defineAsyncComponent(() => import("../views/Latest.vue")),
   },
   {
     path: "/genres/:id/:name",
-    name: "Latest Anime",
+    name: "Genres",
     component: defineAsyncComponent(() => import("../views/Genres.vue")),
   },
   {

@@ -17,8 +17,9 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: import.meta.env.DEV,
+      isDevEnv: !import.meta.env.DEV,
       timeout: null as any,
+      isBuffering: false,
     };
   },
   created() {
@@ -138,6 +139,7 @@ export default {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.remove("mini-player");
       });
+
       this.videoRef.addEventListener("mousemove", () => {
         if (!this.controlContainerRef || !this.videoRef) return;
         const controller: HTMLDivElement = this.controlContainerRef;
@@ -268,6 +270,13 @@ export default {
     setSubtitle: function (subtitle: any) {
       handleVideo.setSubtitle(this.settingBoxRef);
       this.currentSubtitle = subtitle;
+    },
+    //Buffering handler
+    handleWaiting: function () {
+      this.isBuffering = true;
+    },
+    handlePlaying: function () {
+      this.isBuffering = false;
     },
   },
   components: { Loading, Settings },
@@ -408,16 +417,20 @@ export default {
           />
         </div>
       </div>
+
       <video
+        @playing="handlePlaying"
         @play="handleVideoPlaying"
         @pause="handleVideoPause"
         @click="togglePlay"
         @loadeddata="loadedData"
         @volumechange="handleChangingVolume"
         @timeupdate="handleTimeUpdate"
+        @waiting="handleWaiting"
         ref="videoRef"
         preload="metadata"
         crossorigin="anonymous"
+        class="relative"
       >
         <source :src="getSource().video" type="video/mp4" />
         <track
@@ -430,6 +443,19 @@ export default {
 
         This video type can't be supported
       </video>
+      <div
+        class="absolute backdrop-blur-sm opacity-25 bg-gray w-full h-full"
+        v-if="isBuffering"
+      ></div>
+      <div
+        class="absolute flex h-full justify-center items-center w-full bg-transparent"
+        v-if="isBuffering"
+      >
+        <font-awesome-icon
+          class="animate-spin text-4xl opacity-100"
+          icon="fa-solid fa-spinner"
+        />
+      </div>
     </div>
   </section>
 </template>

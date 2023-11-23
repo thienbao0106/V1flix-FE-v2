@@ -21,11 +21,8 @@ export const handlePercent = (
 ): string => {
   let finalPercent: number = currentPercent;
 
-  if (width >= 1950) {
+  if (width >= 1280 && width < 1950) {
     if (finalPercent < 0.05) finalPercent = 0.05;
-    if (finalPercent > 0.95) finalPercent = 0.95;
-  } else if (width >= 1280 && width < 1950) {
-    if (finalPercent < 0.2) finalPercent = 0.2;
     if (finalPercent > 0.84) finalPercent = 0.84;
   } else if (width >= 800 && width < 1280) {
     if (finalPercent < 0.07) finalPercent = 0.07;
