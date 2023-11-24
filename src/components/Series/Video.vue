@@ -17,7 +17,7 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: !import.meta.env.DEV,
+      isDevEnv: import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
     };
