@@ -15,11 +15,14 @@ export default {
     "epNum",
     "epCreatedAt",
   ],
-  data() {
+
+  data(props) {
+    console.log(props.status);
     return {
       isNew: false,
     };
   },
+
   methods: {
     getImageType,
     checkNewEpisode: function (time: any) {
@@ -45,7 +48,7 @@ export default {
     <div class="relative group">
       <div
         class="absolute bg-red-500 rounded-lg -top-3 -right-3 py-2 px-4 group-hover:hidden"
-        v-if="checkNewEpisode(epCreatedAt) && epNum"
+        v-if="checkNewEpisode(epCreatedAt) && epCreatedAt && epNum"
       >
         <span class="lg:text-base md:text-md text-lg font-bold text-lg"
           >New</span

@@ -153,12 +153,12 @@ export default {
     id="main-video"
     v-else
     class="text-white space-y-5 px-8 pt-5 md:gap-x-16"
-    :class="isTheaterMode ? `md:flex-none` : ` lg:flex md:flex-none`"
+    :class="isTheaterMode ? `lg:flex-none` : `xl:flex xl:flex-row lg:flex-none`"
   >
     <section
       id="main-left-section"
       class="space-y-5"
-      :class="isTheaterMode ? `md:w-full` : `lg:w-4/6 md:w-full`"
+      :class="isTheaterMode ? `lg:w-full` : `xl:w-4/6 lg:w-full`"
     >
       <main class="w-full" aria-label="main">
         <section aria-label="details-film" class="flex flex-col gap-y-6">
@@ -244,28 +244,26 @@ export default {
           <aside
             :class="
               isTheaterMode
-                ? `flex lg:flex-row flex-col justify-center items-center gap-x-8 `
+                ? `flex xl:flex-row flex-col justify-start items-start h-fit gap-x-8 `
                 : `flex-none w-full`
             "
             aria-label="info-film"
           >
-            <Info
-              :description="series?.description"
-              :images="series?.images"
-              :genres="series?.genres"
-              :id="series?._id"
-              :status="series?.status"
-              :title="series?.title"
-              :total_episodes="series?.total_episodes"
-              :type="series?.type"
-              :view="series?.view"
-            ></Info>
-            <section
-              v-if="isTheaterMode"
-              aria-label="trending"
-              class="md:w-3/6"
-            >
-              <h2 class="lg:text-3xl text-xl mb-5 font-bold">Top Trending</h2>
+            <div :class="isTheaterMode ? `xl:w-4/6 lg:w-full` : `w-full`">
+              <Info
+                :description="series?.description"
+                :images="series?.images"
+                :genres="series?.genres"
+                :id="series?._id"
+                :status="series?.status"
+                :title="series?.title"
+                :total_episodes="series?.total_episodes"
+                :type="series?.type"
+                :view="series?.view"
+              ></Info>
+            </div>
+            <section v-if="isTheaterMode" aria-label="trending" class="w-2/6">
+              <h2 class="text-3xl sm:mt-0 mt-5 mb-5 font-bold">Top Trending</h2>
               <TopAnimeList />
             </section>
           </aside>
@@ -276,9 +274,9 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="lg:w-2/6 md:w-full"
+      class="xl:w-2/6 sm:mt-0"
     >
-      <h2 class="lg:text-3xl text-3xl mb-5 font-bold">Top Trending</h2>
+      <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
       <TopAnimeList />
     </section>
   </section>

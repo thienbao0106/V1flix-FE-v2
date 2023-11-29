@@ -9,7 +9,7 @@ export default {
     <div class="flex flex-row justify-start items-center gap-2">
       <div class="flex flex-row justify-start gap-0.5">
         <div
-          class="flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
+          class="gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 flex justify-center items-center"
         >
           <font-awesome-icon
             icon="fa-solid fa-tv"

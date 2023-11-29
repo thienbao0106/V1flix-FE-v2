@@ -46,6 +46,7 @@ export default {
     this.$watch(
       () => this.$route.params,
       () => {
+        console.log("called");
         this.fetchSeriesGenres();
       },
       { immediate: true }
@@ -68,9 +69,10 @@ export default {
         v-for="series in listResult"
         :id="series._id"
         :images="series.images"
-        :ep-num="series.epNum"
+        :total_episodes="series.total_episodes"
         :ep-created-at="series.created_at"
         :title="series.title"
+        :status="series.status"
       />
     </section>
   </main>
