@@ -10,10 +10,22 @@ export default {
       isDropdown: false,
       loading: false,
       isSubNav: false,
+      width: window.screen.width,
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
 
   methods: {
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
     toggleTheme: function (theme: string) {
       this.theme = theme === "dark" ? "light" : "dark";
       return;
@@ -62,9 +74,11 @@ export default {
 <template>
   <SubNav v-if="isSubNav" :toggle-sub-nav="toggleSubNav" />
   <nav
-    class="max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent z-20 flex items-center justify-center gap-5 text-white py-7 px-10"
+    class="z-[800] max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white py-7 px-10"
   >
-    <div class="flex-none w-3/6 flex gap-x-8 justify-start items-center">
+    <div
+      class="flex-none lg:w-3/6 w-2/6 flex gap-x-8 justify-start items-center"
+    >
       <svg
         class="cursor-pointer menu-burger-icon wi"
         @click="toggleSubNav(isSubNav)"
@@ -86,9 +100,13 @@ export default {
 
     <section
       aria-label="search"
-      class="flex flex-row w-3/6 h-12 text-white gap-10"
+      class="flex flex-row lg:w-3/6 w-4/6 h-12 text-white lg:gap-0"
     >
-      <aside aria-label="input" class="w-4/6 flex flex-col">
+      <aside
+        v-if="width > 1280"
+        aria-label="input"
+        class="md:visible invisible w-4/6 flex flex-col"
+      >
         <div class="flex w-full">
           <div
             class="w-full flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
@@ -153,13 +171,28 @@ export default {
           </ul>
         </div>
       </aside>
+      <aside
+        v-else
+        class="h-full md:invisible visible flex justify-center items-center"
+      >
+        <router-link
+          to="/search"
+          class="no-underline text-white hover:text-secondColorBrighter"
+        >
+          <svg class="fill-white w-[2rem] h-[2rem]" viewBox="0 0 20 20">
+            <path
+              d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"
+            ></path>
+          </svg>
+        </router-link>
+      </aside>
       <div
-        class="w-1/6 flex flex-1 justify-center items-center cursor-pointer text-white"
+        class="w-2/6 flex lg:flex-1 justify-center items-center cursor-pointer text-white"
       >
         <svg
           v-if="theme === 'dark'"
           @click="toggleTheme(theme)"
-          class="sun-icon"
+          class="sun-icon w-full"
           viewBox="0 0 20 20"
         >
           <path

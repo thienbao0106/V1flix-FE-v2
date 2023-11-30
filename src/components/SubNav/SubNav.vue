@@ -11,8 +11,9 @@ export default {
 
   mounted() {
     const submenu: HTMLDivElement | null = document.querySelector("#sub-menu");
+    const menu: HTMLDivElement | null = document.querySelector("#menu");
 
-    if (!submenu) return;
+    if (!submenu || !menu) return;
     const body = document.body,
       html = document.documentElement;
     console.log(html.clientHeight);
@@ -25,6 +26,7 @@ export default {
     );
 
     submenu.style.height = `${height}px`;
+    menu.style.height = `${height}px`;
   },
   methods: {
     toggleGenresList: function (isGenresList: boolean) {
@@ -38,7 +40,7 @@ export default {
 <template>
   <section
     id="sub-menu"
-    class="text-white absolute z-[200] inset-0 opacity-100"
+    class="text-white absolute z-[1000] inset-0 opacity-100"
   >
     <div
       @click="toggleSubNav(true)"
@@ -47,9 +49,9 @@ export default {
     <div class="w-fit z-20 relative">
       <div
         id="menu"
-        class="h-screen w-[14rem] bg-mainColor translate-x transition duration-1000"
+        class="w-[14rem] bg-mainColor translate-x transition duration-1000"
       >
-        <div class="sticky top-0 pt-5">
+        <div class="sticky top-0 pt-5 bottom-0">
           <div class="text-3xl font-bold flex gap-x-5 pl-4">
             <svg
               class="cursor-pointer menu-burger-icon"

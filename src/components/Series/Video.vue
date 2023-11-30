@@ -9,7 +9,14 @@ import Loading from "../Loading.vue";
 import Settings from "./Settings.vue";
 
 export default {
-  props: ["source", "time", "subtitles", "setTheaterMode", "keyframe"],
+  props: [
+    "source",
+    "time",
+    "subtitles",
+    "setTheaterMode",
+    "keyframe",
+    "isTheaterMode",
+  ],
   data() {
     return {
       isCompleted: false,
@@ -20,6 +27,7 @@ export default {
       isDevEnv: import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
+      width: window.screen.width,
     };
   },
   created() {
@@ -49,6 +57,7 @@ export default {
     const settingBoxRef = ref<HTMLDivElement>();
     const previewTimeRef = ref<HTMLDivElement>();
     const controlContainerRef = ref<HTMLDivElement>();
+
     return {
       captions: {} as any,
       wasPaused: null as any,
@@ -72,6 +81,10 @@ export default {
   mounted() {
     if (!document || !this.videoRef) return;
 
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+
     this.videoRef.currentTime = parseFloat(this.time || 0);
 
     if (this.keyframe !== "") {
@@ -83,7 +96,13 @@ export default {
       this.handleRenderVideo();
     }
   },
+  unmounted() {
+    window.removeEventListener("resize", this.onResize);
+  },
   methods: {
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
     getSource: function () {
       return handleVideo.getSource(
         this.isDevEnv,
@@ -379,7 +398,11 @@ export default {
               />
             </svg>
           </button>
-          <button @click="toggleTheaterMode" class="theater-btn">
+          <button
+            v-if="width >= 1280"
+            @click="toggleTheaterMode"
+            class="theater-btn"
+          >
             <svg class="tall" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
@@ -414,6 +437,7 @@ export default {
             :set-subtitle="setSubtitle"
             v-if="subtitles.length > 0"
             :current-subtitle="currentSubtitle.label"
+            :is-theater-mode="isTheaterMode"
           />
         </div>
       </div>

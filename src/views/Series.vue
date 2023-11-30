@@ -176,6 +176,7 @@ export default {
                 :subtitles="currentEpisode.subtitles"
                 :set-theater-mode="setTheaterMode"
                 :keyframe="currentEpisode.keyframe"
+                :is-theater-mode="isTheaterMode"
               />
               <VideoMobile
                 v-if="
