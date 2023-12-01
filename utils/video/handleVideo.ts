@@ -23,7 +23,7 @@ export const handlePercent = (
 
   if (width >= 1280 && width < 1950) {
     if (finalPercent < 0.05) finalPercent = 0.05;
-    if (finalPercent > 0.84) finalPercent = 0.84;
+    if (finalPercent > 0.94) finalPercent = 0.94;
   } else if (width >= 800 && width < 1280) {
     if (finalPercent < 0.07) finalPercent = 0.07;
     if (finalPercent > 0.92) finalPercent = 0.92;

@@ -12,8 +12,9 @@ export default {
   mounted() {
     const submenu: HTMLDivElement | null = document.querySelector("#sub-menu");
     const menu: HTMLDivElement | null = document.querySelector("#menu");
+    const genres: HTMLDivElement | null = document.querySelector("#genres");
 
-    if (!submenu || !menu) return;
+    if (!submenu || !menu || !genres) return;
     const body = document.body,
       html = document.documentElement;
     console.log(html.clientHeight);
@@ -27,6 +28,7 @@ export default {
 
     submenu.style.height = `${height}px`;
     menu.style.height = `${height}px`;
+    genres.style.height = `${height}px`;
   },
   methods: {
     toggleGenresList: function (isGenresList: boolean) {
@@ -91,11 +93,13 @@ export default {
           </ul>
         </div>
       </div>
-      <ListGenres
-        v-if="isGenresList"
-        :toggleGenresMenu="toggleGenresList"
-        :listGenres="listGenres"
-      />
+      <div id="genres">
+        <ListGenres
+          v-if="isGenresList"
+          :toggleGenresMenu="toggleGenresList"
+          :listGenres="listGenres"
+        />
+      </div>
     </div>
   </section>
 </template>

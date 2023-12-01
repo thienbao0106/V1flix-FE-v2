@@ -40,7 +40,7 @@ export function handleTimelineUpdate(
     !settingBoxRef
   )
     return;
-  console.log("test");
+
   const rect = timelineContainerRef.getBoundingClientRect();
   const imgRect = previewImgRef.getBoundingClientRect();
   let imgSrc = "";

@@ -40,10 +40,6 @@ export default {
 
       return;
     },
-    setKeyword: function (keyword: string) {
-      this.keyword = keyword;
-      this.isDropdown = false;
-    },
     toggleDropdown: function () {
       if (this.keyword === "") return;
       this.isDropdown = true;
@@ -52,7 +48,7 @@ export default {
       console.log("test");
       if (this.keyword === "") return;
       if (this.resultQuery.length > 0) this.resultQuery = [];
-      this.loading = true;
+      if (!this.isDropdown) this.isDropdown = true;
     },
   },
   computed: {
@@ -60,11 +56,11 @@ export default {
       if (this.keyword === "") return;
       this.loading = true;
       const { result } = useQuery(findSeriesQuery(["title"], this.keyword, 3));
-      if (result.value) {
+      setTimeout(() => {
         this.loading = false;
-        return result.value.findSeries;
-      }
-      return [];
+      }, 500);
+
+      return result.value ? result.value.findSeries : [];
     },
   },
   components: { SubNav },
@@ -102,11 +98,7 @@ export default {
       aria-label="search"
       class="flex flex-row lg:w-3/6 w-4/6 h-12 text-white lg:gap-0"
     >
-      <aside
-        v-if="width > 1280"
-        aria-label="input"
-        class="md:visible invisible w-4/6 flex flex-col"
-      >
+      <aside v-if="width > 1280" aria-label="input" class="w-4/6 flex flex-col">
         <div class="flex w-full">
           <div
             class="w-full flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
@@ -137,19 +129,18 @@ export default {
           >
             Loading...
           </div>
-          <ul class="rounded-b-md list w-full">
+          <ul v-else class="rounded-b-md list w-full">
             <li
               v-if="resultQuery && resultQuery.length > 0"
               v-for="film in resultQuery"
               class="bg-mainColor text-left py-2 pl-2 even:bg-black-500 list-none"
             >
-              <router-link
+              <a
                 class="text-white decoration-none hover:text-secondColorBrighter"
-                :to="`/series/${film.title}?ep=1`"
-                @click="setKeyword(film.title)"
+                :href="`/series/${film.title}?ep=1`"
               >
                 {{ film.title }}
-              </router-link>
+              </a>
             </li>
             <li
               v-if="resultQuery && resultQuery.length === 3"
@@ -173,7 +164,7 @@ export default {
       </aside>
       <aside
         v-else
-        class="h-full md:invisible visible flex justify-center items-center"
+        class="h-full flex flex-col justify-center items-center pt-1"
       >
         <router-link
           to="/search"
@@ -213,12 +204,12 @@ export default {
           ></path>
         </svg>
       </div>
-      <a
-        href="/login"
+      <router-link
+        to="/login"
         class="w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
       >
         Login
-      </a>
+      </router-link>
     </section>
   </nav>
 </template>

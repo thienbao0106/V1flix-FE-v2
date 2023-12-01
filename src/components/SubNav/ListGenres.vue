@@ -26,10 +26,10 @@ export default {
 };
 </script>
 <template>
-  <div class="absolute left-[14rem] h-fit top-[4rem] w-[30rem]">
+  <div class="absolute left-[14rem] h-full bottom-0 w-[30rem]">
     <div
       @mouseleave="toggleGenresMenu(true)"
-      class="w-full bg-mainColor grid grid-cols-4 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
+      class="w-full h-fit sticky top-[4rem] bg-mainColor grid grid-cols-4 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
     >
       <router-link
         :to="`/genres/${genres._id}/${genres.name}`"

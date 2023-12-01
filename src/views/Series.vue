@@ -69,6 +69,7 @@ export default {
           //Update value
           this.loading = loading.value;
           this.series = result.data.findSeries[0];
+          console.log(this.series);
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );
@@ -164,7 +165,12 @@ export default {
         <section aria-label="details-film" class="flex flex-col gap-y-6">
           <aside aria-label="video" class="text-white">
             <section v-if="getInfoUrl.ep && series?.episodes">
-              <div v-if="currentEpisode.source.length === 0">
+              <div
+                v-if="
+                  series?.episodes.length === 0 ||
+                  currentEpisode.source.length === 0
+                "
+              >
                 This episode doesn't have a source yet.
               </div>
               <Video
