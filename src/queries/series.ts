@@ -24,7 +24,7 @@ export const findSeriesQuery = (
 
 export const seriesBannerQuery = (limit: number) => gql`
   query getBannerSeries {
-    series(${limit && `amount: ${limit}`}) {
+    series(${`limitPerPage:  ${limit}`}) {
       series {
         _id
         title
@@ -39,9 +39,12 @@ export const seriesBannerQuery = (limit: number) => gql`
   }
 `;
 
-export const seriesQuery = (limit: number) => gql`
+export const seriesQuery = (currentPage?: number, limit?: number) => {
+  let pageNumber = currentPage || 0;
+  let limitPerPage = limit || 0;
+  return gql`
   query getSeries {
-    series(${limit && `amount: ${limit}`}) {
+    series(${`pageNumber: ${pageNumber}, limitPerPage: ${limitPerPage}`}) {
       series {
         _id
         title
@@ -61,6 +64,7 @@ export const seriesQuery = (limit: number) => gql`
     }
   }
 `;
+};
 
 export const randomSeriesQuery = () => gql`
   query randomSeries {

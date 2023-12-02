@@ -2,6 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../queries/series";
 import SubNav from "./SubNav/SubNav.vue";
+
 export default {
   data() {
     return {
@@ -11,8 +12,11 @@ export default {
       loading: false,
       isSubNav: false,
       width: window.screen.width,
+      timeOut: null,
+      resultQuery: [] as any,
     };
   },
+
   mounted() {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
@@ -45,23 +49,32 @@ export default {
       this.isDropdown = true;
     },
     handleQuery: function () {
-      console.log("test");
+      console.log("called");
       if (this.keyword === "") return;
-      if (this.resultQuery.length > 0) this.resultQuery = [];
       if (!this.isDropdown) this.isDropdown = true;
     },
-  },
-  computed: {
-    resultQuery: function () {
-      if (this.keyword === "") return;
+    fetchResult: function () {
       this.loading = true;
-      const { result } = useQuery(findSeriesQuery(["title"], this.keyword, 3));
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
 
-      return result.value ? result.value.findSeries : [];
+      const { result } = useQuery(findSeriesQuery(["title"], this.keyword, 3));
+      console.log("called");
+
+      this.loading = false;
+      this.resultQuery = result.value ? result.value.findSeries : [];
+      return;
     },
+  },
+
+  created() {
+    this.$watch(
+      () => this.keyword,
+      () => {
+        if (this.keyword === "") return;
+        console.log("called");
+        this.fetchResult();
+      },
+      { immediate: true }
+    );
   },
   components: { SubNav },
 };

@@ -7,10 +7,12 @@ export default {
   data() {
     return {
       series: [] as any[],
+      currentPage: 0,
+      loading: false,
     };
   },
   setup() {
-    const { onResult: resultFn } = useQuery(seriesQuery(2));
+    const { onResult: resultFn } = useQuery(seriesQuery(0, 4));
     return {
       resultFn,
     };
@@ -21,6 +23,17 @@ export default {
     });
   },
   components: { Card },
+  methods: {
+    seeMore: function () {
+      const { onResult, loading } = useQuery(seriesQuery(1, 4));
+      this.loading = true;
+      onResult((result) => {
+        if (result.data)
+          this.series = [...this.series, ...result.data.series.series];
+        this.loading = loading.value;
+      });
+    },
+  },
 };
 </script>
 
@@ -39,10 +52,11 @@ export default {
   </aside>
   <aside class="flex justify-center items-center">
     <div
-      v-if="series.length > 4"
+      v-if="series.length <= 4"
+      @click="seeMore"
       class="bg-secondColor font-bold rounded-md py-2 px-5 mt-14 cursor-pointer"
     >
-      See More
+      {{ loading ? "Loading..." : "See More" }}
     </div>
   </aside>
 </template>
