@@ -262,3 +262,13 @@ video {
 .timeline-container:hover .timeline {
   height: 100%;
 }
+
+::cue {
+  color: white;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 35px;
+  width: full;
+  margin-bottom: 9px;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}

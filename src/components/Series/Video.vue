@@ -24,10 +24,12 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: import.meta.env.DEV,
+      isDevEnv: !import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
       width: window.screen.width,
+      editCue: false,
+      controller: false,
     };
   },
   created() {
@@ -40,6 +42,13 @@ export default {
           container.style.visibility = "visible";
           this.handleRenderVideo();
         }
+      },
+      { immediate: true }
+    );
+    this.$watch(
+      () => this.$data.controller,
+      () => {
+        this.handleCue(this.controller);
       },
       { immediate: true }
     );
@@ -57,6 +66,7 @@ export default {
     const settingBoxRef = ref<HTMLDivElement>();
     const previewTimeRef = ref<HTMLDivElement>();
     const controlContainerRef = ref<HTMLDivElement>();
+    const trackRef = ref<HTMLTrackElement>();
 
     return {
       captions: {} as any,
@@ -76,6 +86,7 @@ export default {
       controlContainerRef,
       source: handleVideo.checkSource(props.source),
       keyframe: handleVideo.checkSource(props.keyframe),
+      trackRef,
     };
   },
   mounted() {
@@ -100,6 +111,13 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
+    handleCue: function (controller?: boolean) {
+      if (!this.trackRef) return;
+      const { cues } = this.trackRef.track;
+      controller
+        ? handleVideo.handleCue(cues, controller)
+        : handleVideo.handleCue(cues);
+    },
     onResize: function () {
       this.width = window.innerWidth;
     },
@@ -116,12 +134,13 @@ export default {
         !document ||
         !this.timelineContainerRef ||
         !this.videoRef ||
-        !this.videoContainerRef
+        !this.videoContainerRef ||
+        !this.trackRef
       )
         return;
       if (this.subtitles.length > 0) {
         this.captions = this.videoRef.textTracks[0];
-        this.captions.mode = "hidden";
+        this.captions.mode = "showing";
       }
       //Handle keydown
       document.addEventListener("keydown", (e) =>
@@ -135,16 +154,20 @@ export default {
           this.skip,
         ])
       );
+
       this.videoContainerRef.addEventListener("mouseup", (e) => {
         if (this.isScrubbing) this.toggleScrubbing(e);
       });
       this.videoContainerRef.addEventListener("mousemove", (e) => {
         if (this.isScrubbing) this.handleTimelineUpdate(e);
+        if (!this.controller) this.controller = true;
       });
 
       this.videoContainerRef.addEventListener("mouseleave", () => {
         if (!this.settingBoxRef || !this.controlContainerRef || !this.videoRef)
           return;
+        if (this.controller) this.controller = false;
+
         if (!this.videoRef.paused) this.controlContainerRef.style.opacity = "0";
         if (!this.settingBoxRef.classList.contains("hidden"))
           this.settingBoxRef.classList.add("hidden");
@@ -160,13 +183,23 @@ export default {
       });
 
       this.videoRef.addEventListener("mousemove", () => {
-        if (!this.controlContainerRef || !this.videoRef) return;
+        if (!this.controlContainerRef || !this.videoRef || !this.trackRef)
+          return;
+
         const controller: HTMLDivElement = this.controlContainerRef;
         const video: HTMLVideoElement = this.videoRef;
+        const { cues } = this.trackRef.track;
         if (controller.style.opacity === "0") controller.style.opacity = "1";
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
-          if (!video.paused) controller.style.opacity = "0";
+          if (!video.paused) {
+            controller.style.opacity = "0";
+            if (!cues) return;
+            for (let i = 0; i < cues.length; i++) {
+              const cue: any = cues[i];
+              cue.line = -2;
+            }
+          }
         }, 5000);
       });
     },
@@ -203,6 +236,7 @@ export default {
     },
     togglePlay: function () {
       handleVideo.togglePlay(this.videoRef);
+      if (this.editCue || !this.trackRef) return;
     },
     handleVideoPlaying: function () {
       handleVideo.handleVideoPlaying(this.videoContainerRef);
@@ -309,7 +343,7 @@ export default {
   <section id="container" style="visibility: hidden">
     <div
       ref="videoContainerRef"
-      class="video-container paused w-full"
+      class="video-container paused w-full captions"
       data-volume-level="high"
     >
       <img ref="thumbnailImgRef" class="thumbnail-img" />
@@ -458,6 +492,7 @@ export default {
       >
         <source :src="getSource().video" type="video/mp4" />
         <track
+          ref="trackRef"
           v-if="subtitles.length > 0"
           :label="currentSubtitle.label"
           kind="subtitles"
