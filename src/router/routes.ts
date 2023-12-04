@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
     component: defineAsyncComponent(() => import("../views/Series.vue")),
   },
   {
+    path: "/series",
+    name: "Series",
+    component: defineAsyncComponent(() => import("../views/ListSeries.vue")),
+  },
+  {
     path: "/search",
     name: "Search",
     component: defineAsyncComponent(() => import("../views/Search.vue")),

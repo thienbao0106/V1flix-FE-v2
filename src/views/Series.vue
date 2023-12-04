@@ -281,7 +281,7 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 sm:mt-0"
+      class="xl:w-2/6 w-fullPvi sm:mt-0"
     >
       <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
       <TopAnimeList />

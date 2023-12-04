@@ -66,6 +66,29 @@ export const seriesQuery = (currentPage?: number, limit?: number) => {
 `;
 };
 
+export const listSeriesQuery = (currentPage: number, limit: number) => {
+  return gql`
+  query getSeries {
+    series(${`pageNumber: ${currentPage}, limitPerPage: ${limit}`}) {
+      totalPage
+      series {
+        _id
+        title
+        status
+        total_episodes
+        type
+        view
+        images {
+          _id
+          source
+          type
+        }
+      }
+    }
+  }
+`;
+};
+
 export const randomSeriesQuery = () => gql`
   query randomSeries {
     randomSeries {

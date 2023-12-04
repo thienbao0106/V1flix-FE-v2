@@ -13,7 +13,7 @@ import { handleTimeUpdate, handleTimelineUpdate } from "./handleTimeline";
 import { handleVideoPlaying, handleVideoPause } from "./handlePlaying";
 import { handleVolumeSlider, handleChangingVolume } from "./handleVolume";
 import { checkSource, formatDuration, handlePercent } from "./handleVideo";
-import { setSubtitle, handleCue } from "./handleSubtitle";
+import { setSubtitle } from "./handleSubtitle";
 import { changePlaybackSpeed } from "./handlePlayback";
 import { handleKeydown } from "./handleKeydown";
 
@@ -40,5 +40,4 @@ export default {
   setSubtitle,
   changePlaybackSpeed,
   handleKeydown,
-  handleCue,
 };

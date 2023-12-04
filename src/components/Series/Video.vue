@@ -24,7 +24,7 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: !import.meta.env.DEV,
+      isDevEnv: import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
       width: window.screen.width,
@@ -112,11 +112,15 @@ export default {
   },
   methods: {
     handleCue: function (controller?: boolean) {
+      console.log("called");
+      console.log(controller);
       if (!this.trackRef) return;
       const { cues } = this.trackRef.track;
-      controller
-        ? handleVideo.handleCue(cues, controller)
-        : handleVideo.handleCue(cues);
+      if (!cues) return;
+      for (let i = 0; i < cues.length; i++) {
+        const cue: any = cues[i];
+        cue.line = controller ? -3 : -2;
+      }
     },
     onResize: function () {
       this.width = window.innerWidth;
@@ -189,10 +193,14 @@ export default {
         const controller: HTMLDivElement = this.controlContainerRef;
         const video: HTMLVideoElement = this.videoRef;
         const { cues } = this.trackRef.track;
+
         if (controller.style.opacity === "0") controller.style.opacity = "1";
+        if (video.style.cursor === "none") video.style.cursor = "default";
+
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
           if (!video.paused) {
+            video.style.cursor = "none";
             controller.style.opacity = "0";
             if (!cues) return;
             for (let i = 0; i < cues.length; i++) {
@@ -237,6 +245,8 @@ export default {
     togglePlay: function () {
       handleVideo.togglePlay(this.videoRef);
       if (this.editCue || !this.trackRef) return;
+      this.handleCue();
+      this.editCue = true;
     },
     handleVideoPlaying: function () {
       handleVideo.handleVideoPlaying(this.videoContainerRef);
