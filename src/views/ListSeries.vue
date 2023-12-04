@@ -2,6 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { listSeriesQuery } from "../queries/series";
 import Card from "../components/Card.vue";
+import Loading from "../components/Loading.vue";
 
 export default {
   data() {
@@ -12,6 +13,7 @@ export default {
       currentPage: 0,
     };
   },
+
   methods: {
     fetchSeries: function (page: number) {
       console.log(Number.isNaN(page));
@@ -30,6 +32,14 @@ export default {
         this.loading = false;
       });
     },
+    handleNavigation: function (type: string) {
+      console.log("called");
+      this.$router.push(
+        `/series?page=${
+          type === "next" ? this.currentPage + 1 : this.currentPage - 1
+        }`
+      );
+    },
   },
 
   created() {
@@ -43,7 +53,7 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card },
+  components: { Card, Loading },
 };
 </script>
 
@@ -67,24 +77,44 @@ export default {
         :view="s.view"
       />
     </section>
-    <section>
-      <ul
-        class="list-none w-full flex justify-center items-center flex-row gap-x-5 flex-wrap"
+    <section
+      class="list-none w-full flex justify-center items-center flex-row gap-x-5 flex-wrap"
+    >
+      <button
+        :disabled="currentPage === 1"
+        @click="handleNavigation('prev')"
+        class="text-white decoration-none disabled:opacity-60"
       >
-        <li
+        <div
+          class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-mainColor"
+        >
+          Prev
+        </div>
+      </button>
+      <router-link
+        class="text-white decoration-none"
+        v-for="index in totalPage"
+        :key="index"
+        :to="`/series?page=${index}`"
+      >
+        <div
           class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
           :class="`${index === currentPage ? 'bg-secondColor' : 'bg-gray-500'}`"
-          :key="index"
-          v-for="index in totalPage"
         >
-          <router-link
-            class="text-white decoration-none"
-            :to="`/series?page=${index}`"
-          >
-            {{ index }}
-          </router-link>
-        </li>
-      </ul>
+          {{ index }}
+        </div>
+      </router-link>
+      <button
+        :disabled="currentPage === totalPage"
+        @click="handleNavigation('next')"
+        class="text-white outline-none disabled:opacity-60"
+      >
+        <div
+          class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-mainColor"
+        >
+          Next
+        </div>
+      </button>
     </section>
   </main>
 </template>
