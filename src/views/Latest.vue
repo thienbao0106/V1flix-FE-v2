@@ -2,31 +2,43 @@
 import { useQuery } from "@vue/apollo-composable";
 import { getEpisodes } from "../queries/episodes";
 import Card from "../components/Card.vue";
+import Pagination from "../components/Pagination.vue";
+
 export default {
   data() {
     return {
       episodes: [] as any,
       loading: false,
+      totalPage: 0,
+      currentPage: 0,
     };
   },
   created() {
     this.$watch(
-      () => this.$route.params,
+      () => this.$route.query,
       () => {
-        this.fetchEpisodes();
+        console.log(this.$route.query);
+        const currentPage: any = this.$route.query.page;
+        this.fetchEpisodes(parseInt(currentPage));
       },
       { immediate: true }
     );
   },
   methods: {
-    fetchEpisodes: function () {
-      const { onResult, loading } = useQuery(getEpisodes);
+    fetchEpisodes: function (page: number) {
+      console.log(Number.isNaN(page));
+      let currentPage = Number.isNaN(page) ? 1 : page;
+      this.currentPage = currentPage;
+      const { onResult, loading } = useQuery(getEpisodes(currentPage - 1, 5));
       this.loading = loading.value;
       console.log(loading.value);
       onResult((result) => {
         if (result.data) {
           this.loading = loading.value;
-          const arrEps = [...result.data.episodes];
+          const { episodes, totalPage } = result.data.episodes;
+          console.log(result.data.episodes);
+          this.totalPage = totalPage;
+          const arrEps = [...episodes];
 
           this.episodes = arrEps.sort(
             (a: any, b: any) => b.created_at - a.created_at
@@ -35,7 +47,7 @@ export default {
       });
     },
   },
-  components: { Card },
+  components: { Card, Pagination },
 };
 </script>
 
@@ -59,5 +71,12 @@ export default {
         :title="ep.series.title"
       />
     </section>
+    <div class="mt-5">
+      <Pagination
+        type="latest"
+        :current-page="currentPage"
+        :total-page="totalPage"
+      />
+    </div>
   </main>
 </template>

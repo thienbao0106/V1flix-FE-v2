@@ -267,9 +267,7 @@ video {
   color: white;
   background-color: transparent;
   font-weight: 700;
-  font-size: 40px;
-  width: full;
-  margin-bottom: 9px;
+  font-size: 3rem;
   line-height: normal;
   text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 }

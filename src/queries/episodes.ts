@@ -1,18 +1,21 @@
 import gql from "graphql-tag";
 
-export const getEpisodes = () => gql`
+export const getEpisodes = (currentPage: number, limit: number) => gql`
   query getEpisodes {
-    episodes {
-      _id
-      epNum
-      created_at
-      series {
+    episodes(${`pageNumber: ${currentPage}, limitPerPage: ${limit}`}) {
+      totalPage
+      episodes {
         _id
-        title
-        images {
+        epNum
+        created_at
+        series {
           _id
-          source
-          type
+          title
+          images {
+            _id
+            source
+            type
+          }
         }
       }
     }

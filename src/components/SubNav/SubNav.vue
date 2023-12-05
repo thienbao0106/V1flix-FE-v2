@@ -76,6 +76,14 @@ export default {
             </router-link>
           </div>
           <ul class="list-none pl-4 space-y-4 pt-4 font-bold">
+            <li>
+              <router-link
+                to="/series"
+                class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
+              >
+                Series
+              </router-link>
+            </li>
             <li
               @click="toggleGenresList(isGenresList)"
               class="hover:text-secondColorBrighter cursor-pointer"
