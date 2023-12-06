@@ -13,7 +13,7 @@ export default {
     };
   },
   setup() {
-    const { onResult: resultFn, loading } = useQuery(seriesBannerQuery(2));
+    const { onResult: resultFn, loading } = useQuery(seriesBannerQuery(5));
     return {
       resultFn,
       loading,
