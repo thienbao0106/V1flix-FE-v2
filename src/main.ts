@@ -9,6 +9,7 @@ import { addIcon } from "./../utils/handleIcons";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { createHead } from "@unhead/vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import "@unocss/reset/tailwind-compat.css";
 
 const cache = new InMemoryCache();
 const apolloClient = new ApolloClient({

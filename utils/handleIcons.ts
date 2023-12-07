@@ -15,6 +15,8 @@ import {
   faVolumeHigh,
   faGear,
   faBars,
+  faHome,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -52,6 +54,8 @@ export const addIcon = () => {
     faVolumeHigh,
     faClosedCaptioning,
     faGear,
-    faBars
+    faBars,
+    faHome,
+    faUser
   );
 };

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../queries/series";
+import { getUser } from "../queries/users";
 import SubNav from "./SubNav/SubNav.vue";
 
 export default {
@@ -14,6 +15,9 @@ export default {
       width: window.screen.width,
       timeOut: null,
       resultQuery: [] as any,
+
+      username: window.localStorage.getItem("username") || "",
+      isHoverUsername: false,
     };
   },
 
@@ -55,13 +59,24 @@ export default {
     },
     fetchResult: function () {
       this.loading = true;
-
       const { result } = useQuery(findSeriesQuery(["title"], this.keyword, 3));
-      console.log("called");
-
       this.loading = false;
       this.resultQuery = result.value ? result.value.findSeries : [];
       return;
+    },
+    fetchUser: function () {
+      console.log(typeof this.username);
+      if (this.username === "" || this.username === "undefined") return;
+      const { result } = useQuery(getUser(this.username));
+      if (!result.value) return;
+      //TO-DO: Handle Avatar Fetching
+    },
+    toggleUserMenu: function (isHoverUsername: boolean) {
+      this.isHoverUsername = isHoverUsername;
+    },
+    handleLogout: function () {
+      window.localStorage.removeItem("username");
+      window.location.reload();
     },
   },
 
@@ -70,8 +85,15 @@ export default {
       () => this.keyword,
       () => {
         if (this.keyword === "") return;
-        console.log("called");
         this.fetchResult();
+      },
+      { immediate: true }
+    );
+    this.$watch(
+      () => this.username,
+      () => {
+        if (this.username === "") return;
+        this.fetchUser();
       },
       { immediate: true }
     );
@@ -217,12 +239,41 @@ export default {
           ></path>
         </svg>
       </div>
-      <router-link
-        to="/login"
+      <a
+        v-if="username === ''"
+        href="/login"
         class="w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
       >
         Login
-      </router-link>
+      </a>
+      <div
+        v-else
+        class="w-1/6 flex flex-1 justify-center items-center font-bold relative text-white"
+      >
+        <p
+          @mouseenter="toggleUserMenu(true)"
+          class="hover:text-secondColor w-fit hover:cursor-pointer"
+        >
+          {{ username }}
+        </p>
+        <div
+          @mouseleave="toggleUserMenu(false)"
+          class="absolute py-5 -bottom-[8rem] bg-red-500 left-0 right-0 w-full flex flex-col rounded-lg px-2"
+          v-if="isHoverUsername"
+        >
+          <h1>Avatar</h1>
+          <hr />
+          <ul class="space-y-3 pt-3">
+            <li
+              @click="handleLogout()"
+              class="hover:text-secondColor hover:cursor-pointer"
+            >
+              Logout
+            </li>
+            <li class="hover:text-secondColor hover:cursor-pointer">Setting</li>
+          </ul>
+        </div>
+      </div>
     </section>
   </nav>
 </template>

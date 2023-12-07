@@ -1,18 +1,47 @@
 <script lang="ts">
+import { useQuery } from "@vue/apollo-composable";
+import { userLogin } from "../queries/users";
+
 export default {
   data() {
     return {
       inputClass:
-        "xl:w-[30rem] w-[25rem] rounded-md h-12 border-2 bg-opacity-40 bg-gray-500 p-3 focus:outline-none focus:border-secondColorBrighter",
+        "xl:w-[30rem] sm:w-[28rem] w-[24rem] rounded-md h-12 border-2 bg-opacity-40 bg-gray-500 p-3 focus:outline-none focus:border-secondColorBrighter",
       spanClass:
-        "pointer-events-none font-bold absolute left-0 top-0 p-3 transform transition-transform",
+        "pointer-events-none font-bold absolute left-0 p-3 transition-transform duration-500",
       theme: "dark",
+      email: "",
+      password: "",
+      loading: false,
+      error: "",
     };
+  },
+  setup() {
+    document.title = "Login";
   },
   methods: {
     toggleTheme: function (theme: string) {
       this.theme = theme === "dark" ? "light" : "dark";
       return;
+    },
+    handleSubmit: function (e: any) {
+      this.loading = true;
+      e.preventDefault();
+
+      const { onResult } = useQuery(userLogin(this.email, this.password));
+
+      onResult((result) => {
+        if (!result.data) {
+          this.error =
+            "Your password isn't matched or your account doesn't exist.";
+          this.loading = false;
+          return;
+        }
+        if (this.error !== "") this.error = "";
+        const { username } = result.data.login;
+        window.localStorage.setItem("username", username);
+        window.location.href = "/";
+      });
     },
   },
 };
@@ -26,7 +55,7 @@ export default {
         <div
           className=" w-full flex flex-row w-full h-fit items-center justify-between"
         >
-          <span className="hover:cursor-pointer hover:text-secondColor">
+          <span className="hover:cursor-pointer ">
             <svg
               v-if="theme === 'dark'"
               @click="toggleTheme(theme)"
@@ -51,42 +80,69 @@ export default {
               ></path>
             </svg>
           </span>
-          <span className="hover:cursor-pointer hover:text-secondColor">
-            <a class="text-white decoration-none" href="/"> Home </a>
+          <span className="hover:cursor-pointer ">
+            <a
+              class="text-white decoration-none hover:text-secondColor"
+              href="/"
+            >
+              <font-awesome-icon size="xl" icon="house" />
+            </a>
           </span>
         </div>
       </aside>
+
       <aside class="w-full flex justify-center items-center">
-        <form class="space-y-5">
+        <form method="post" @submit="handleSubmit" class="space-y-5">
           <div className="relative">
-            <input type="text" :class="`${inputClass} border-secondColor`" />
-            <span :class="`${spanClass}`">Username</span>
+            <input
+              :class="`${inputClass} border-secondColor`"
+              type="email"
+              v-model.lazy="email"
+              required
+            />
+
+            <span :class="`${spanClass}`">Email</span>
           </div>
           <div className="relative">
             <input
               type="password"
               :class="`${inputClass} border-secondColor`"
+              required
+              v-model.lazy="password"
             />
             <span :class="`${spanClass}`">Password</span>
           </div>
-          <input
+          <aside v-if="error !== ''">
+            <p class="text-red-500 font-bold w-full">
+              {{ error }}
+            </p>
+          </aside>
+          <button
             class="text-white bg-secondColor hover:bg-secondColorBrighter py-2 text-2xl rounded-md font-bold cursor-pointer w-full text-center"
             type="submit"
-            value="Log-in"
-          />
+          >
+            {{ loading ? "Loading..." : "Log-in" }}
+          </button>
         </form>
       </aside>
+      <div className="flex justify-center mt-4">
+        <p>
+          Don't have an account? Create
+          <router-link
+            to="/register"
+            className="text-secondColor font-bold hover:text-secondColorBrighter"
+          >
+            here
+          </router-link>
+        </p>
+      </div>
     </section>
   </main>
 </template>
 
 <style scoped>
-input[type="text"]:valid ~ span,
-input[type="text"]:focus ~ span,
-input[type="password"]:focus ~ span,
-input[type="password"]:valid ~ span,
-input[type="email"]:valid ~ span,
-input[type="email"]:focus ~ span {
+input:valid ~ span,
+input:focus ~ span {
   color: white;
   font-size: 0.65em;
   transform: translateX(10px) translateY(-7px);
