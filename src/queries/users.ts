@@ -6,7 +6,6 @@ export const userLogin = (email: string, password: string) => {
     query getLogin {
       login(email: "${email}", password: "${password}") {
         token
-        tokenExpiration
         username
       }
     }
