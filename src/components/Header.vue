@@ -15,7 +15,7 @@ export default {
       width: window.screen.width,
       timeOut: null,
       resultQuery: [] as any,
-
+      avatar: "",
       username: window.localStorage.getItem("username") || "",
       isHoverUsername: false,
     };
@@ -65,14 +65,18 @@ export default {
       return;
     },
     fetchUser: function () {
-      console.log(typeof this.username);
-      if (this.username === "" || this.username === "undefined") return;
+      if (this.username === "") return;
+
       const { result } = useQuery(getUser(this.username));
       if (!result.value) return;
-      //TO-DO: Handle Avatar Fetching
+      const {
+        findUserByName: { avatar },
+      } = result.value;
+      this.avatar = avatar === "" ? "/assets/avatar.png" : avatar;
     },
     toggleUserMenu: function (isHoverUsername: boolean) {
-      this.isHoverUsername = isHoverUsername;
+      this.isHoverUsername = !isHoverUsername;
+      this.fetchUser();
     },
     handleLogout: function () {
       window.localStorage.removeItem("username");
@@ -251,17 +255,20 @@ export default {
         class="w-1/6 flex flex-1 justify-center items-center font-bold relative text-white"
       >
         <p
-          @mouseenter="toggleUserMenu(true)"
+          @click="toggleUserMenu(isHoverUsername)"
           class="hover:text-secondColor w-fit hover:cursor-pointer"
         >
           {{ username }}
         </p>
         <div
-          @mouseleave="toggleUserMenu(false)"
-          class="absolute py-5 -bottom-[8rem] bg-red-500 left-0 right-0 w-full flex flex-col rounded-lg px-2"
+          class="absolute py-5 xl:-bottom-[15rem] lg:-bottom-[17rem] md:-bottom-[22rem] sm:-bottom-[18rem] -bottom-[15rem] bg-mainColor left-0 right-0 w-full flex flex-col rounded-lg px-2"
           v-if="isHoverUsername"
         >
-          <h1>Avatar</h1>
+          <div class="flex flex-col justify-center items-center w-full mb-6">
+            <img class="mb-4 w-1/2 h-1/2 rounded-lg" :src="avatar" />
+            <h2>{{ username }}</h2>
+          </div>
+
           <hr />
           <ul class="space-y-3 pt-3">
             <li

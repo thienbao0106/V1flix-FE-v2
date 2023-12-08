@@ -15,9 +15,10 @@ export const userLogin = (email: string, password: string) => {
 
 export const getUser = (username: string) => {
   return gql`
-    query findUserById {
-      findUserById(username: "${username}") {
-        username
+    query findUserByName {
+      findUserByName(username: "${username}") {
+        
+        avatar
       }
     }
   `;

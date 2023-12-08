@@ -27,6 +27,7 @@ export default {
       seconds: 0,
       isTheaterMode: false,
       isIOS: null as any,
+      isUser: window.localStorage.getItem("username") !== "",
     };
   },
   created() {
@@ -201,9 +202,10 @@ export default {
             <h2 class="lg:text-2xl text-base" v-if="currentEpisode">
               {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
             </h2>
+            <!-- TEMP LAYOUT IN ACTION BUTTONS -->
             <div
               v-if="currentEpisode"
-              class="flex flex-row justify-between items-center"
+              class="flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start sm:gap-y-0 gap-y-2"
             >
               <div
                 class="text-lg flex flex-row justify-center items-center gap-x-5"
@@ -215,12 +217,20 @@ export default {
                   {{ ` ${getCurrentDate(currentEpisode?.created_at)} ` }}
                 </p>
               </div>
-              <div
-                class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
-                @click="toggleShareModal"
-              >
-                <font-awesome-icon class="mr-2" icon="fa-solid fa-share" />
-                Share
+              <div class="flex justify-center items-center gap-x-4">
+                <div
+                  class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
+                  @click="toggleShareModal"
+                >
+                  <font-awesome-icon class="mr-2" icon="fa-solid fa-share" />
+                  Share
+                </div>
+                <div
+                  class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
+                  v-if="isUser"
+                >
+                  Add
+                </div>
               </div>
             </div>
           </header>

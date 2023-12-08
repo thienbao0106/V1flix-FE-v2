@@ -27,8 +27,14 @@ export default {
     handleSubmit: function (e: any) {
       this.loading = true;
       e.preventDefault();
-
-      const { onResult } = useQuery(userLogin(this.email, this.password));
+      console.log(this.password);
+      const { onResult } = useQuery(
+        userLogin(this.email, this.password),
+        {},
+        {
+          fetchPolicy: "no-cache",
+        }
+      );
 
       onResult((result) => {
         if (!result.data) {
@@ -37,9 +43,11 @@ export default {
           this.loading = false;
           return;
         }
+        console.log("called");
         if (this.error !== "") this.error = "";
-        const { username } = result.data.login;
+        const { username, token } = result.data.login;
         window.localStorage.setItem("username", username);
+        window.localStorage.setItem("token", token);
         window.location.href = "/";
       });
     },
