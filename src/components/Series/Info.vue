@@ -67,10 +67,7 @@ export default {
         {{ description }}
       </p>
 
-      <div
-        v-if="width < 1280"
-        class="flex sm:justify-start sm:items-start justify-center items-center"
-      >
+      <div v-if="width < 1280" class="flex justify-start items-start">
         <div
           class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white"
           @click="toggleSeeMore(isSeeMore)"

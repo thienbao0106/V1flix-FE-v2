@@ -37,7 +37,7 @@ export default {
     class="rounded-md border-none drop-shadow text-white bg-mainColor outline-none m-auto space-y-5 p-5"
   >
     <header class="flex justify-between items-center">
-      <h1>Share</h1>
+      <h1 class="font-bold text-xl">Share</h1>
       <div @click="closeModal" class="cursor-pointer text-xl">X</div>
     </header>
     <section class="space-y-2">
@@ -47,7 +47,7 @@ export default {
           type="text"
           ref="urlInput"
           :value="url"
-          class="p-4 bg-mainColor text-white font-bold border-red w-[20rem] border-secondColor"
+          class="p-4 bg-mainColor text-white font-bold w-[20rem] border-secondColor border"
           disabled
         />
 
@@ -64,7 +64,7 @@ export default {
           ref="timestampInput"
           type="text"
           :value="`${url}&t=${seconds}`"
-          class="p-4 bg-mainColor text-white font-bold border-red w-[20rem] border-secondColor"
+          class="p-4 bg-mainColor text-white font-bold w-[20rem] border-secondColor border"
           disabled
         />
 
@@ -78,4 +78,3 @@ export default {
     </section>
   </dialog>
 </template>
-../../../utils/toastSettings

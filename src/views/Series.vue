@@ -27,7 +27,7 @@ export default {
       seconds: 0,
       isTheaterMode: false,
       isIOS: null as any,
-      isUser: window.localStorage.getItem("username") !== "",
+      isUser: window.localStorage.getItem("username"),
     };
   },
   created() {
@@ -104,7 +104,7 @@ export default {
         }
       });
     },
-    getCurrentDate: function (dateNum: number): string {
+    getDate: function (dateNum: number): string {
       return moment(dateNum).format("MMM Do YYYY");
     },
     setTheaterMode: function (isTheaterMode: boolean) {
@@ -198,37 +198,46 @@ export default {
               <div>This episode doesn't exist</div>
             </section>
           </aside>
-          <header class="space-y-2">
-            <h2 class="lg:text-2xl text-base" v-if="currentEpisode">
+          <header class="sm:space-y-2 space-y-5">
+            <h2 class="text-2xl" v-if="currentEpisode">
               {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
             </h2>
-            <!-- TEMP LAYOUT IN ACTION BUTTONS -->
+
             <div
               v-if="currentEpisode"
-              class="flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start sm:gap-y-0 gap-y-2"
+              class="flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start sm:gap-y-0 gap-y-4"
             >
               <div
-                class="text-lg flex flex-row justify-center items-center gap-x-5"
+                class="text-lg flex flex-row justify-center items-center gap-x-4"
               >
-                <p>
-                  {{ `${currentEpisode?.view + 1 || 0} views` }}
-                </p>
-                <p v-if="currentEpisode?.created_at">
-                  {{ ` ${getCurrentDate(currentEpisode?.created_at)} ` }}
-                </p>
+                <div
+                  class="bg-mainColor rounded-md px-4 py-1.5 flex justify-center items-center"
+                >
+                  <font-awesome-icon class="mr-2" icon="fa-solid fa-eye" />
+
+                  <p>
+                    {{ `${currentEpisode?.view + 1 || 0}` }}
+                  </p>
+                </div>
+                <div class="bg-mainColor rounded-md px-4 py-1.5">
+                  <p v-if="currentEpisode?.created_at">
+                    {{ ` ${getDate(currentEpisode?.created_at)} ` }}
+                  </p>
+                </div>
               </div>
               <div class="flex justify-center items-center gap-x-4">
                 <div
-                  class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
+                  class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
                   @click="toggleShareModal"
                 >
                   <font-awesome-icon class="mr-2" icon="fa-solid fa-share" />
                   Share
                 </div>
                 <div
-                  class="cursor-pointer bg-mainColor hover:bg-secondColor p-2.5 rounded-lg text-white font-bold"
-                  v-if="isUser"
+                  class="cursor-pointer bg-green-700 hover:bg-green-500 p-2.5 rounded-lg text-white font-bold"
+                  v-if="isUser !== '' && isUser"
                 >
+                  <font-awesome-icon class="mr-2" icon="fa-solid fa-plus" />
                   Add
                 </div>
               </div>

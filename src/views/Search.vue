@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { useRoute } from "vue-router";
+
 import { getGenres } from "../queries/genres";
 import { fetchSeries } from "../../utils/handleSeries";
 import ListResult from "../components/Search/ListResult.vue";
@@ -8,15 +8,6 @@ import TopAnime from "../components/Search/TopAnime.vue";
 import Loading from "../components/Loading.vue";
 
 export default {
-  setup() {
-    const route = useRoute();
-    const { keyword } = route.query;
-
-    return {
-      keyword: keyword || "",
-      loading: true,
-    };
-  },
   methods: {
     fetchGenres: function () {
       console.log("test");
@@ -48,6 +39,14 @@ export default {
     handleSubmit: function (e: any) {
       e.preventDefault();
       this.fetchResults();
+      this.displayKeyword = this.keyword;
+    },
+    handleReset: function () {
+      console.log("called");
+      console.log(this.keyword);
+      this.keyword = "";
+      this.statusValue = "default";
+      this.genresValue = "default";
     },
   },
   created() {
@@ -78,6 +77,10 @@ export default {
         },
       ],
       genresFilter: [] as any,
+      keyword: this.$route.query.keyword || "",
+      displayKeyword: this.$route.query.keyword || "",
+
+      loading: false,
     };
   },
   components: { ListResult, TopAnime, Loading },
@@ -87,12 +90,14 @@ export default {
 <template>
   <main className="xl:px-8 px-4 text-white xl:flex xl:flex-row lg:space-y-8">
     <section aria-label="result-query" className="xl:basis-3/4 space-y-5 pr-8">
-      <h1 className="text-3xl font-bold">{{ `Result for ${keyword}` }}</h1>
+      <h1 className="text-3xl font-bold">
+        {{ `Result for ${displayKeyword}` }}
+      </h1>
 
       <form method="post" @submit="handleSubmit">
         <aside
           aria-label="query"
-          class="w-full flex lg:flex-row flex-col gap-2"
+          class="w-full flex lg:flex-row flex-col sm:gap-2 gap-3"
         >
           <input
             placeholder="Type your filter"
@@ -114,11 +119,22 @@ export default {
               </option>
             </select>
           </div>
-          <input
-            type="submit"
-            class="bg-secondColor p-2 rounded-md font-bold flex gap-2 cursor-pointer text-white"
-            value="Submit"
-          />
+          <div class="w-full flex sm:justify-end justify-start gap-x-3">
+            <button
+              type="submit"
+              class="bg-secondColor w-fit py-2 px-4 rounded-md font-bold flex sm:justify-start justify-center sm:items-start items-center gap-2 cursor-pointer text-white"
+            >
+              Submit
+            </button>
+
+            <button
+              type="button"
+              @click.prevent="handleReset()"
+              class="bg-red-500 w-fit py-2 px-4 rounded-md font-bold flex sm:justify-start justify-center sm:items-start items-center gap-2 cursor-pointer text-white"
+            >
+              Reset
+            </button>
+          </div>
         </aside>
       </form>
       <Loading v-if="loading" message="Getting the data" />
@@ -131,7 +147,7 @@ export default {
       aria-label="top-anime-query"
       className="lg:basis-1/4 space-y-4 lg:mt-0 mt-5"
     >
-      <TopAnime :filter="keyword" :result="result" />
+      <TopAnime :filter="displayKeyword" :result="result" />
     </section>
   </main>
 </template>

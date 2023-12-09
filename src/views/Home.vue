@@ -42,7 +42,7 @@ export default {
         <Recommendations />
       </section>
       <section className="basis-1/4 lg:mt-5 mt-8">
-        <h1 className="font-bold lg:text-2xl text-4xl mb-5">Top Anime</h1>
+        <h1 className="font-bold lg:text-2xl text-xl mb-5">Top Anime</h1>
         <TopAnimeList />
       </section>
     </main>

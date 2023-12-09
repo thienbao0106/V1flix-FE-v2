@@ -9,7 +9,6 @@ export default {
     };
   },
   setup() {
-    console.log("called");
     const { onResult: resultFn } = useQuery(randomSeriesQuery);
     return {
       resultFn,
@@ -31,7 +30,9 @@ export default {
 
 <template>
   <div class="xl:px-10 lg:px-5 px-4 space-y-3">
-    <h1 class="text-center text-4xl">Series Of The Day</h1>
+    <h1 class="text-center lg:text-4xl text-2xl font-extrabold">
+      Series Of The Day
+    </h1>
     <div class="relative group decoration-none">
       <router-link class="text-white" :to="`/series/${series.title}?ep=1`">
         <img
@@ -43,9 +44,6 @@ export default {
         <div
           class="absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:duration-1000 top-0 md:h-full h-[10rem] w-full flex justify-center items-center flex-col"
         >
-          <h2 class="lg:text-4xl md:text-2xl font-extrabold">
-            {{ series.title }}
-          </h2>
           <div class="lg:text-lg md:text-base">
             <label>Status: </label>
             <span class="font-bold text-green"> {{ series.status }}</span>
@@ -65,5 +63,8 @@ export default {
         </div>
       </router-link>
     </div>
+    <h2 class="lg:text-4xl md:text-2xl text-lg text-center">
+      {{ series.title }}
+    </h2>
   </div>
 </template>

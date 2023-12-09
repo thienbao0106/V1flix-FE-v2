@@ -17,6 +17,7 @@ import {
   faBars,
   faHome,
   faUser,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -33,6 +34,7 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faPlus,
     faShare,
     faPlay,
     faTv,

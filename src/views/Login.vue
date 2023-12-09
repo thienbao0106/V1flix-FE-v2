@@ -126,8 +126,9 @@ export default {
             </p>
           </aside>
           <button
-            class="text-white bg-secondColor hover:bg-secondColorBrighter py-2 text-2xl rounded-md font-bold cursor-pointer w-full text-center"
+            class="disabled:opacity-70 text-white bg-secondColor hover:bg-secondColorBrighter py-2 text-2xl rounded-md font-bold cursor-pointer w-full text-center"
             type="submit"
+            :disabled="loading"
           >
             {{ loading ? "Loading..." : "Log-in" }}
           </button>
