@@ -8,6 +8,8 @@ import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
+import AddModal from "../components/Series/AddModal.vue";
+
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";
 
@@ -122,7 +124,15 @@ export default {
       this.timestamp = `${String(minutes).padStart(2, "0")}:${String(
         remainingSeconds
       ).padStart(2, "0")}`;
-      const dialog: any = document.querySelector("dialog");
+      const dialog: any = document.querySelector("#share-modal");
+      console.log(dialog);
+      if (!dialog) return;
+      dialog.showModal();
+    },
+    toggleAddModal: function () {
+      const dialog: any = document.querySelector("#add-modal");
+      if (!dialog) return;
+
       dialog.showModal();
     },
     addView: function (seriesId: string, episodeId: string) {
@@ -142,12 +152,14 @@ export default {
     ShareModal,
     TopAnimeList,
     VideoMobile,
+    AddModal,
   },
 };
 </script>
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
+  <AddModal :series="series" />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>
@@ -236,9 +248,10 @@ export default {
                 <div
                   class="cursor-pointer bg-green-700 hover:bg-green-500 p-2.5 rounded-lg text-white font-bold"
                   v-if="isUser !== '' && isUser"
+                  @click="toggleAddModal"
                 >
-                  <font-awesome-icon class="mr-2" icon="fa-solid fa-plus" />
-                  Add
+                  <font-awesome-icon class="mr-2" icon="fa-solid fa-gear" />
+                  Settings
                 </div>
               </div>
             </div>

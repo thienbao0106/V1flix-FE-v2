@@ -56,7 +56,7 @@ export default {
     <Loading message="Getting the data" />
   </div>
   <main class="text-white px-8">
-    <h1 class="font-bold">List Series</h1>
+    <h1 class="font-bold text-2xl">List Series</h1>
     <section
       className="w-full grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >

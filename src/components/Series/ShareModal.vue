@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     closeModal: function () {
-      const dialog = document.querySelector("dialog");
+      const dialog: any = document.querySelector("#share-modal");
       dialog?.close();
     },
     copyClipboard: function (url: string) {
@@ -34,6 +34,7 @@ export default {
 
 <template>
   <dialog
+    id="share-modal"
     class="rounded-md border-none drop-shadow text-white bg-mainColor outline-none m-auto space-y-5 p-5"
   >
     <header class="flex justify-between items-center">
