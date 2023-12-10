@@ -67,7 +67,7 @@ export default {
     fetchUser: function () {
       if (this.username === "") return;
 
-      const { result } = useQuery(getUser(this.username));
+      const { result } = useQuery(getUser(["avatar"], this.username));
       if (!result.value) return;
       const {
         findUserByName: { avatar },

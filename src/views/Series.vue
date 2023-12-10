@@ -34,8 +34,9 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$route.params,
+      () => this.$route.fullPath,
       () => {
+        console.log("called");
         this.fetchSeries();
         this.getInfoUrl;
       },
@@ -159,7 +160,11 @@ export default {
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
-  <AddModal :series="series" />
+  <AddModal
+    v-if="Object.keys(series).length > 0"
+    :series="series"
+    :current-ep="getInfoUrl.ep"
+  />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />
   </div>

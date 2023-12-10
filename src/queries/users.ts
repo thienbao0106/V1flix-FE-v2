@@ -12,12 +12,33 @@ export const userLogin = (email: string, password: string) => {
   `;
 };
 
-export const getUser = (username: string) => {
+export const getUser = (userFields: string[], username: string) => {
   return gql`
     query findUserByName {
       findUserByName(username: "${username}") {
-        
-        avatar
+        ${[...userFields].join("\n")}
+      }
+    }
+  `;
+};
+
+export const addSeriesMutation = () => {
+  return gql`
+    mutation addSeriesToList(
+      $seriesId: String!
+      $note: String!
+      $currentEp: Int!
+      $status: String!
+      $userId: String!
+    ) {
+      addSeriesToList(
+        seriesId: $seriesId
+        note: $note
+        currentEp: $currentEp
+        status: $status
+        userId: $userId
+      ) {
+        _id
       }
     }
   `;
