@@ -25,7 +25,7 @@ export default {
       dialog?.close();
     },
     copyClipboard: function (url: string) {
-      toast("Copied successfully", toastSettings.success);
+      toast.success("Copied successfully", toastSettings.success);
       navigator.clipboard.writeText(url);
     },
   },

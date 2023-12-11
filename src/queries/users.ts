@@ -12,7 +12,7 @@ export const userLogin = (email: string, password: string) => {
   `;
 };
 
-export const getUser = (userFields: string[], username: string) => {
+export const getUser = (userFields: string[], username: any) => {
   return gql`
     query findUserByName {
       findUserByName(username: "${username}") {
@@ -40,6 +40,34 @@ export const addSeriesMutation = () => {
       ) {
         _id
       }
+    }
+  `;
+};
+
+export const removeSeriesMutation = () => {
+  return gql`
+    mutation removeSeriesFromList($seriesId: String!, $userId: String!) {
+      removeSeriesFromList(seriesId: $seriesId, userId: $userId)
+    }
+  `;
+};
+
+export const editSeriesMutation = () => {
+  return gql`
+    mutation updateSeriesInList(
+      $seriesId: String!
+      $note: String!
+      $currentEp: Int!
+      $status: String!
+      $userId: String!
+    ) {
+      updateSeriesInList(
+        seriesId: $seriesId
+        note: $note
+        currentEp: $currentEp
+        status: $status
+        userId: $userId
+      )
     }
   `;
 };

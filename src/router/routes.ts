@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     component: defineAsyncComponent(() => import("../views/Home.vue")),
   },
   {
-    path: "/profile",
+    path: "/profile/:username",
     name: "Profile",
     component: defineAsyncComponent(() => import("../views/Profile.vue")),
   },
