@@ -268,7 +268,11 @@ export default {
         >
           <div class="flex flex-col justify-center items-center w-full mb-6">
             <img class="mb-4 w-1/2 h-1/2 rounded-lg" :src="avatar" />
-            <h2>{{ username }}</h2>
+            <h2 class="decoration-none text-white hover:text-secondColor">
+              <router-link :to="`/profile/${username}`">
+                {{ username }}
+              </router-link>
+            </h2>
           </div>
 
           <hr />
