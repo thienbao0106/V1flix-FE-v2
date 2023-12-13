@@ -131,7 +131,7 @@ export default {
       dialog.showModal();
     },
     toggleAddModal: function () {
-      const dialog: any = document.querySelector("#add-modal");
+      const dialog: any = document.querySelector(`#add-modal`);
       if (!dialog) return;
 
       dialog.showModal();
@@ -164,6 +164,7 @@ export default {
     v-if="Object.keys(series).length > 0"
     :series="series"
     :current-ep="getInfoUrl.ep"
+    :reload="false"
   />
   <div class="text-4xl font-bold text-white" v-if="loading">
     <Loading message="Getting the data" />

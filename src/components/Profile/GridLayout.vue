@@ -1,17 +1,21 @@
 <script lang="ts">
 import Card from "../../components/Card.vue";
+import ProfileCard from "./ProfileCard.vue";
 
 export default {
-  props: ["listSeries"],
+  props: ["listSeries", "setSeries"],
 
-  components: { Card },
+  components: { Card, ProfileCard },
 };
 </script>
 
 <template>
   <div>
-    <div class="grid sm:grid-cols-5 grid-cols-2 w-full sm:ml-8 ml-0">
-      <Card
+    <div
+      class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full lg:ml-8 ml-0 gap-x-5 gap-y-5"
+    >
+      <ProfileCard
+        @click="setSeries(series)"
         v-for="{ series } in listSeries"
         :id="series._id"
         :images="series.images"

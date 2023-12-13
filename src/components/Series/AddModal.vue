@@ -13,7 +13,7 @@ import { toastSettings } from "../../../utils/toastSettings";
 import Loading from "../Loading.vue";
 
 export default {
-  props: ["series", "currentEp"],
+  props: ["series", "currentEp", "reload"],
   data() {
     return {
       series: {},
@@ -26,7 +26,7 @@ export default {
 
   methods: {
     getImageType,
-    addSeries: async function () {
+    addSeries: function () {
       try {
         if (this.status === "default") {
           toast.error("Status shouldn't be emptied", toastSettings.error);
@@ -34,7 +34,7 @@ export default {
         }
 
         const { mutate } = useMutation(addSeriesMutation);
-        await mutate({
+        mutate({
           seriesId: this.series._id,
           note: this.note,
           currentEp: parseInt(this.currentEp),
@@ -45,19 +45,20 @@ export default {
         this.isInList = true;
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
+        if (this.reload) this.$router.go(0);
       } catch (error) {
         console.log(error);
         toast.error("Add failed", toastSettings.error);
       }
     },
-    deleteSeries: async function () {
+    deleteSeries: function () {
       try {
         const wantDelete: boolean = confirm(
           "Do you want to remove this out your list?"
         );
         if (!wantDelete) return;
         const { mutate } = useMutation(removeSeriesMutation);
-        await mutate({
+        mutate({
           seriesId: this.series._id,
           userId: this.userId,
         });
@@ -65,14 +66,16 @@ export default {
         this.isInList = false;
         this.note = "";
         this.status = "default";
+
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
+        if (this.reload) this.$router.go(0);
       } catch (error) {
         console.log(error);
         toast.error("Remove failed", toastSettings.error);
       }
     },
-    updateSeries: async function () {
+    updateSeries: function () {
       try {
         if (this.status === "default") {
           toast.error("Status shouldn't be emptied", toastSettings.error);
@@ -80,7 +83,7 @@ export default {
         }
 
         const { mutate } = useMutation(editSeriesMutation);
-        await mutate({
+        mutate({
           seriesId: this.series._id,
           note: this.note,
           currentEp: parseInt(this.currentEp),
@@ -88,8 +91,10 @@ export default {
           userId: this.userId,
         });
         toast.success("Edit successfully", toastSettings.success);
+
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
+        if (this.reload) this.$router.go(0);
       } catch (error) {
         console.log(error);
         toast.error("Edit failed", toastSettings.error);
@@ -117,7 +122,11 @@ export default {
           getUser(
             ["_id", "list { \n series { \n _id \n } \n status \n note \n }"],
             username
-          )
+          ),
+          {},
+          {
+            fetchPolicy: "no-cache",
+          }
         );
         onResult((result) => {
           if (!result.data) return;
@@ -126,9 +135,11 @@ export default {
           } = result.data;
           const { _id: seriesId } = this.series;
 
-          const filteredArr = list.filter(
-            (item: any) => item.series._id === seriesId
-          );
+          const filteredArr = list.filter((item: any) => {
+            console.log(item.series._id);
+            return item.series._id === seriesId;
+          });
+          console.log(list.length);
           this.userId = _id;
           this.isInList = filteredArr.length > 0;
           if (filteredArr.length > 0) {
