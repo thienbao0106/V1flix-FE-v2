@@ -8,7 +8,7 @@ import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
-import AddModal from "../components/Series/AddModal.vue";
+import AddModal from "../components/AddModal.vue";
 
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";

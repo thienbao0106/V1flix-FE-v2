@@ -1,16 +1,16 @@
 <script lang="ts">
 import { useQuery, useMutation } from "@vue/apollo-composable";
-import { getImageType } from "../../../utils/handleImage";
+import { getImageType } from "../../utils/handleImage";
 import {
   getUser,
   addSeriesMutation,
   removeSeriesMutation,
   editSeriesMutation,
-} from "../../queries/users";
+} from "../queries/users";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import { toastSettings } from "../../../utils/toastSettings";
-import Loading from "../Loading.vue";
+import { toastSettings } from "../../utils/toastSettings";
+import Loading from "./Loading.vue";
 
 export default {
   props: ["series", "currentEp", "reload"],
@@ -21,6 +21,7 @@ export default {
       userId: "",
       status: "default",
       note: "",
+      currentEp: 0,
     };
   },
 
@@ -30,6 +31,14 @@ export default {
       try {
         if (this.status === "default") {
           toast.error("Status shouldn't be emptied", toastSettings.error);
+          return;
+        }
+
+        if (this.currentEp > this.series.total_episodes) {
+          toast.error(
+            "Current episode isn't greater than total episode",
+            toastSettings.error
+          );
           return;
         }
 
@@ -81,6 +90,13 @@ export default {
           toast.error("Status shouldn't be emptied", toastSettings.error);
           return;
         }
+        if (this.currentEp > this.series.total_episodes) {
+          toast.error(
+            "Current episode isn't greater than total episode",
+            toastSettings.error
+          );
+          return;
+        }
 
         const { mutate } = useMutation(editSeriesMutation);
         mutate({
@@ -120,7 +136,10 @@ export default {
         const username = window.localStorage.getItem("username") || "";
         const { onResult } = useQuery(
           getUser(
-            ["_id", "list { \n series { \n _id \n } \n status \n note \n }"],
+            [
+              "_id",
+              "list { \n series { \n _id \n } \n status \n note \n currentEp \n }",
+            ],
             username
           ),
           {},
@@ -136,18 +155,18 @@ export default {
           const { _id: seriesId } = this.series;
 
           const filteredArr = list.filter((item: any) => {
-            console.log(item.series._id);
             return item.series._id === seriesId;
           });
-          console.log(list.length);
           this.userId = _id;
           this.isInList = filteredArr.length > 0;
           if (filteredArr.length > 0) {
             this.status = filteredArr[0].status;
             this.note = filteredArr[0].note;
+            this.currentEp = filteredArr[0].currentEp;
           } else {
             this.status = "default";
             this.note = "";
+            this.currentEp = 0;
           }
         });
       },
@@ -193,43 +212,77 @@ export default {
           <div
             class="flex lg:flex-row flex-col lg:gap-y-0 gap-y-4 gap-x-3 pt-3 lg:justify-start justify-center lg:items-start items-center"
           >
-            <select
-              v-model="status"
-              class="lg:w-[15rem] w-[20rem] text-white p-2 rounded-lg bg-opacityText"
+            <div
+              class="flex flex-col lg:justify-start lg:items-start justify-center items-center lg:w-[10rem] w-[20rem] space-y-2"
             >
-              <option value="default" disabled>Select your status</option>
-              <option value="completed">completed</option>
-              <option value="watching">watching</option>
-            </select>
-            <input
-              type="text"
-              v-model="note"
-              placeholder="Your note"
-              class="w-[20rem] text-white p-2 rounded-lg bg-opacityText"
-            />
-
-            <button
-              v-if="!isInList"
-              class="lg:w-fit w-[20rem] bg-green-700 hover:bg-green-500 rounded-xl py-2 px-4.5 font-bold"
-              @click="addSeries()"
+              <h1 class="font-bold">Status</h1>
+              <select
+                v-model="status"
+                class="text-white p-2 rounded-lg bg-opacityText w-full"
+              >
+                <option value="default" disabled>Select your status</option>
+                <option value="completed">Completed</option>
+                <option value="watching">Watching</option>
+                <option value="on-hold">On-hold</option>
+                <option value="plans to watch">Plans to watch</option>
+                <option value="dropped">Dropped</option>
+              </select>
+            </div>
+            <div
+              class="flex flex-col lg:justify-start lg:items-start justify-center items-center lg:w-[15rem] w-[20rem] space-y-2"
             >
-              <font-awesome-icon icon="fa-solid fa-plus" class="pr-2" />
-              Add
-            </button>
-            <button
-              v-if="isInList"
-              class="lg:w-fit w-[20rem] bg-yellow-700 hover:bg-yellow-500 rounded-xl py-2 px-4.5 font-bold"
-              @click="updateSeries()"
+              <h1 class="font-bold">Note</h1>
+              <input
+                type="text"
+                v-model="note"
+                placeholder="Note"
+                class="w-full text-white p-2 rounded-lg bg-opacityText"
+              />
+            </div>
+            <div
+              class="flex flex-col lg:justify-start lg:items-start justify-center items-center lg:w-[10rem] w-[20rem] space-y-2 lg:-mb-0 -mb-5"
             >
-              Edit
-            </button>
-            <button
-              v-if="isInList"
-              @click="deleteSeries()"
-              class="lg:w-fit w-[20rem] bg-red-700 hover:bg-red-500 rounded-xl py-2 px-4.5 font-bold"
+              <h1 class="font-bold">Current Episode</h1>
+              <input
+                type="text"
+                inputmode="numeric"
+                oninput="this.value = this.value.replace(/\D+/g, '')"
+                v-model="currentEp"
+                placeholder="Episodes"
+                class="w-full text-white p-2 rounded-lg bg-opacityText"
+              />
+            </div>
+            <div
+              class="flex gap-x-3 flex-col lg:justify-start lg:items-start justify-center items-center lg:w-[10rem] w-[20rem] space-y-2"
             >
-              Delete
-            </button>
+              <div class="select-none">&nbsp;</div>
+              <div
+                class="flex lg:flex-row flex-col w-full h-full lg:gap-x-3 gap-y-3"
+              >
+                <button
+                  v-if="!isInList"
+                  class="lg:w-fit w-full bg-green-700 hover:bg-green-500 rounded-xl py-2 px-4.5 font-bold"
+                  @click="addSeries()"
+                >
+                  <font-awesome-icon icon="fa-solid fa-plus" class="pr-2" />
+                  Add
+                </button>
+                <button
+                  v-if="isInList"
+                  class="lg:w-fit w-full bg-yellow-700 hover:bg-yellow-500 rounded-xl py-2 px-4.5 font-bold"
+                  @click="updateSeries()"
+                >
+                  Edit
+                </button>
+                <button
+                  v-if="isInList"
+                  @click="deleteSeries()"
+                  class="lg:w-fit w-full bg-red-700 hover:bg-red-500 rounded-xl py-2 px-4.5 font-bold"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
           <p class="lg:pl-0 pl-4 pr-4 lg:text-start text-center">
             {{ series.description }}

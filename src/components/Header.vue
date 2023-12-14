@@ -75,8 +75,16 @@ export default {
       this.avatar = avatar === "" ? "/assets/avatar.png" : avatar;
     },
     toggleUserMenu: function (isHoverUsername: boolean) {
-      this.isHoverUsername = !isHoverUsername;
-      this.fetchUser();
+      window.addEventListener("click", (e: any) => {
+        const usernameBox: any = document.getElementById("username");
+        if (!usernameBox) return;
+        if (usernameBox.contains(e.target)) {
+          this.isHoverUsername = !isHoverUsername;
+          this.fetchUser();
+        } else {
+          this.isHoverUsername = false;
+        }
+      });
     },
     handleLogout: function () {
       window.localStorage.removeItem("username");
@@ -257,6 +265,7 @@ export default {
         class="w-1/6 flex flex-1 justify-center items-center font-bold relative text-white"
       >
         <p
+          id="username"
           @click="toggleUserMenu(isHoverUsername)"
           class="hover:text-secondColor w-fit hover:cursor-pointer"
         >

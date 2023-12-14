@@ -6,7 +6,8 @@ import { capitalizeWord } from "../../utils/handleWord";
 import Card from "../components/Card.vue";
 import GridLayout from "../components/Profile/GridLayout.vue";
 import Loading from "../components/Loading.vue";
-import AddModal from "../components/Series/AddModal.vue";
+import AddModal from "../components/AddModal.vue";
+import ListStatus from "../components/Profile/ListStatus.vue";
 
 export default {
   data() {
@@ -42,7 +43,7 @@ export default {
               "_id",
               "avatar",
               "username",
-              `list { \n series { ${query} } \n status \n note \n }`,
+              `list { \n series { ${query} } \n status \n note \n currentEp \n }`,
             ],
             username
           ),
@@ -68,7 +69,7 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card, GridLayout, Loading, AddModal },
+  components: { Card, GridLayout, Loading, AddModal, ListStatus },
   methods: {
     capitalizeWord,
     setCurrentType: function (type: string) {
@@ -121,26 +122,15 @@ export default {
         </section>
       </div>
       <div class="w-full flex lg:flex-row flex-col gap-x-4">
-        <section class="lg:w-1/5 w-full lg:mb-0 mb-5">
-          <h1 class="font-bold text-xl">Lists</h1>
-          <ul class="pt-5">
-            <li
-              v-for="(type, index) in typeList"
-              class="hover:bg-secondColor hover:cursor-pointer hover:font-bold py-3 px-3"
-              @click="setCurrentType(type)"
-            >
-              <div class="flex flex-row justify-between items-center">
-                <span>
-                  {{ type }}
-                </span>
-                <span> {{ count[index] }} </span>
-              </div>
-            </li>
-          </ul>
-        </section>
+        <ListStatus
+          :count="count"
+          :set-current-type="setCurrentType"
+          :type-list="typeList"
+        />
+
         <section
-          class="lg:w-4/5 w-full"
           v-if="Object.keys(user).length > 0 && user.list.length > 0"
+          class="lg:w-4/5 w-full"
         >
           <h1 class="font-bold pb-5 text-xl lg:ml-8 ml-0">
             {{ capitalizeWord(currentType) }}

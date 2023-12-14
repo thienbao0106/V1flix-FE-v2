@@ -19,6 +19,8 @@ import {
   faUser,
   faPlus,
   faEllipsis,
+  faArrowDown,
+  faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -60,6 +62,8 @@ export const addIcon = () => {
     faBars,
     faHome,
     faUser,
-    faEllipsis
+    faEllipsis,
+    faArrowDown,
+    faArrowUp
   );
 };

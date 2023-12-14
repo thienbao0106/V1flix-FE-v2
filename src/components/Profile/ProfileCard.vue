@@ -2,7 +2,16 @@
 import { getImageType } from "../../../utils/handleImage";
 
 export default {
-  props: ["id", "title", "images", "type", "total_episodes", "status", "view"],
+  props: [
+    "id",
+    "title",
+    "images",
+    "type",
+    "total_episodes",
+    "status",
+    "view",
+    "current_episode",
+  ],
   methods: {
     getImageType,
     toggleModal: function () {
@@ -35,8 +44,15 @@ export default {
             class="text-white group-hover:cursor-pointer bg-mainColor p-3 rounded-lg"
           />
         </div>
+        <div class="absolute bottom-0 backdrop-blur-md bg-mainColor/30 px-2">
+          <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">
+            {{ title }}
+          </h3>
+          <div class="font-bold text-secondColor">
+            {{ current_episode }}/{{ total_episodes }}
+          </div>
+        </div>
       </div>
     </div>
-    <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">{{ title }}</h3>
   </div>
 </template>

@@ -4,7 +4,9 @@ import ProfileCard from "./ProfileCard.vue";
 
 export default {
   props: ["listSeries", "setSeries"],
-
+  setup(props) {
+    console.log(props.listSeries);
+  },
   components: { Card, ProfileCard },
 };
 </script>
@@ -16,7 +18,7 @@ export default {
     >
       <ProfileCard
         @click="setSeries(series)"
-        v-for="{ series } in listSeries"
+        v-for="{ series, currentEp } in listSeries"
         :id="series._id"
         :images="series.images"
         :status="series.status"
@@ -24,6 +26,7 @@ export default {
         :total_episodes="series.total_episodes"
         :type="series.type"
         :view="series.view"
+        :current_episode="currentEp"
       />
     </div>
   </div>
