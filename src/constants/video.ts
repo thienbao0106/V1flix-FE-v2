@@ -4,7 +4,7 @@ export const URL_TYPE = {
   subtitles: "/test/test.vtt",
 };
 
-export const QUERIES: any = {
+export const VIDEO_QUERIES: any = {
   video: [
     "images { \n source \n type \n }",
     "_id",

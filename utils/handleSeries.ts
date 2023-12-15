@@ -1,4 +1,4 @@
-import { QUERIES } from "../src/constants/video";
+import { VIDEO_QUERIES } from "../src/constants/video";
 import { findSeriesQuery } from "./../src/queries/series";
 import { useQuery } from "@vue/apollo-composable";
 
@@ -9,7 +9,7 @@ export const fetchSeries = (
   genres?: any
 ) => {
   const { onResult, loading } = useQuery(
-    findSeriesQuery(QUERIES[kind], keyword, 0, {
+    findSeriesQuery(VIDEO_QUERIES[kind], keyword, 0, {
       status: status === "default" ? "" : status,
       genres: genres === "default" ? "" : genres,
     }),

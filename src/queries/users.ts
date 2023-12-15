@@ -1,4 +1,6 @@
 import gql from "graphql-tag";
+// import { VIDEO_QUERIES } from "../constants/video";
+// import { USER_QUERIES } from "../constants/user";
 
 export const userLogin = (email: string, password: string) => {
   console.log(email);
@@ -71,3 +73,14 @@ export const editSeriesMutation = () => {
     }
   `;
 };
+
+// export const findList = (status: string, username: string, title: any) => {
+//   console.log([...VIDEO_QUERIES.search].join("\n"));
+//   return gql`
+//     query findListByType {
+//       findListByType(status: "${status}", username: "${username}", title: "${title}") {
+//         ${USER_QUERIES.searchList.join("\n")}
+//       }
+//     }
+//   `;
+// };

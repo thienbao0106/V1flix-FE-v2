@@ -3,7 +3,8 @@ import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../queries/series";
 import { getUser } from "../queries/users";
 import SubNav from "./SubNav/SubNav.vue";
-
+import { DEFAULT_IMAGE } from "../constants/image";
+import { USER_QUERIES } from "../constants/user";
 export default {
   data() {
     return {
@@ -67,12 +68,12 @@ export default {
     fetchUser: function () {
       if (this.username === "") return;
 
-      const { result } = useQuery(getUser(["avatar"], this.username));
+      const { result } = useQuery(getUser(USER_QUERIES.header, this.username));
       if (!result.value) return;
       const {
         findUserByName: { avatar },
       } = result.value;
-      this.avatar = avatar === "" ? "/assets/avatar.png" : avatar;
+      this.avatar = avatar === "" ? DEFAULT_IMAGE.avatar : avatar;
     },
     toggleUserMenu: function (isHoverUsername: boolean) {
       window.addEventListener("click", (e: any) => {

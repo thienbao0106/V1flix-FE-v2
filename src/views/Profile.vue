@@ -1,8 +1,11 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { getUser } from "../queries/users";
-import { QUERIES } from "../constants/video";
+import { USER_QUERIES } from "../constants/user";
+import { DEFAULT_IMAGE } from "../constants/image";
 import { capitalizeWord } from "../../utils/handleWord";
+import { totalCurrentEpisode } from "../../utils/handleProfile";
+
 import Card from "../components/Card.vue";
 import GridLayout from "../components/Profile/GridLayout.vue";
 import Loading from "../components/Loading.vue";
@@ -27,6 +30,8 @@ export default {
         "Plans To Watch",
       ],
       count: [] as any,
+      defaultAvatar: DEFAULT_IMAGE.avatar,
+      defaultBanner: DEFAULT_IMAGE.banner,
     };
   },
   created() {
@@ -35,18 +40,9 @@ export default {
       () => {
         this.loading = true;
         const { username } = this.$route.params;
-        const query = QUERIES["search"].join(" \n ");
 
         const { onResult } = useQuery(
-          getUser(
-            [
-              "_id",
-              "avatar",
-              "username",
-              `list { \n series { ${query} } \n status \n note \n currentEp \n }`,
-            ],
-            username
-          ),
+          getUser(USER_QUERIES.profile, username),
           {},
           {
             fetchPolicy: "no-cache",
@@ -58,6 +54,7 @@ export default {
           const { list } = result.data.findUserByName;
           this.list = list;
           this.user = result.data.findUserByName;
+
           this.count = this.typeList.map((type: string, index: number) => {
             if (index === 0) return list.length;
             return list.filter((series: any) => {
@@ -72,6 +69,7 @@ export default {
   components: { Card, GridLayout, Loading, AddModal, ListStatus },
   methods: {
     capitalizeWord,
+    totalCurrentEpisode,
     setCurrentType: function (type: string) {
       this.currentType = type;
       if (type === "All") {
@@ -82,9 +80,11 @@ export default {
         (series: any) => series.status === type.toLocaleLowerCase()
       );
     },
+    setListSeries: function (listSeries: any) {
+      this.list = listSeries;
+    },
     setSeries: function (series: any) {
       if (this.series === series) return;
-
       this.series = series;
     },
   },
@@ -102,7 +102,7 @@ export default {
   <main class="text-white">
     <div
       :style="{
-        backgroundImage: `url(/assets/cover.png)`,
+        backgroundImage: `url(${defaultBanner})`,
       }"
       className="bg-center bg-no-repeat h-[20rem] w-full"
     ></div>
@@ -111,21 +111,38 @@ export default {
         class="flex lg:flex-row flex-col lg:justify-start justify-center lg:items-start items-center gap-x-4"
       >
         <img
-          :src="user.avatar === '' ? '/assets/avatar.png' : user.avatar"
+          :src="user.avatar === '' ? defaultAvatar : user.avatar"
           alt="avatar"
           class="w-[10rem] lg:rounded-0 rounded-xl lg:pb-0 pb-5"
         />
-        <section class="space-y-4 lg:text-start text-center">
+        <section class="space-y-4 lg:text-start text-center lg:w-fit w-full">
           <h1 class="font-bold text-3xl">{{ user.username }}</h1>
           <h2 class="text-md">@{{ user.username }}</h2>
           <p class="">What's your thought...</p>
+          <div
+            class="bg-mainColor rounded-lg flex flex-row justify-between gap-x-6 px-3 py-2"
+          >
+            <div class="text-center">
+              <p class="font-bold text-secondColor text-2xl">
+                {{ totalCurrentEpisode(user) }}
+              </p>
+              <h1 class="text-xl">Total Episodes</h1>
+            </div>
+            <div class="text-center">
+              <p class="font-bold text-secondColor text-2xl">Coming soon...</p>
+              <h1 class="text-xl">Coming soon...</h1>
+            </div>
+          </div>
         </section>
       </div>
       <div class="w-full flex lg:flex-row flex-col gap-x-4">
         <ListStatus
           :count="count"
           :set-current-type="setCurrentType"
+          :current-type="currentType"
           :type-list="typeList"
+          :set-list-series="setListSeries"
+          :user-list="user.list"
         />
 
         <section

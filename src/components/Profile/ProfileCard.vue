@@ -48,7 +48,7 @@ export default {
           <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">
             {{ title }}
           </h3>
-          <div class="font-bold text-secondColor">
+          <div class="font-extrabold text-secondColor">
             {{ current_episode }}/{{ total_episodes }}
           </div>
         </div>

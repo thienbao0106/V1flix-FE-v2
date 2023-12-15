@@ -3,6 +3,7 @@ export default {
   data() {
     return {
       isCollapse: window.innerWidth < 1024 ? false : true,
+      keyword: "",
     };
   },
   mounted() {
@@ -22,13 +23,53 @@ export default {
       if (window.innerWidth < 1024) return;
       if (this.isCollapse === false) this.isCollapse = true;
     },
+    handleSearch: function () {
+      if (this.currentType === "all") {
+        this.setListSeries(
+          this.userList.filter((item: any) =>
+            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+        );
+        return;
+      }
+
+      this.setListSeries(
+        this.userList.filter((item: any) => {
+          return (
+            item.status === this.currentType.toLowerCase() &&
+            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+          );
+        })
+      );
+    },
   },
-  props: ["count", "typeList", "setCurrentType"],
+  props: [
+    "count",
+    "typeList",
+    "setCurrentType",
+    "setListSeries",
+    "currentType",
+    "userList",
+  ],
 };
 </script>
 
 <template>
   <section class="lg:w-1/5 w-full lg:mb-0 mb-5">
+    <div class="w-full mb-5">
+      <h1 class="font-bold text-xl my-1.5">Filters</h1>
+
+      <input
+        type="text"
+        v-model="keyword"
+        placeholder="Please input your search"
+        @input="handleSearch"
+        class="w-full text-white font-bold pl-2 py-2 rounded-md bg-mainColor"
+      />
+    </div>
+    <div class="my-5">
+      <h1 class="font-bold text-xl my-1.5">Watch History</h1>
+    </div>
     <div class="flex flex-row justify-between items-center w-full">
       <h1 class="font-bold text-xl">Lists</h1>
       <button

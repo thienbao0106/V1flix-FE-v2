@@ -7,9 +7,11 @@ import {
   removeSeriesMutation,
   editSeriesMutation,
 } from "../queries/users";
+
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { toastSettings } from "../../utils/toastSettings";
+import { USER_QUERIES } from "../constants/user";
 import Loading from "./Loading.vue";
 
 export default {
@@ -135,13 +137,7 @@ export default {
       () => {
         const username = window.localStorage.getItem("username") || "";
         const { onResult } = useQuery(
-          getUser(
-            [
-              "_id",
-              "list { \n series { \n _id \n } \n status \n note \n currentEp \n }",
-            ],
-            username
-          ),
+          getUser(USER_QUERIES.modal, username),
           {},
           {
             fetchPolicy: "no-cache",
