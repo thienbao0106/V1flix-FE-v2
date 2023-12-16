@@ -18,7 +18,7 @@ export default {
     >
       <ProfileCard
         @click="setSeries(series)"
-        v-for="{ series, currentEp } in listSeries"
+        v-for="{ series, currentEp, date } in listSeries"
         :id="series._id"
         :images="series.images"
         :status="series.status"
@@ -27,6 +27,7 @@ export default {
         :type="series.type"
         :view="series.view"
         :current_episode="currentEp"
+        :date="date || ``"
       />
     </div>
   </div>

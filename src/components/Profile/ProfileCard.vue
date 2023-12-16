@@ -1,4 +1,5 @@
 <script lang="ts">
+import moment from "moment";
 import { getImageType } from "../../../utils/handleImage";
 
 export default {
@@ -11,7 +12,9 @@ export default {
     "status",
     "view",
     "current_episode",
+    "date",
   ],
+
   methods: {
     getImageType,
     toggleModal: function () {
@@ -19,6 +22,9 @@ export default {
       if (!dialog) return;
 
       dialog.showModal();
+    },
+    formatDate: function (date: string) {
+      return moment(date).fromNow();
     },
   },
 };
@@ -44,7 +50,9 @@ export default {
             class="text-white group-hover:cursor-pointer bg-mainColor p-3 rounded-lg"
           />
         </div>
-        <div class="absolute bottom-0 backdrop-blur-md bg-mainColor/30 px-2">
+        <div
+          class="absolute left-0 right-0 bottom-0 backdrop-blur-md bg-mainColor/30 px-2"
+        >
           <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">
             {{ title }}
           </h3>
@@ -54,5 +62,6 @@ export default {
         </div>
       </div>
     </div>
+    <div v-if="date !== ''">{{ formatDate(date) }}</div>
   </div>
 </template>

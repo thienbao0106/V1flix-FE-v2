@@ -4,7 +4,6 @@ import { getUser } from "../queries/users";
 import { USER_QUERIES } from "../constants/user";
 import { DEFAULT_IMAGE } from "../constants/image";
 import { capitalizeWord } from "../../utils/handleWord";
-import { totalCurrentEpisode } from "../../utils/handleProfile";
 
 import Card from "../components/Card.vue";
 import GridLayout from "../components/Profile/GridLayout.vue";
@@ -32,6 +31,8 @@ export default {
       count: [] as any,
       defaultAvatar: DEFAULT_IMAGE.avatar,
       defaultBanner: DEFAULT_IMAGE.banner,
+      totalEpisodes: 0,
+      daysWatched: 0,
     };
   },
   created() {
@@ -55,6 +56,12 @@ export default {
           this.list = list;
           this.user = result.data.findUserByName;
 
+          const { total_episodes, days_watched } =
+            result.data.findUserByName.stats;
+          this.totalEpisodes = total_episodes;
+          this.daysWatched = days_watched;
+          console.log(this.totalEpisodes);
+
           this.count = this.typeList.map((type: string, index: number) => {
             if (index === 0) return list.length;
             return list.filter((series: any) => {
@@ -69,7 +76,7 @@ export default {
   components: { Card, GridLayout, Loading, AddModal, ListStatus },
   methods: {
     capitalizeWord,
-    totalCurrentEpisode,
+
     setCurrentType: function (type: string) {
       this.currentType = type;
       if (type === "All") {
@@ -120,17 +127,19 @@ export default {
           <h2 class="text-md">@{{ user.username }}</h2>
           <p class="">What's your thought...</p>
           <div
-            class="bg-mainColor rounded-lg flex flex-row justify-between gap-x-6 px-3 py-2"
+            class="bg-mainColor rounded-lg flex flex-row justify-between gap-x-[5rem] px-3 py-2"
           >
             <div class="text-center">
-              <p class="font-bold text-secondColor text-2xl">
-                {{ totalCurrentEpisode(user) }}
+              <p class="font-bold text-secondColor lg:text-2xl text-xl">
+                {{ totalEpisodes }}
               </p>
-              <h1 class="text-xl">Total Episodes</h1>
+              <h1 class="lg:text-xl text-lg">Total Episodes</h1>
             </div>
             <div class="text-center">
-              <p class="font-bold text-secondColor text-2xl">Coming soon...</p>
-              <h1 class="text-xl">Coming soon...</h1>
+              <p class="font-bold text-secondColor lg:text-2xl text-xl">
+                {{ daysWatched }}
+              </p>
+              <h1 class="lg:text-xl text-lg">Days Watched</h1>
             </div>
           </div>
         </section>

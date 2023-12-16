@@ -112,3 +112,25 @@ export const addViewMutation = () => gql`
     addView(seriesId: $seriesId, episodeId: $episodeId)
   }
 `;
+
+export const findSeriesByIds = (listSeries: any) => {
+  const result = '"' + listSeries.join('","') + '"';
+
+  return gql`
+    query findSeriesByIds {
+      findSeriesByIds(${`listSeries: [${result}]`}) {
+        _id
+        title
+        status
+        total_episodes
+        type
+        view
+        images {
+          _id
+          source
+          type
+        }
+      }
+    }
+  `;
+};

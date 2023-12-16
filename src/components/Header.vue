@@ -90,6 +90,7 @@ export default {
     handleLogout: function () {
       window.localStorage.removeItem("username");
       window.localStorage.removeItem("token");
+      window.localStorage.removeItem("history");
 
       window.location.reload();
     },

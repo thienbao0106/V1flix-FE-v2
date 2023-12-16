@@ -13,7 +13,7 @@ import AddModal from "../components/AddModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";
 
-import { fetchSeries } from "../../utils/handleSeries";
+import { fetchSeries, handleHistory } from "../../utils/handleSeries";
 import { addViewMutation } from "../queries/series";
 import { defaultImage } from "../../utils/handleImage";
 import { isIOS } from "../../utils/handleVersion";
@@ -55,7 +55,6 @@ export default {
   },
   setup() {
     const url = window.location.href;
-
     return {
       url,
     };
@@ -73,7 +72,7 @@ export default {
           //Update value
           this.loading = loading.value;
           this.series = result.data.findSeries[0];
-          console.log(this.series);
+
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );
@@ -82,6 +81,17 @@ export default {
           const image = this.series?.images.find(
             (image: any) => image.type === "cover"
           );
+          if (window.localStorage.getItem("history") !== null) {
+            const history = JSON.parse(
+              window.localStorage.getItem("history") || ""
+            );
+            const newHistory = handleHistory(
+              history,
+              this.series._id,
+              this.getInfoUrl.ep
+            );
+            window.localStorage.setItem("history", JSON.stringify(newHistory));
+          }
           //Update head metadata
           useHead({
             title: `${this.getInfoUrl.title}`,

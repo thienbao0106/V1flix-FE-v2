@@ -48,6 +48,7 @@ export default {
         const { username, token } = result.data.login;
         window.localStorage.setItem("username", username);
         window.localStorage.setItem("token", token);
+        window.localStorage.setItem("history", JSON.stringify([]));
         window.location.href = "/";
       });
     },

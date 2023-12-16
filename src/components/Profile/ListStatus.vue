@@ -1,4 +1,6 @@
 <script lang="ts">
+import { useQuery } from "@vue/apollo-composable";
+import { findSeriesByIds } from "../../queries/series";
 export default {
   data() {
     return {
@@ -42,6 +44,32 @@ export default {
         })
       );
     },
+    showHistory: function () {
+      const history = JSON.parse(window.localStorage.getItem("history") || "");
+      if (history.length === 0) {
+        this.setListSeries([]);
+        return;
+      }
+      const historyIds = history.map((series: any) => series.seriesId);
+      const dateWatches = history.map((series: any) => series.time);
+      const currentEps = history.map((series: any) => series.currentEp);
+
+      const { onResult } = useQuery(findSeriesByIds(historyIds));
+      onResult((result) => {
+        if (!result.data) return;
+        this.setCurrentType("History");
+        console.log(result.data.findSeriesByIds);
+        this.setListSeries(
+          result.data.findSeriesByIds.map((series: any, index: number) => {
+            return {
+              series,
+              currentEp: currentEps[index],
+              date: dateWatches[index],
+            };
+          })
+        );
+      });
+    },
   },
   props: [
     "count",
@@ -68,7 +96,12 @@ export default {
       />
     </div>
     <div class="my-5">
-      <h1 class="font-bold text-xl my-1.5">Watch History</h1>
+      <h1
+        @click="showHistory()"
+        class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"
+      >
+        Watch History
+      </h1>
     </div>
     <div class="flex flex-row justify-between items-center w-full">
       <h1 class="font-bold text-xl">Lists</h1>

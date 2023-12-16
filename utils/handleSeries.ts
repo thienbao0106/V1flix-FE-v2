@@ -24,3 +24,18 @@ export const fetchSeries = (
     loading,
   };
 };
+
+export const handleHistory = (
+  historyList: any,
+  currentSeriesId: string,
+  currentEp: any
+) => {
+  const list = historyList;
+
+  list.unshift({
+    seriesId: currentSeriesId,
+    time: new Date().toLocaleString(),
+    currentEp,
+  });
+  return list;
+};
