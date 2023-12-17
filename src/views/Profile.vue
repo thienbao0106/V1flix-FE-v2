@@ -10,6 +10,7 @@ import GridLayout from "../components/Profile/GridLayout.vue";
 import Loading from "../components/Loading.vue";
 import AddModal from "../components/AddModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
+import RowLayout from "../components/Profile/RowLayout.vue";
 
 export default {
   data() {
@@ -33,6 +34,7 @@ export default {
       defaultBanner: DEFAULT_IMAGE.banner,
       totalEpisodes: 0,
       daysWatched: 0,
+      layout: "grid",
     };
   },
   created() {
@@ -73,7 +75,7 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card, GridLayout, Loading, AddModal, ListStatus },
+  components: { Card, GridLayout, Loading, AddModal, ListStatus, RowLayout },
   methods: {
     capitalizeWord,
 
@@ -93,6 +95,9 @@ export default {
     setSeries: function (series: any) {
       if (this.series === series) return;
       this.series = series;
+    },
+    setLayout: function (layout: string) {
+      this.layout = layout;
     },
   },
 };
@@ -156,16 +161,45 @@ export default {
 
         <section
           v-if="Object.keys(user).length > 0 && user.list.length > 0"
-          class="lg:w-4/5 w-full"
+          class="lg:w-4/5 w-full space-y-5"
         >
-          <h1 class="font-bold pb-5 text-xl lg:ml-8 ml-0">
-            {{ capitalizeWord(currentType) }}
-          </h1>
+          <div class="w-full flex justify-between items-center">
+            <h1 class="font-bold text-xl lg:ml-8 ml-0">
+              {{ capitalizeWord(currentType) }}
+            </h1>
+            <div class="w-fit flex gap-x-3">
+              <button
+                @click="setLayout('grid')"
+                class="bg-mainColor px-4 py-2 rounded-md hover-bg-secondColor"
+              >
+                Grid
+              </button>
+              <button
+                @click="setLayout('row')"
+                class="bg-mainColor px-4 py-2 rounded-md hover:bg-secondColor"
+              >
+                Row
+              </button>
+            </div>
+          </div>
+          <div
+            class="font-bold lg:text-xl text-md lg:ml-8 ml-0 max-w-full flex justify-center items-center bg-mainColor rounded-lg lg:h-[3rem] h-[6rem]"
+            v-if="currentType === 'history'"
+          >
+            <p class="lg:px-0 px-5 text-center">
+              Watching history is currently only tracked on your device, and
+              will be lost if you log out or clear site data.
+            </p>
+          </div>
 
           <GridLayout
-            v-if="list.length > 0"
-            :key="$route.fullPath"
-            :listSeries="list"
+            v-if="list.length > 0 && layout === 'grid'"
+            :list-series="list"
+            :set-series="setSeries"
+          />
+          <RowLayout
+            v-else-if="list.length > 0 && layout === 'row'"
+            :list-series="list"
             :set-series="setSeries"
           />
           <div

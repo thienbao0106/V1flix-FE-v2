@@ -1,6 +1,7 @@
 <script lang="ts">
 import moment from "moment";
 import { getImageType } from "../../../utils/handleImage";
+import { useRouter } from "vue-router";
 
 export default {
   props: [
@@ -14,7 +15,12 @@ export default {
     "current_episode",
     "date",
   ],
-
+  setup() {
+    const router = useRouter();
+    return {
+      router,
+    };
+  },
   methods: {
     getImageType,
     toggleModal: function () {
@@ -25,6 +31,14 @@ export default {
     },
     formatDate: function (date: string) {
       return moment(date).fromNow();
+    },
+    navigateSeries: function () {
+      this.router.push(
+        `/series/${this.title}?ep=${
+          this.date !== "" ? this.current_episode : "1"
+        }`
+      );
+      return;
     },
   },
 };
@@ -41,15 +55,23 @@ export default {
         />
 
         <div
-          class="absolute top-3 right-3 h-full w-full flex justify-end items-start group-hover:translate-x-1 group-hover:duration-1000 opacity-0 group-hover:opacity-100"
+          class="absolute top-3 right-3 gap-x-3 h-full w-full flex justify-end items-start group-hover:translate-x-1 group-hover:duration-1000 opacity-0 group-hover:opacity-100"
         >
           <font-awesome-icon
             icon="fa-solid fa-ellipsis "
             size="xl"
+            v-if="date === ''"
             @click="toggleModal()"
             class="text-white group-hover:cursor-pointer bg-mainColor p-3 rounded-lg"
           />
+          <font-awesome-icon
+            icon="fa-solid fa-play "
+            size="xl"
+            @click="navigateSeries()"
+            class="text-white group-hover:cursor-pointer bg-mainColor p-3 rounded-lg"
+          />
         </div>
+
         <div
           class="absolute left-0 right-0 bottom-0 backdrop-blur-md bg-mainColor/30 px-2"
         >

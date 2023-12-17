@@ -6,6 +6,7 @@ export default {
     return {
       isCollapse: window.innerWidth < 1024 ? false : true,
       keyword: "",
+      historyList: [] as any,
     };
   },
   mounted() {
@@ -26,9 +27,19 @@ export default {
       if (this.isCollapse === false) this.isCollapse = true;
     },
     handleSearch: function () {
+      if (this.historyList.length === 0 || this.userList.length === 0) return;
       if (this.currentType === "all") {
         this.setListSeries(
           this.userList.filter((item: any) =>
+            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+        );
+        return;
+      }
+
+      if (this.currentType === "history") {
+        this.setListSeries(
+          this.historyList.filter((item: any) =>
             item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
           )
         );
@@ -57,17 +68,17 @@ export default {
       const { onResult } = useQuery(findSeriesByIds(historyIds));
       onResult((result) => {
         if (!result.data) return;
-        this.setCurrentType("History");
-        console.log(result.data.findSeriesByIds);
-        this.setListSeries(
-          result.data.findSeriesByIds.map((series: any, index: number) => {
+        this.setCurrentType("history");
+        this.historyList = result.data.findSeriesByIds.map(
+          (series: any, index: number) => {
             return {
               series,
               currentEp: currentEps[index],
               date: dateWatches[index],
             };
-          })
+          }
         );
+        this.setListSeries(this.historyList);
       });
     },
   },
@@ -100,7 +111,7 @@ export default {
         @click="showHistory()"
         class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"
       >
-        Watch History
+        Watching History
       </h1>
     </div>
     <div class="flex flex-row justify-between items-center w-full">

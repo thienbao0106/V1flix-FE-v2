@@ -14,11 +14,12 @@ export default {
 <template>
   <div>
     <div
-      class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full lg:ml-8 ml-0 gap-x-5 gap-y-5"
+      class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full lg:ml-8 ml-0 lg:pr-8 pr-0 gap-x-5 gap-y-5"
     >
       <ProfileCard
         @click="setSeries(series)"
         v-for="{ series, currentEp, date } in listSeries"
+        :key="series._id"
         :id="series._id"
         :images="series.images"
         :status="series.status"

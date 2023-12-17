@@ -28,7 +28,7 @@ export default {
 
 <template>
   <section
-    class="list-none w-full flex justify-center items-center flex-row gap-x-5"
+    class="list-none w-full flex justify-center items-center flex-row gap-x-5 lg:pt-0 pt-5"
   >
     <button
       :disabled="currentPage === 1"
