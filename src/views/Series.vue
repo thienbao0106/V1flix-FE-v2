@@ -17,6 +17,7 @@ import { fetchSeries, handleHistory } from "../../utils/handleSeries";
 import { addViewMutation } from "../queries/series";
 import { defaultImage } from "../../utils/handleImage";
 import { isIOS } from "../../utils/handleVersion";
+import Error from "../components/Error.vue";
 
 export default {
   data() {
@@ -65,12 +66,17 @@ export default {
       this.isIOS = isIOS();
     },
     fetchSeries: function () {
-      const { onResult, loading } = fetchSeries(this.getInfoUrl.title, "video");
-      this.loading = loading.value;
+      const { onResult, onError } = fetchSeries(this.getInfoUrl.title, "video");
+      this.loading = true;
+      onError((error) => {
+        console.error(error);
+        this.loading = false;
+      });
       onResult((result) => {
         if (result.data) {
           //Update value
-          this.loading = loading.value;
+          this.loading = false;
+          if (result.data.findSeries.length === 0) return;
           this.series = result.data.findSeries[0];
 
           this.currentEpisode = this.series?.episodes.find(
@@ -164,6 +170,7 @@ export default {
     TopAnimeList,
     VideoMobile,
     AddModal,
+    Error,
   },
 };
 </script>
@@ -181,7 +188,7 @@ export default {
   </div>
   <section
     id="main-video"
-    v-else
+    v-if="!loading && Object.keys(series).length > 0"
     class="text-white space-y-5 px-8 pt-5 md:gap-x-16"
     :class="isTheaterMode ? `lg:flex-none` : `xl:flex xl:flex-row lg:flex-none`"
   >
@@ -335,4 +342,7 @@ export default {
       <TopAnimeList />
     </section>
   </section>
+  <main class="text-white" v-else>
+    <Error message="Can't find the series" />
+  </main>
 </template>

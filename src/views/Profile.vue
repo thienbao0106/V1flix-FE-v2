@@ -11,6 +11,7 @@ import Loading from "../components/Loading.vue";
 import AddModal from "../components/AddModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
 import RowLayout from "../components/Profile/RowLayout.vue";
+import Error from "../components/Error.vue";
 
 export default {
   data() {
@@ -35,8 +36,10 @@ export default {
       totalEpisodes: 0,
       daysWatched: 0,
       layout: "grid",
+      storageUser: window.localStorage.getItem("username"),
     };
   },
+
   created() {
     this.$watch(
       () => this.$route.fullPath,
@@ -44,16 +47,21 @@ export default {
         this.loading = true;
         const { username } = this.$route.params;
 
-        const { onResult } = useQuery(
+        const { onResult, onError } = useQuery(
           getUser(USER_QUERIES.profile, username),
           {},
           {
             fetchPolicy: "no-cache",
           }
         );
+        onError((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+
         onResult((result) => {
           this.loading = false;
-          if (!result.data) return;
+          if (!result || !result.data) return;
           const { list } = result.data.findUserByName;
           this.list = list;
           this.user = result.data.findUserByName;
@@ -75,7 +83,15 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card, GridLayout, Loading, AddModal, ListStatus, RowLayout },
+  components: {
+    Card,
+    GridLayout,
+    Loading,
+    AddModal,
+    ListStatus,
+    RowLayout,
+    Error,
+  },
   methods: {
     capitalizeWord,
 
@@ -111,7 +127,7 @@ export default {
     :current-ep="1"
     :reload="true"
   />
-  <main class="text-white">
+  <main v-if="Object.keys(user).length > 0 && !loading" class="text-white">
     <div
       :style="{
         backgroundImage: `url(${defaultBanner})`,
@@ -157,6 +173,7 @@ export default {
           :type-list="typeList"
           :set-list-series="setListSeries"
           :user-list="user.list"
+          :is-owner="storageUser === $route.params.username"
         />
 
         <section
@@ -167,18 +184,22 @@ export default {
             <h1 class="font-bold text-xl lg:ml-8 ml-0">
               {{ capitalizeWord(currentType) }}
             </h1>
-            <div class="w-fit flex gap-x-3">
+
+            <div v-if="list.length > 0" class="w-fit flex gap-x-3">
               <button
                 @click="setLayout('grid')"
                 class="bg-mainColor px-4 py-2 rounded-md hover-bg-secondColor"
               >
-                Grid
+                <font-awesome-icon icon="fa-solid fa-grip" class="text-white" />
               </button>
               <button
                 @click="setLayout('row')"
                 class="bg-mainColor px-4 py-2 rounded-md hover:bg-secondColor"
               >
-                Row
+                <font-awesome-icon
+                  icon="fa-solid fa-table"
+                  class="text-white"
+                />
               </button>
             </div>
           </div>
@@ -218,5 +239,8 @@ export default {
         </div>
       </div>
     </div>
+  </main>
+  <main class="text-white" v-else>
+    <Error message="Can't find the user" />
   </main>
 </template>

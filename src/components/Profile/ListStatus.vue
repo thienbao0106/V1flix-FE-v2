@@ -9,6 +9,9 @@ export default {
       historyList: [] as any,
     };
   },
+  setup(props) {
+    console.log(props.isOwner);
+  },
   mounted() {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
@@ -56,6 +59,7 @@ export default {
       );
     },
     showHistory: function () {
+      this.setCurrentType("history");
       const history = JSON.parse(window.localStorage.getItem("history") || "");
       if (history.length === 0) {
         this.setListSeries([]);
@@ -68,7 +72,6 @@ export default {
       const { onResult } = useQuery(findSeriesByIds(historyIds));
       onResult((result) => {
         if (!result.data) return;
-        this.setCurrentType("history");
         this.historyList = result.data.findSeriesByIds.map(
           (series: any, index: number) => {
             return {
@@ -89,6 +92,7 @@ export default {
     "setListSeries",
     "currentType",
     "userList",
+    "isOwner",
   ],
 };
 </script>
@@ -106,7 +110,7 @@ export default {
         class="w-full text-white font-bold pl-2 py-2 rounded-md bg-mainColor"
       />
     </div>
-    <div class="my-5">
+    <div v-if="isOwner" class="my-5">
       <h1
         @click="showHistory()"
         class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"

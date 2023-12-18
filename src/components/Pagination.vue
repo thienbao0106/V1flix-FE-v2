@@ -11,11 +11,10 @@ export default {
         }`
       );
     },
-    reverseArray: function (requestNum: number) {
+    reverseArray: function () {
       let array = [];
-      console.log(this.totalPage);
-      if (requestNum > this.totalPage) return [];
-      for (let i = this.totalPage; i >= requestNum; i--) {
+
+      for (let i = this.totalPage; i >= this.totalPage - 1; i--) {
         console.log(i);
         array.unshift(i);
       }
@@ -28,31 +27,23 @@ export default {
 
 <template>
   <section
-    class="list-none w-full flex justify-center items-center flex-row gap-x-5 lg:pt-0 pt-5"
+    class="list-none w-full flex justify-center items-center flex-row lg:gap-x-5 gap-x-2 lg:pt-0 pt-5"
   >
     <button
       :disabled="currentPage === 1"
       @click="handleNavigation('prev')"
-      class="text-white decoration-none disabled:opacity-60"
+      class="text-white decoration-none disabled:opacity-60 font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-transparent"
     >
-      <div
-        class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-mainColor"
-      >
-        Prev
-      </div>
+      <font-awesome-icon icon="fa-solid fa-arrow-left" class="text-white" />
     </button>
     <router-link
-      class="text-white decoration-none"
+      class="text-white decoration-none font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
+      :class="`${index === currentPage ? 'bg-secondColor' : 'bg-transparent'}`"
       v-for="index in 2"
       :key="index"
       :to="`/${type}?page=${index}`"
     >
-      <div
-        class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
-        :class="`${index === currentPage ? 'bg-secondColor' : 'bg-gray-500'}`"
-      >
-        {{ index }}
-      </div>
+      {{ index }}
     </router-link>
     <div
       v-if="totalPage > 3"
@@ -61,28 +52,25 @@ export default {
       ...
     </div>
     <router-link
-      class="text-white decoration-none"
-      v-for="index in reverseArray(3)"
+      class="text-white decoration-none font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
+      :class="`${index === currentPage ? 'bg-secondColor' : 'bg-transparent'}`"
+      v-if="totalPage > 3"
+      v-for="index in reverseArray()"
       :key="index"
       :to="`/${type}?page=${index}`"
     >
-      <div
-        class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
-        :class="`${index === currentPage ? 'bg-secondColor' : 'bg-gray-500'}`"
-      >
-        {{ index }}
-      </div>
+      {{ index }}
     </router-link>
     <button
       :disabled="currentPage === totalPage"
       @click="handleNavigation('next')"
-      class="text-white outline-none disabled:opacity-60"
+      class="text-white outline-none disabled:opacity-60 font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-transparent"
     >
-      <div
-        class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer bg-mainColor"
-      >
-        Next
-      </div>
+      <font-awesome-icon
+        icon="fa-solid fa-arrow-right "
+        size="md"
+        class="text-white"
+      />
     </button>
   </section>
 </template>

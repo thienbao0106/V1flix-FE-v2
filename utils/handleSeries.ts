@@ -8,7 +8,7 @@ export const fetchSeries = (
   status?: string,
   genres?: any
 ) => {
-  const { onResult, loading } = useQuery(
+  const { onResult, loading, onError } = useQuery(
     findSeriesQuery(VIDEO_QUERIES[kind], keyword, 0, {
       status: status === "default" ? "" : status,
       genres: genres === "default" ? "" : genres,
@@ -22,6 +22,7 @@ export const fetchSeries = (
   return {
     onResult,
     loading,
+    onError,
   };
 };
 
