@@ -311,7 +311,7 @@ export default {
             "
             aria-label="info-film"
           >
-            <div :class="isTheaterMode ? `xl:w-4/6 lg:w-full` : `w-full`">
+            <div :class="isTheaterMode ? `xl:w-4/6 :w-full` : `w-full`">
               <Info
                 :description="series?.description"
                 :images="series?.images"
@@ -324,7 +324,11 @@ export default {
                 :view="series?.view"
               ></Info>
             </div>
-            <section v-if="isTheaterMode" aria-label="trending" class="w-2/6">
+            <section
+              v-if="isTheaterMode"
+              aria-label="trending"
+              class="xl:w-2/6 w-full"
+            >
               <h2 class="text-3xl sm:mt-0 mt-5 mb-5 font-bold">Top Trending</h2>
               <TopAnimeList />
             </section>
@@ -336,13 +340,13 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 w-fullPvi sm:mt-0"
+      class="xl:w-2/6 w-full sm:mt-0"
     >
       <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
       <TopAnimeList />
     </section>
   </section>
-  <main class="text-white" v-else>
+  <main class="text-white" v-if="!loading && Object.keys(series).length === 0">
     <Error message="Can't find the series" />
   </main>
 </template>

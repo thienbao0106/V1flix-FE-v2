@@ -50,7 +50,7 @@ export default {
     </div>
     <div class="w-2/12 text-left">
       <p class="lg:line-clamp-0 line-clamp-2 font-bold">
-        {{ current_episode }}/{{ total_episodes }}
+        {{ current_episode }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
       </p>
     </div>
     <div class="w-4/12 flex justify-center">

@@ -12,6 +12,7 @@ import AddModal from "../components/AddModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
 import RowLayout from "../components/Profile/RowLayout.vue";
 import Error from "../components/Error.vue";
+import { useHead } from "@unhead/vue";
 
 export default {
   data() {
@@ -46,9 +47,12 @@ export default {
       () => {
         this.loading = true;
         const { username } = this.$route.params;
-
+        let name =
+          username === "me"
+            ? window.localStorage.getItem("username") || ""
+            : username;
         const { onResult, onError } = useQuery(
-          getUser(USER_QUERIES.profile, username),
+          getUser(USER_QUERIES.profile, name),
           {},
           {
             fetchPolicy: "no-cache",
@@ -56,7 +60,7 @@ export default {
         );
         onError((error) => {
           this.loading = false;
-          console.log(error);
+          console.error(error);
         });
 
         onResult((result) => {
@@ -78,6 +82,33 @@ export default {
               return series.status === type.toLocaleLowerCase();
             }).length;
           });
+
+          //Update head metadata
+          if (this.$route.params.username !== "me")
+            useHead({
+              title: `${this.user.username}`,
+              meta: [
+                {
+                  property: "og:image",
+                  content:
+                    this.user.avatar === ""
+                      ? DEFAULT_IMAGE.avatar
+                      : this.user.avatar,
+                },
+                {
+                  property: "og:title",
+                  content: `${this.user.username}`,
+                },
+                {
+                  property: "og:url",
+                  content: window.location.href,
+                },
+                {
+                  property: "og:description",
+                  content: this.user.description,
+                },
+              ],
+            });
         });
       },
       { immediate: true }
@@ -173,7 +204,7 @@ export default {
           :type-list="typeList"
           :set-list-series="setListSeries"
           :user-list="user.list"
-          :is-owner="storageUser === $route.params.username"
+          :is-owner="$route.params.username === 'me'"
         />
 
         <section
@@ -204,7 +235,7 @@ export default {
             </div>
           </div>
           <div
-            class="font-bold lg:text-xl text-md lg:ml-8 ml-0 max-w-full flex justify-center items-center bg-mainColor rounded-lg lg:h-[3rem] h-[6rem]"
+            class="font-bold lg:text-xl text-md lg:ml-8 ml-0 max-w-full flex justify-center items-center bg-mainColor rounded-lg xl:h-[3rem] h-[6rem]"
             v-if="currentType === 'history'"
           >
             <p class="lg:px-0 px-5 text-center">
@@ -241,6 +272,12 @@ export default {
     </div>
   </main>
   <main class="text-white" v-else>
-    <Error message="Can't find the user" />
+    <Error
+      :message="
+        $route.params.username === 'me'
+          ? `Seems like you haven't logged in to the site`
+          : `Can't find the user`
+      "
+    />
   </main>
 </template>

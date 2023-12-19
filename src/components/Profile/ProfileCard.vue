@@ -79,7 +79,8 @@ export default {
             {{ title }}
           </h3>
           <div class="font-extrabold text-secondColor">
-            {{ current_episode }}/{{ total_episodes }}
+            {{ current_episode
+            }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
           </div>
         </div>
       </div>

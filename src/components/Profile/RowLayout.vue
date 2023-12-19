@@ -17,7 +17,9 @@ export default {
         <h1 class="font-bold">Title</h1>
       </div>
       <div class="w-2/12 text-left">
-        <h1 class="font-bold">Progress</h1>
+        <h1 class="font-bold">
+          {{ listSeries[0].date ? "Episode" : "Progress" }}
+        </h1>
       </div>
       <div class="w-4/12 flex justify-center">
         <h1 class="font-bold">

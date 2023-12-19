@@ -22,7 +22,7 @@ export default {
       let currentPage = Number.isNaN(page) ? 1 : page;
       this.currentPage = currentPage;
 
-      const { onResult } = useQuery(listSeriesQuery(currentPage - 1, 4));
+      const { onResult } = useQuery(listSeriesQuery(currentPage - 1, 5));
       this.loading = true;
       onResult((result) => {
         if (!result.data) return;

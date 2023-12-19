@@ -1,6 +1,12 @@
 <script lang="ts">
 export default {
   props: ["currentPage", "totalPage", "type"],
+  data() {
+    return {
+      pageNum: 0,
+      isPage: false,
+    };
+  },
   methods: {
     handleNavigation: function (type: string) {
       console.log("called");
@@ -13,13 +19,26 @@ export default {
     },
     reverseArray: function () {
       let array = [];
-
       for (let i = this.totalPage; i >= this.totalPage - 1; i--) {
-        console.log(i);
         array.unshift(i);
       }
       console.log(array);
       return array;
+    },
+    togglePageInput: function () {
+      this.isPage = true;
+      window.addEventListener("click", (e: any) => {
+        const pageNumBox: any = document.getElementById("pageNumInput");
+        if (!pageNumBox) return;
+        if (!pageNumBox.contains(e.target)) {
+          this.isPage = false;
+          this.$router.push(
+            `/${this.type}?page=${
+              this.pageNum > this.totalPage ? this.totalPage : this.pageNum
+            }`
+          );
+        }
+      });
     },
   },
 };
@@ -47,9 +66,21 @@ export default {
     </router-link>
     <div
       v-if="totalPage > 3"
-      class="font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer flex-0"
+      class="font-bold text-xl px-4 py-2 rounded-lg cursor-pointer flex-0"
+      :class="`${isPage ? `` : `hover:bg-secondColor`}`"
+      @click="togglePageInput"
+      id="pageNumInput"
     >
-      ...
+      <input
+        type="text"
+        v-if="isPage"
+        inputmode="numeric"
+        oninput="this.value = this.value.replace(/\D+/g, '')"
+        v-model="pageNum"
+        placeholder="Pages"
+        class="text-white px-4 py-2 lg:w-full w-[6rem] rounded-lg text-center bg-opacityText"
+      />
+      <div v-else>...</div>
     </div>
     <router-link
       class="text-white decoration-none font-bold text-xl px-4 py-2 rounded-lg hover:bg-secondColor cursor-pointer"
