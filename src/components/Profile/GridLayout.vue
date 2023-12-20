@@ -18,8 +18,8 @@ export default {
     >
       <ProfileCard
         @click="setSeries(series)"
-        v-for="{ series, currentEp, date } in listSeries"
-        :key="series._id"
+        v-for="({ series, currentEp, date }, index) in listSeries"
+        :key="index"
         :id="series._id"
         :images="series.images"
         :status="series.status"

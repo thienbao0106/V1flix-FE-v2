@@ -22,7 +22,9 @@ export default {
 
 <template>
   <div className="flex flex-row w-full h-auto gap-3 bg-mainColor bg-opacity-50">
-    <div className="basis-1/5 flex justify-center items-center">
+    <div
+      className="xl:basis-[20%] lg:basis-[10%] basis-[20%] flex justify-center items-center"
+    >
       <span
         :class="
           parseInt(rank) === 1
@@ -38,16 +40,16 @@ export default {
         {{ rank }}
       </span>
     </div>
-    <div className="basis-1/5">
+    <div className=" xl:basis-1/5 md:basis-[10%] sm:basis-[15%] basis-1/5 ">
       <img
         loading="lazy"
-        class="h-full w-full"
+        class="xl:w-full xl:h-full md:h-[8rem] sm:h-[8rem] sm:w-fit h-full w-full"
         :src="getImageType(images, `cover`)"
         alt="placeholder-img"
       />
     </div>
     <div
-      className="flex flex-col basis-3/5  w-full  my-auto space-y-3 xl:mx-0 lg:mx-2 md:mx-0 "
+      className="flex flex-col lg:basis-[80%]  md:basis-[70%] sm:basis-[65%] basis-3/5   my-auto space-y-3 "
     >
       <h3
         className="xl:text-base lg:text-xl sm:text-lg pt-2 text-lg font-semibold line-clamp-1"

@@ -30,19 +30,27 @@ export default {
       if (this.isCollapse === false) this.isCollapse = true;
     },
     handleSearch: function () {
-      if (this.historyList.length === 0 || this.userList.length === 0) return;
-      if (this.currentType === "all") {
+      if (this.currentType === "history") {
+        if (this.historyList.length === 0) return;
+        if (this.keyword.length === 0) {
+          this.setListSeries(this.historyList);
+          return;
+        }
+
         this.setListSeries(
-          this.userList.filter((item: any) =>
-            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
-          )
+          this.historyList.filter((item: any) => {
+            const result = item.series.title
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase());
+            return result;
+          })
         );
         return;
       }
 
-      if (this.currentType === "history") {
+      if (this.currentType === "all") {
         this.setListSeries(
-          this.historyList.filter((item: any) =>
+          this.userList.filter((item: any) =>
             item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
           )
         );

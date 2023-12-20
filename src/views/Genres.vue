@@ -30,14 +30,10 @@ export default {
         this.id
       );
       this.loading = loading.value;
-      console.log(loading.value);
       onResult((result) => {
-        console.log(result);
         if (result.data) {
-          console.log(loading.value);
           this.loading = loading.value;
           this.listResult = result.data.findSeries;
-          console.log(result.data.findSeries);
         }
       });
     },
@@ -61,7 +57,7 @@ export default {
     <Loading message="Getting the data" />
   </div>
   <main class="text-white px-8">
-    <h1 class="font-2xl">{{ capitalizeWord(genre) }} Anime</h1>
+    <h1 class="text-2xl font-bold">{{ capitalizeWord(genre) }} Anime</h1>
     <section
       className="w-full grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >

@@ -280,9 +280,6 @@ export default {
               </div>
             </div>
           </div>
-          <p class="lg:pl-0 pl-4 pr-4 lg:text-start text-center">
-            {{ series.description }}
-          </p>
         </div>
       </div>
     </div>
