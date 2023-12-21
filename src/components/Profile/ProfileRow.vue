@@ -3,6 +3,11 @@ import moment from "moment";
 import { getImageType } from "../../../utils/handleImage";
 
 export default {
+  data() {
+    return {
+      isOwner: this.$route.params.username === "me",
+    };
+  },
   props: [
     "id",
     "title",
@@ -34,11 +39,32 @@ export default {
     class="w-full flex flex-row bg-mainColor h-full justify-start items-center gap-x-3"
   >
     <div class="h-full xl:w-1/12 lg:w-2/12 md:w-1/12 w-3/12 px-2 py-2">
-      <img
-        class="lg:w-[8rem] sm-w-[6rem] w-full rounded-md"
-        :src="getImageType(images, `cover`)"
-        :alt="id"
-      />
+      <div
+        @click="date === '' && isOwner && toggleModal()"
+        class="relative"
+        :class="date !== '' ? `` : `group`"
+      >
+        <img
+          class="lg:w-[8rem] sm:w-[6rem] w-full rounded-md"
+          :class="
+            isOwner &&
+            'group-hover:opacity-25  hover:opacity-50 hover:cursor-pointer'
+          "
+          :src="getImageType(images, `cover`)"
+          :alt="id"
+        />
+        <div
+          v-if="isOwner"
+          class="absolute top-0 w-full h-full flex justify-center items-center z-10 font-bold group-hover:translate-x-0 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-ellipsis "
+            size="xl"
+            v-if="date === ''"
+            class="text-white"
+          />
+        </div>
+      </div>
     </div>
     <div class="xl:w-8/12 lg:w-6/12 md:w-5/12 w-4/12 text-left">
       <router-link
@@ -54,13 +80,8 @@ export default {
       </p>
     </div>
     <div class="w-4/12 flex justify-center">
-      <font-awesome-icon
-        icon="fa-solid fa-ellipsis "
-        size="xl"
-        v-if="date === ''"
-        @click="toggleModal()"
-        class="text-white group-hover:cursor-pointer bg-secondColor hover:bg-secondColorBrighter hover:cursor-pointer p-3 rounded-lg"
-      />
+      <div v-if="date === ''">Test</div>
+
       <p v-else>{{ formatDate(date) }}</p>
     </div>
   </div>

@@ -15,6 +15,11 @@ export default {
     "current_episode",
     "date",
   ],
+  data() {
+    return {
+      isOwner: this.$route.params.username === "me",
+    };
+  },
   setup() {
     const router = useRouter();
     return {
@@ -60,7 +65,7 @@ export default {
           <font-awesome-icon
             icon="fa-solid fa-ellipsis "
             size="xl"
-            v-if="date === ''"
+            v-if="date === '' && isOwner"
             @click="toggleModal()"
             class="text-white group-hover:cursor-pointer bg-mainColor p-3 rounded-lg"
           />

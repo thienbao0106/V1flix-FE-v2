@@ -13,6 +13,7 @@ import ListStatus from "../components/Profile/ListStatus.vue";
 import RowLayout from "../components/Profile/RowLayout.vue";
 import Error from "../components/Error.vue";
 import { useHead } from "@unhead/vue";
+import ProfileActions from "../components/Profile/ProfileActions.vue";
 
 export default {
   data() {
@@ -38,7 +39,17 @@ export default {
       daysWatched: 0,
       layout: "grid",
       storageUser: window.localStorage.getItem("username"),
+      width: window.screen.width,
     };
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
 
   created() {
@@ -122,6 +133,7 @@ export default {
     ListStatus,
     RowLayout,
     Error,
+    ProfileActions,
   },
   methods: {
     capitalizeWord,
@@ -146,6 +158,9 @@ export default {
     setLayout: function (layout: string) {
       this.layout = layout;
     },
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
   },
 };
 </script>
@@ -169,15 +184,21 @@ export default {
       <div
         class="flex lg:flex-row flex-col lg:justify-start justify-center lg:items-start items-center gap-x-4"
       >
-        <img
-          :src="user.avatar === '' ? defaultAvatar : user.avatar"
-          alt="avatar"
-          class="w-[10rem] lg:rounded-0 rounded-xl lg:pb-0 pb-5"
-        />
+        <div>
+          <img
+            :src="user.avatar === '' ? defaultAvatar : user.avatar"
+            alt="avatar"
+            class="w-[10rem] lg:rounded-0 rounded-xl lg:pb-0 pb-5"
+          />
+          <ProfileActions v-if="width >= 1024" />
+        </div>
+
         <section class="space-y-4 lg:text-start text-center lg:w-fit w-full">
           <h1 class="font-bold text-3xl">{{ user.username }}</h1>
           <h2 class="text-md">@{{ user.username }}</h2>
           <p class="">What's your thought...</p>
+          <ProfileActions v-if="width < 1024" />
+
           <div
             class="bg-mainColor rounded-lg flex flex-row justify-between gap-x-[5rem] px-3 py-2"
           >

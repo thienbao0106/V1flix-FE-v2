@@ -25,6 +25,7 @@ import {
   faArrowRight,
   faGrip,
   faTable,
+  faFlag,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -41,6 +42,7 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faFlag,
     faGrip,
     faTable,
     faArrowLeft,
