@@ -39,7 +39,7 @@ export default {
       daysWatched: 0,
       layout: "grid",
       storageUser: window.localStorage.getItem("username"),
-      width: window.screen.width,
+      width: window.innerWidth,
     };
   },
 

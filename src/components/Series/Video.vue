@@ -29,7 +29,6 @@ export default {
       isBuffering: false,
       width: window.screen.width,
       editCue: false,
-      controller: false,
     };
   },
   created() {
@@ -42,13 +41,6 @@ export default {
           container.style.visibility = "visible";
           this.handleRenderVideo();
         }
-      },
-      { immediate: true }
-    );
-    this.$watch(
-      () => this.$data.controller,
-      () => {
-        this.handleCue(this.controller);
       },
       { immediate: true }
     );
@@ -111,15 +103,14 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
-    handleCue: function (controller?: boolean) {
-      console.log("called");
-      console.log(controller);
+    handleCue: function () {
       if (!this.trackRef) return;
+
       const { cues } = this.trackRef.track;
       if (!cues) return;
       for (let i = 0; i < cues.length; i++) {
         const cue: any = cues[i];
-        cue.line = controller ? -3 : -2;
+        cue.line = -2;
       }
     },
     onResize: function () {
@@ -164,15 +155,13 @@ export default {
       });
       this.videoContainerRef.addEventListener("mousemove", (e) => {
         if (this.isScrubbing) this.handleTimelineUpdate(e);
-        if (!this.controller) this.controller = true;
       });
 
       this.videoContainerRef.addEventListener("mouseleave", () => {
         if (!this.settingBoxRef || !this.controlContainerRef || !this.videoRef)
           return;
-        if (this.controller) this.controller = false;
 
-        if (!this.videoRef.paused) this.controlContainerRef.style.opacity = "0";
+        this.controlContainerRef.style.opacity = "0";
         if (!this.settingBoxRef.classList.contains("hidden"))
           this.settingBoxRef.classList.add("hidden");
       });
@@ -199,16 +188,14 @@ export default {
 
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
-          if (!video.paused) {
-            video.style.cursor = "none";
-            controller.style.opacity = "0";
-            if (!cues) return;
-            for (let i = 0; i < cues.length; i++) {
-              const cue: any = cues[i];
-              cue.line = -2;
-            }
+          video.style.cursor = "none";
+          controller.style.opacity = "0";
+          if (!cues) return;
+          for (let i = 0; i < cues.length; i++) {
+            const cue: any = cues[i];
+            cue.line = -2;
           }
-        }, 5000);
+        }, 2000);
       });
     },
     //Unchangeable

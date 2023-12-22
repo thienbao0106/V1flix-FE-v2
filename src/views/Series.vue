@@ -9,15 +9,20 @@ import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import AddModal from "../components/AddModal.vue";
-
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";
+import Error from "../components/Error.vue";
 
 import { fetchSeries, handleHistory } from "../../utils/handleSeries";
-import { addViewMutation } from "../queries/series";
-import { defaultImage } from "../../utils/handleImage";
 import { isIOS } from "../../utils/handleVersion";
-import Error from "../components/Error.vue";
+import {
+  convertToTimestamp,
+  historyTimeline,
+} from "../../utils/video/handleTime";
+
+import { addViewMutation } from "../queries/series";
+
+import { defaultImage } from "../../utils/handleImage";
 
 export default {
   data() {
@@ -31,28 +36,47 @@ export default {
       isTheaterMode: false,
       isIOS: null as any,
       isUser: window.localStorage.getItem("username"),
+      getInfoUrl: {
+        ep: this.$route.query.ep,
+        time: this.$route.query.t || 0,
+        title: this.$route.params.title,
+      } as any,
     };
   },
   created() {
     this.$watch(
       () => this.$route.fullPath,
       () => {
-        console.log("called");
+        this.setSeconds();
+        this.getInfoUrl = {
+          ep: this.$route.query.ep,
+          time: this.$route.query.t,
+          title: this.$route.params.title,
+        };
         this.fetchSeries();
-        this.getInfoUrl;
       },
       { immediate: true }
     );
+    this.$watch(
+      () => this.loading,
+      () => {
+        const history = JSON.parse(
+          window.localStorage.getItem("history") || ""
+        );
+        if (this.$route.query.t) return;
+        const { title, ep } = this.getInfoUrl;
+        this.getInfoUrl.time = historyTimeline(history, title, ep);
+      }
+    );
   },
-  computed: {
-    getInfoUrl: function () {
-      const { ep, t: time } = this.$route.query;
-      const { title } = this.$route.params;
-      return { ep, time, title };
-    },
-  },
+
   mounted() {
     this.handleIOS();
+  },
+
+  beforeUnmount() {
+    console.log("called");
+    this.setSeconds();
   },
   setup() {
     const url = window.location.href;
@@ -78,7 +102,6 @@ export default {
           this.loading = false;
           if (result.data.findSeries.length === 0) return;
           this.series = result.data.findSeries[0];
-
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );
@@ -94,7 +117,8 @@ export default {
             const newHistory = handleHistory(
               history,
               this.series._id,
-              this.getInfoUrl.ep
+              this.getInfoUrl.ep,
+              this.getInfoUrl.title
             );
             window.localStorage.setItem("history", JSON.stringify(newHistory));
           }
@@ -134,13 +158,9 @@ export default {
     toggleShareModal: function () {
       const video = document.querySelector("video");
       if (!video) return;
-      const seconds = video.currentTime;
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = Math.floor(seconds % 60);
-      this.seconds = seconds;
-      this.timestamp = `${String(minutes).padStart(2, "0")}:${String(
-        remainingSeconds
-      ).padStart(2, "0")}`;
+      this.seconds = video.currentTime;
+      this.timestamp = convertToTimestamp(video);
+
       const dialog: any = document.querySelector("#share-modal");
       console.log(dialog);
       if (!dialog) return;
@@ -158,6 +178,16 @@ export default {
         seriesId,
         episodeId,
       });
+    },
+    setSeconds: function () {
+      const video = document.querySelector("video");
+      if (!video) return;
+      const history = JSON.parse(window.localStorage.getItem("history") || "");
+      const series: any = history[0];
+      history.shift();
+      series.seconds = video.currentTime;
+      history.unshift(series);
+      window.localStorage.setItem("history", JSON.stringify(history));
     },
   },
 

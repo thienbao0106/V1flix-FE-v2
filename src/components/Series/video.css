@@ -267,7 +267,19 @@ video {
   color: white;
   background-color: transparent;
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: normal;
   text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+@media screen and (max-width: 640px) {
+  ::cue {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 640px) and (max-width: 768px) {
+  ::cue {
+    font-size: 1.5rem;
+  }
 }

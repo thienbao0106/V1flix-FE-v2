@@ -16,8 +16,10 @@ import { checkSource, formatDuration, handlePercent } from "./handleVideo";
 import { setSubtitle } from "./handleSubtitle";
 import { changePlaybackSpeed } from "./handlePlayback";
 import { handleKeydown } from "./handleKeydown";
+import { convertToTimestamp, historyTimeline } from "./handleTime";
 
 export default {
+  historyTimeline,
   checkSource,
   formatDuration,
   handlePercent,
@@ -40,4 +42,5 @@ export default {
   setSubtitle,
   changePlaybackSpeed,
   handleKeydown,
+  convertToTimestamp,
 };

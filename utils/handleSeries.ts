@@ -29,7 +29,9 @@ export const fetchSeries = (
 export const handleHistory = (
   historyList: any,
   currentSeriesId: string,
-  currentEp: any
+  currentEp: any,
+  title: string,
+  seconds?: number
 ) => {
   const list = historyList;
 
@@ -37,6 +39,8 @@ export const handleHistory = (
     seriesId: currentSeriesId,
     time: new Date().toLocaleString(),
     currentEp,
+    seconds: seconds || 0,
+    title,
   });
   return list;
 };

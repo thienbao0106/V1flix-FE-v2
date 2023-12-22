@@ -13,7 +13,7 @@ export default {
       isDropdown: false,
       loading: false,
       isSubNav: false,
-      width: window.screen.width,
+      width: window.innerWidth,
       timeOut: null,
       resultQuery: [] as any,
       avatar: "",
@@ -123,11 +123,9 @@ export default {
   <nav
     class="z-[800] max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
   >
-    <div
-      class="flex-none lg:w-3/6 w-2/6 flex gap-x-8 justify-start items-center"
-    >
+    <div class="lg:w-3/6 w-2/6 flex gap-x-8 justify-start items-center">
       <svg
-        class="cursor-pointer menu-burger-icon wi"
+        class="hover:cursor-pointer menu-burger-icon"
         @click="toggleSubNav(isSubNav)"
         viewBox="0 0 20 20"
       >
@@ -215,7 +213,7 @@ export default {
       </aside>
       <aside
         v-else
-        class="h-full flex flex-col justify-center items-center pt-1"
+        class="w-2/6 h-full flex flex-col justify-center items-center pt-1"
       >
         <router-link
           to="/search"
@@ -228,13 +226,11 @@ export default {
           </svg>
         </router-link>
       </aside>
-      <div
-        class="w-2/6 flex lg:flex-1 justify-center items-center cursor-pointer text-white"
-      >
+      <div class="w-1/6 flex lg:flex-1 justify-center items-center text-white">
         <svg
           v-if="theme === 'dark'"
           @click="toggleTheme(theme)"
-          class="sun-icon"
+          class="sun-icon hover:cursor-pointer"
           viewBox="0 0 20 20"
         >
           <path
@@ -246,7 +242,7 @@ export default {
         <svg
           v-else
           @click="toggleTheme(theme)"
-          class="moon-icon"
+          class="moon-icon hover:cursor-pointer"
           viewBox="0 0 20 20"
         >
           <path
