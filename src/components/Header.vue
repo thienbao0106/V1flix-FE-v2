@@ -254,7 +254,7 @@ export default {
       <a
         v-if="username === ''"
         href="/login"
-        class="w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white py-2 rounded-lg px-2 w-full no-underline"
+        class="xl:mx-0 lg:mx-9 mx-6 w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white rounded-lg w-full no-underline"
       >
         Login
       </a>

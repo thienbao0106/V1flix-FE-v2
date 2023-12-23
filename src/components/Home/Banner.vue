@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <section aria-label="banner" className="lg:h-auto ">
+  <section aria-label="banner">
     <swiper-container
       :centered-slides="true"
       :autoplay="{
@@ -50,6 +50,7 @@ export default {
           :title="s.title"
           :description="s.description"
           :images="s.images"
+          :season="s.season"
         />
       </swiper-slide>
     </swiper-container>
@@ -59,7 +60,13 @@ export default {
 <style scoped>
 swiper-container::part(pagination) {
   text-align: left !important;
-  padding-left: 2rem;
+
+  left: 0px;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 swiper-container::part(bullet) {
@@ -74,9 +81,9 @@ swiper-container::part(bullet-active) {
 
 @media only screen and (max-width: 600px) {
   /* For tablets: */
-  swiper-container::part(pagination) {
+  /* swiper-container::part(pagination) {
     padding-left: 0.5rem;
-  }
+  } */
   swiper-container::part(bullet) {
     width: 1rem !important;
     height: 1rem !important;
@@ -90,9 +97,9 @@ swiper-container::part(bullet-active) {
 
 @media only screen and (max-width: 1000px) {
   /* For tablets: */
-  swiper-container::part(pagination) {
+  /* swiper-container::part(pagination) {
     padding-left: 0.5rem;
-  }
+  } */
   swiper-container::part(bullet) {
     width: 1.2rem !important;
     height: 1.2rem !important;
@@ -101,9 +108,9 @@ swiper-container::part(bullet-active) {
 
 @media only screen and (max-width: 1200px) {
   /* For tablets: */
-  swiper-container::part(pagination) {
+  /* swiper-container::part(pagination) {
     padding-left: 0.8rem;
-  }
+  } */
   swiper-container::part(bullet) {
     width: 1rem !important;
     height: 1rem !important;

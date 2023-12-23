@@ -60,6 +60,7 @@ export default {
     this.$watch(
       () => this.loading,
       () => {
+        if (!window.localStorage.getItem("history")) return;
         const history = JSON.parse(
           window.localStorage.getItem("history") || ""
         );
@@ -180,6 +181,7 @@ export default {
       });
     },
     setSeconds: function () {
+      if (!window.localStorage.getItem("history")) return;
       const video = document.querySelector("video");
       if (!video) return;
       const history = JSON.parse(window.localStorage.getItem("history") || "");
