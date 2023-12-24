@@ -29,6 +29,7 @@ export const seriesBannerQuery = (limit: number) => gql`
         _id
         title
         description
+        duration
         season
         images {
           _id

@@ -3,6 +3,7 @@ import { useRoute } from "vue-router";
 import { capitalizeWord } from "../../utils/handleWord";
 import { fetchSeries } from "../../utils/handleSeries";
 import Card from "../components/Card.vue";
+import ResultLayout from "../layouts/ResultLayout.vue";
 export default {
   data() {
     return {
@@ -48,28 +49,20 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card },
+  components: { Card, ResultLayout },
 };
 </script>
 
 <template>
-  <div class="text-4xl font-bold text-white" v-if="loading">
-    <Loading message="Getting the data" />
-  </div>
-  <main class="text-white px-8">
-    <h1 class="text-2xl font-bold">{{ capitalizeWord(genre) }} Anime</h1>
-    <section
-      className="w-full grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
-    >
-      <Card
-        v-for="series in listResult"
-        :id="series._id"
-        :images="series.images"
-        :total_episodes="series.total_episodes"
-        :ep-created-at="series.created_at"
-        :title="series.title"
-        :status="series.status"
-      />
-    </section>
-  </main>
+  <ResultLayout :loading="loading" :title="`${genre} Anime`">
+    <Card
+      v-for="series in listResult"
+      :id="series._id"
+      :images="series.images"
+      :total_episodes="series.total_episodes"
+      :ep-created-at="series.created_at"
+      :title="series.title"
+      :status="series.status"
+    />
+  </ResultLayout>
 </template>

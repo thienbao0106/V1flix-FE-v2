@@ -354,6 +354,7 @@ export default {
                 :total_episodes="series?.total_episodes"
                 :type="series?.type"
                 :view="series?.view"
+                :duration="series?.duration"
               ></Info>
             </div>
             <section

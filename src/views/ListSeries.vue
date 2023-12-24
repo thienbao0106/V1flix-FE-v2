@@ -5,6 +5,7 @@ import Card from "../components/Card.vue";
 import Loading from "../components/Loading.vue";
 
 import Pagination from "../components/Pagination.vue";
+import ResultLayout from "../layouts/ResultLayout.vue";
 
 export default {
   data() {
@@ -47,19 +48,13 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card, Loading, Pagination },
+  components: { Card, Loading, Pagination, ResultLayout },
 };
 </script>
 
 <template>
-  <div class="text-4xl font-bold text-white" v-if="loading">
-    <Loading message="Getting the data" />
-  </div>
-  <main class="text-white px-8">
-    <h1 class="font-bold text-2xl">List Series</h1>
-    <section
-      className="w-full grid xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
-    >
+  <main>
+    <ResultLayout :loading="loading" :title="`List Series`">
       <Card
         v-for="s in listSeries"
         :id="s._id"
@@ -70,7 +65,8 @@ export default {
         :type="s.type"
         :view="s.view"
       />
-    </section>
+    </ResultLayout>
+
     <Pagination
       type="series"
       :currentPage="currentPage"

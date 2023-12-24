@@ -292,7 +292,7 @@ export default {
       </div>
     </div>
   </main>
-  <main class="text-white" v-else>
+  <main class="text-white" v-if="Object.keys(user).length > 0 && loading">
     <Error
       :message="
         $route.params.username === 'me'

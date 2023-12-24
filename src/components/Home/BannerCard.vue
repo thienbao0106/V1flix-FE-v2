@@ -1,16 +1,15 @@
 <script lang="ts">
 import { getImageType } from "../../../utils/handleImage";
+import { formatDuration } from "../../../utils/handleSeries";
 export default {
-  props: ["images", "id", "title", "description", "season"],
+  props: ["images", "id", "title", "description", "season", "duration"],
   data() {
     return {
       width: window.innerWidth,
     };
   },
-  setup(props) {
-    console.log(props.season);
-  },
   methods: {
+    formatDuration,
     getImageType,
     onResize: function () {
       this.width = window.innerWidth;
@@ -33,7 +32,7 @@ export default {
       :src="getImageType(images, `banner`)"
       alt="test"
       loading="lazy"
-      class="relative w-full 2xl:h-[400px] xl:h-[400px] lg:h-[400px] md:h-[300px] h-[300px] opacity-20"
+      class="relative w-full xl:h-[450px] lg:h-[400px] md:h-[350px] h-[380px] opacity-20"
     />
     <aside
       class="absolute inset-0 h-full flex lg:flex-row flex-col gap-3 lg:px-10 px-5 py-10 lg:gap-x-5 w-full"
@@ -60,12 +59,16 @@ export default {
             {{ title }}
           </h2>
           <div
-            class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center flex flex-row lg:justify-start justify-center"
+            class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center flex lg:flex-row flex-col lg:justify-start justify-center gap-2"
           >
             <div class="bg-detail px-3 py-1.5 rounded-xl">
               <font-awesome-icon icon="fa-regular fa-calendar" class="pr-2" />
 
               {{ season }}
+            </div>
+            <div class="bg-detail px-3 py-1.5 rounded-xl">
+              <font-awesome-icon icon="fa-regular fa-clock" class="pr-2" />
+              {{ formatDuration(duration) }}
             </div>
           </div>
           <p

@@ -51,6 +51,7 @@ export default {
           :description="s.description"
           :images="s.images"
           :season="s.season"
+          :duration="s.duration"
         />
       </swiper-slide>
     </swiper-container>
@@ -80,10 +81,6 @@ swiper-container::part(bullet-active) {
 }
 
 @media only screen and (max-width: 600px) {
-  /* For tablets: */
-  /* swiper-container::part(pagination) {
-    padding-left: 0.5rem;
-  } */
   swiper-container::part(bullet) {
     width: 1rem !important;
     height: 1rem !important;
@@ -97,10 +94,14 @@ swiper-container::part(bullet-active) {
 
 @media only screen and (max-width: 1000px) {
   /* For tablets: */
-  /* swiper-container::part(pagination) {
-    padding-left: 0.5rem;
-  } */
+
   swiper-container::part(bullet) {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+
+  swiper-container::part(bullet-active) {
+    background-color: #e89b26 !important;
     width: 1.2rem !important;
     height: 1.2rem !important;
   }
@@ -108,10 +109,13 @@ swiper-container::part(bullet-active) {
 
 @media only screen and (max-width: 1200px) {
   /* For tablets: */
-  /* swiper-container::part(pagination) {
-    padding-left: 0.8rem;
-  } */
+
   swiper-container::part(bullet) {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+  swiper-container::part(bullet-active) {
+    background-color: #e89b26 !important;
     width: 1rem !important;
     height: 1rem !important;
   }

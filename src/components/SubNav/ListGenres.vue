@@ -26,14 +26,16 @@ export default {
 };
 </script>
 <template>
-  <div class="absolute left-[14rem] h-full bottom-0 w-[30rem]">
+  <div
+    class="absolute lg:left-[14rem] left-[10.8rem] h-full bottom-0 lg:w-[30rem] w-[14rem]"
+  >
     <div
       @mouseleave="toggleGenresMenu(true)"
-      class="w-full h-fit sticky top-[6rem] bg-mainColor grid grid-cols-4 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
+      class="w-full h-fit sticky top-[10rem] bg-mainColor grid lg:grid-cols-4 grid-cols-2 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
     >
       <router-link
         :to="`/genres/${genres._id}/${genres.name}`"
-        class="hover:bg-secondColorBrighter font-bold cursor-pointer p-4 text-white decoration-none"
+        class="hover:bg-secondColorBrighter font-bold cursor-pointer lg:p-4 p-2 text-white text-md decoration-none text-center"
         v-for="genres in listGenres"
       >
         {{ genres.name }}

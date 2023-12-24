@@ -26,6 +26,7 @@ import {
   faGrip,
   faTable,
   faFlag,
+  faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -33,6 +34,7 @@ import {
   faMoon,
   faCalendar,
   faClosedCaptioning,
+  faClock,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faDiscord,
@@ -42,6 +44,8 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faPeopleGroup,
+    faClock,
     faFlag,
     faGrip,
     faTable,

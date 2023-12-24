@@ -1,11 +1,14 @@
 <script lang="ts">
 import ListGenres from "./ListGenres.vue";
+import { capitalizeWord } from "../../../utils/handleWord";
 export default {
   props: ["toggleSubNav"],
   data() {
     return {
       isGenresList: false,
       listGenres: [],
+      listSubMenu: ["series", "latest"],
+      listSubMenuUser: ["users"],
     };
   },
 
@@ -31,6 +34,7 @@ export default {
     genres.style.height = `${height}px`;
   },
   methods: {
+    capitalizeWord,
     toggleGenresList: function (isGenresList: boolean) {
       this.isGenresList = !isGenresList;
     },
@@ -51,7 +55,7 @@ export default {
     <div class="w-fit z-20 relative">
       <div
         id="menu"
-        class="w-[14rem] bg-mainColor translate-x transition duration-1000"
+        class="lg:w-[14rem] w-[11rem] bg-mainColor translate-x transition duration-1000"
       >
         <div class="sticky top-0 pt-5 bottom-0">
           <div class="text-3xl font-bold flex gap-x-5 pl-4">
@@ -75,30 +79,49 @@ export default {
               Logo
             </router-link>
           </div>
-          <ul class="list-none pl-4 space-y-4 pt-4 font-bold">
-            <li>
-              <router-link
-                to="/series"
-                class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
-              >
-                Series
-              </router-link>
-            </li>
-            <li
-              @click="toggleGenresList(isGenresList)"
-              class="hover:text-secondColorBrighter cursor-pointer"
+          <div>
+            <h1
+              class="flex pl-4 space-y-4 pt-4 font-bold text-lg flex items-center gap-x-3"
             >
-              Genres
-            </li>
-            <li>
-              <router-link
-                to="/latest"
-                class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
+              <font-awesome-icon icon="fa-solid fa-tv" />
+              Titles
+            </h1>
+            <ul class="list-none lg:pl-8 pl-4 space-y-4 pt-4 font-bold">
+              <li v-for="section in listSubMenu">
+                <router-link
+                  :to="`/${section}`"
+                  class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
+                >
+                  {{ capitalizeWord(section) }}
+                </router-link>
+              </li>
+
+              <li
+                @click="toggleGenresList(isGenresList)"
+                class="hover:text-secondColorBrighter cursor-pointer"
               >
-                Latest
-              </router-link>
-            </li>
-          </ul>
+                Genres
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h1
+              class="flex pl-4 space-y-4 pt-4 font-bold text-lg flex items-center gap-x-3"
+            >
+              <font-awesome-icon icon="fa-solid fa-tv" />
+              Community
+            </h1>
+            <ul class="list-none lg:pl-8 pl-4 space-y-4 pt-4 font-bold">
+              <li v-for="section in listSubMenuUser">
+                <router-link
+                  :to="`/${section}`"
+                  class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
+                >
+                  {{ capitalizeWord(section) }}
+                </router-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div id="genres">

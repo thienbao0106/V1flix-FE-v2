@@ -1,5 +1,7 @@
 <script lang="ts">
 import { getImageType } from "../../../utils/handleImage";
+import { formatDuration } from "../../../utils/handleSeries";
+
 export default {
   props: [
     "images",
@@ -11,6 +13,7 @@ export default {
     "total_episodes",
     "status",
     "genres",
+    "duration",
   ],
   data() {
     return {
@@ -28,6 +31,7 @@ export default {
   },
   methods: {
     getImageType,
+    formatDuration,
     onResize: function () {
       this.width = window.innerWidth;
     },
@@ -109,6 +113,12 @@ export default {
             Status:
             <span class="text-secondColor ml-3 font-bold">
               {{ status }}
+            </span>
+          </li>
+          <li>
+            {{ type === "TV" ? "Episode Duration: " : "Duration" }}
+            <span class="text-secondColor ml-3 font-bold">
+              {{ formatDuration(duration) }}
             </span>
           </li>
         </ul>
