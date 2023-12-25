@@ -115,6 +115,18 @@ export const addViewMutation = () => gql`
   }
 `;
 
+export const addFavorite = () => gql`
+  mutation addFavoriteSeries($seriesId: String!, $userId: String!) {
+    addFavoriteSeries(seriesId: $seriesId, userId: $userId)
+  }
+`;
+
+export const removeFavorite = () => gql`
+  mutation deleteFavoriteSeries($seriesId: String!, $userId: String!) {
+    deleteFavoriteSeries(seriesId: $seriesId, userId: $userId)
+  }
+`;
+
 export const findSeriesByIds = (listSeries: any) => {
   const result = '"' + listSeries.join('","') + '"';
 

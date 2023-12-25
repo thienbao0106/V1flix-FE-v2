@@ -7,6 +7,7 @@ export default {
       isCollapse: window.innerWidth < 1024 ? false : true,
       keyword: "",
       historyList: [] as any,
+      favoriteList: [] as any,
     };
   },
   setup(props) {
@@ -56,6 +57,15 @@ export default {
         );
         return;
       }
+      if (this.currentType === "favorite") {
+        if (this.keyword === "") return this.favoriteList;
+        this.setListSeries(
+          [...this.favoriteList].filter((item: any) =>
+            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+        );
+        return;
+      }
 
       this.setListSeries(
         this.userList.filter((item: any) => {
@@ -92,6 +102,17 @@ export default {
         this.setListSeries(this.historyList);
       });
     },
+    showFavorite: function () {
+      this.setCurrentType("favorite");
+      this.favoriteList = this.favorList.map((series: any) => {
+        return {
+          series,
+        };
+      });
+      this.setListSeries(this.favoriteList);
+
+      return;
+    },
   },
   props: [
     "count",
@@ -101,6 +122,7 @@ export default {
     "currentType",
     "userList",
     "isOwner",
+    "favorList",
   ],
 };
 </script>
@@ -124,6 +146,14 @@ export default {
         class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"
       >
         Watching History
+      </h1>
+    </div>
+    <div class="my-5">
+      <h1
+        @click="showFavorite()"
+        class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"
+      >
+        Favorites
       </h1>
     </div>
     <div class="flex flex-row justify-between items-center w-full">

@@ -16,6 +16,6 @@ export const historyTimeline = (
   const filteredArray = history.filter((item: any) => {
     return item.title === title && item.currentEp === ep;
   });
-  if (filteredArray.length < 1) return 0;
+  if (filteredArray.length < 2) return 0;
   return filteredArray[1].seconds;
 };

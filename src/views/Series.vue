@@ -76,7 +76,6 @@ export default {
   },
 
   beforeUnmount() {
-    console.log("called");
     this.setSeconds();
   },
   setup() {
@@ -87,7 +86,6 @@ export default {
   },
   methods: {
     handleIOS: function () {
-      console.log(isIOS());
       this.isIOS = isIOS();
     },
     fetchSeries: function () {
@@ -355,6 +353,8 @@ export default {
                 :type="series?.type"
                 :view="series?.view"
                 :duration="series?.duration"
+                :is-user="isUser"
+                :favors="series?.favors"
               ></Info>
             </div>
             <section

@@ -5,7 +5,7 @@ import ProfileCard from "./ProfileCard.vue";
 export default {
   props: ["listSeries", "setSeries"],
   setup(props) {
-    console.log(props.listSeries);
+    console.log(props.listSeries.length);
   },
   components: { Card, ProfileCard },
 };

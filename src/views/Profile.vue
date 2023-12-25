@@ -32,6 +32,7 @@ export default {
         "Dropped",
         "Plans To Watch",
       ],
+      favorList: [] as any,
       count: [] as any,
       defaultAvatar: DEFAULT_IMAGE.avatar,
       defaultBanner: DEFAULT_IMAGE.banner,
@@ -77,8 +78,9 @@ export default {
         onResult((result) => {
           this.loading = false;
           if (!result || !result.data) return;
-          const { list } = result.data.findUserByName;
+          const { list, favoriteList } = result.data.findUserByName;
           this.list = list;
+          this.favorList = favoriteList;
           this.user = result.data.findUserByName;
 
           const { total_episodes, days_watched } =
@@ -226,6 +228,7 @@ export default {
           :set-list-series="setListSeries"
           :user-list="user.list"
           :is-owner="$route.params.username === 'me'"
+          :favor-list="favorList"
         />
 
         <section
