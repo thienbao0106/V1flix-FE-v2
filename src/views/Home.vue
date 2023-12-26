@@ -37,11 +37,11 @@ export default {
       className="bg-bgColor lg:px-9 px-4 py-2 flex xl:flex-row flex-col text-white"
       v-if="!loading"
     >
-      <section className="basis-3/4 mt-5 lg:pr-10 pr-0">
+      <section className="2xl:basis-3/4 basis-[65%] mt-5 lg:pr-10 pr-0">
         <h1 className="font-bold lg:text-2xl text-xl mb-5">Recommendations</h1>
         <Recommendations />
       </section>
-      <section className="basis-1/4 lg:mt-5 mt-8">
+      <section className="2xl:basis-1/4 basis-[35%] lg:mt-5 mt-8">
         <h1 className="font-bold lg:text-2xl text-xl mb-5">Top Anime</h1>
         <TopAnimeList />
       </section>

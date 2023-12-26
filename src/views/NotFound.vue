@@ -7,6 +7,8 @@
       class="text-yellow-400"
       size="4x"
     />
-    <h1 class="text-4xl font-bold tracking-wide">404! Can't find this page.</h1>
+    <h1 class="lg:text-4xl text-2xl font-bold tracking-wide text-center">
+      404! Can't find this page.
+    </h1>
   </section>
 </template>

@@ -1,8 +1,12 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
+import { useHead } from "@unhead/vue";
+
 import { getUser } from "../queries/users";
+
 import { USER_QUERIES } from "../constants/user";
 import { DEFAULT_IMAGE } from "../constants/image";
+
 import { capitalizeWord } from "../../utils/handleWord";
 
 import Card from "../components/Card.vue";
@@ -12,7 +16,6 @@ import AddModal from "../components/AddModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
 import RowLayout from "../components/Profile/RowLayout.vue";
 import Error from "../components/Error.vue";
-import { useHead } from "@unhead/vue";
 import ProfileActions from "../components/Profile/ProfileActions.vue";
 
 export default {
@@ -123,6 +126,14 @@ export default {
               ],
             });
         });
+      },
+      { immediate: true }
+    );
+    this.$watch(
+      () => this.currentType,
+      () => {
+        if (this.currentType !== "favorite") return;
+        this.layout = "grid";
       },
       { immediate: true }
     );
@@ -240,7 +251,10 @@ export default {
               {{ capitalizeWord(currentType) }}
             </h1>
 
-            <div v-if="list.length > 0" class="w-fit flex gap-x-3">
+            <div
+              v-if="list.length > 0 && currentType !== 'favorite'"
+              class="w-fit flex gap-x-3"
+            >
               <button
                 @click="setLayout('grid')"
                 class="bg-mainColor px-4 py-2 rounded-md hover-bg-secondColor"

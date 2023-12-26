@@ -1,6 +1,8 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { userLogin } from "../queries/users";
+import { loginEle } from "../../src/constants/form";
+import { capitalizeWord } from "../../utils/handleWord";
 
 export default {
   data() {
@@ -10,8 +12,7 @@ export default {
       spanClass:
         "pointer-events-none font-bold absolute left-0 p-3 transition-transform duration-500",
       theme: "dark",
-      email: "",
-      password: "",
+      formEle: loginEle,
       loading: false,
       error: "",
     };
@@ -19,7 +20,13 @@ export default {
   setup() {
     document.title = "Login";
   },
+  beforeMount() {
+    const isLoggedIn = window.localStorage.getItem("username");
+    if (!isLoggedIn) return;
+    window.location.href = "/";
+  },
   methods: {
+    capitalizeWord,
     toggleTheme: function (theme: string) {
       this.theme = theme === "dark" ? "light" : "dark";
       return;
@@ -27,15 +34,15 @@ export default {
     handleSubmit: function (e: any) {
       this.loading = true;
       e.preventDefault();
-      console.log(this.password);
+      const { password, email } = e.target.elements;
+
       const { onResult } = useQuery(
-        userLogin(this.email, this.password),
+        userLogin(email.value, password.value),
         {},
         {
           fetchPolicy: "no-cache",
         }
       );
-
       onResult((result) => {
         if (!result.data) {
           this.error =
@@ -102,25 +109,16 @@ export default {
 
       <aside class="w-full flex justify-center items-center">
         <form method="post" @submit="handleSubmit" class="space-y-5">
-          <div className="relative">
+          <div v-for="ele in formEle" className="relative">
             <input
               :class="`${inputClass} border-secondColor`"
-              type="email"
-              v-model.lazy="email"
+              :type="ele.type"
+              :name="ele.name"
               required
             />
+            <span :class="`${spanClass}`">{{ capitalizeWord(ele.title) }}</span>
+          </div>
 
-            <span :class="`${spanClass}`">Email</span>
-          </div>
-          <div className="relative">
-            <input
-              type="password"
-              :class="`${inputClass} border-secondColor`"
-              required
-              v-model.lazy="password"
-            />
-            <span :class="`${spanClass}`">Password</span>
-          </div>
           <aside v-if="error !== ''">
             <p class="text-red-500 font-bold w-full">
               {{ error }}
@@ -150,48 +148,4 @@ export default {
   </main>
 </template>
 
-<style scoped>
-input:valid ~ span,
-input:focus ~ span {
-  color: white;
-  font-size: 0.65em;
-  transform: translateX(10px) translateY(-7px);
-  padding: 0 5px;
-  background: #1d2b3a;
-  border-left: 1px solid #e89b26;
-  border-right: 1px solid #e89b26;
-  letter-spacing: 0.2em;
-}
-
-.sun-icon {
-  width: 2rem;
-  height: 2rem;
-}
-
-.sun-icon path,
-.sun-icon polygon,
-.sun-icon rect {
-  fill: white;
-}
-
-.sun-icon circle {
-  stroke: white;
-  stroke-width: 1;
-}
-
-.moon-icon {
-  width: 2rem;
-  height: 2rem;
-}
-
-.moon-icon path,
-.moon-icon polygon,
-.moon-icon rect {
-  fill: white;
-}
-
-.moon-icon circle {
-  stroke: white;
-  stroke-width: 1;
-}
-</style>
+<style src="./styles/login-register.css" scoped></style>

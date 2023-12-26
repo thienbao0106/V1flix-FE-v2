@@ -74,6 +74,7 @@ export default {
             </svg>
             <router-link
               to="/"
+              @click="toggleSubNav(true)"
               class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
             >
               Logo
@@ -90,6 +91,7 @@ export default {
               <li v-for="section in listSubMenu">
                 <router-link
                   :to="`/${section}`"
+                  @click="toggleSubNav(true)"
                   class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
                 >
                   {{ capitalizeWord(section) }}
@@ -115,6 +117,7 @@ export default {
               <li v-for="section in listSubMenuUser">
                 <router-link
                   :to="`/${section}`"
+                  @click="toggleSubNav(true)"
                   class="hover:text-secondColorBrighter cursor-pointer decoration-none text-white"
                 >
                   {{ capitalizeWord(section) }}
@@ -127,7 +130,8 @@ export default {
       <div id="genres">
         <ListGenres
           v-if="isGenresList"
-          :toggleGenresMenu="toggleGenresList"
+          :toggle-sub-nav="toggleSubNav"
+          :toggle-genres-menu="toggleGenresList"
           :listGenres="listGenres"
         />
       </div>

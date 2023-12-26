@@ -22,7 +22,6 @@ export default {
   },
   setup() {
     const router = useRouter();
-
     return {
       router,
     };
@@ -84,7 +83,10 @@ export default {
           <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">
             {{ title }}
           </h3>
-          <div v-if="current_episode" class="font-extrabold text-secondColor">
+          <div
+            v-if="current_episode !== undefined"
+            class="font-extrabold text-secondColor"
+          >
             {{ current_episode
             }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
           </div>

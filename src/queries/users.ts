@@ -74,6 +74,20 @@ export const editSeriesMutation = () => {
   `;
 };
 
+export const createUserMutation = () => {
+  return gql`
+    mutation createUser(
+      $username: String!
+      $password: String!
+      $email: String!
+    ) {
+      createUser(username: $username, password: $password, email: $email) {
+        _id
+      }
+    }
+  `;
+};
+
 // export const findList = (status: string, username: string, title: any) => {
 //   console.log([...VIDEO_QUERIES.search].join("\n"));
 //   return gql`
