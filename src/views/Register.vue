@@ -3,6 +3,8 @@ import { capitalizeWord } from "../../utils/handleWord";
 import { registerEle } from "../../src/constants/form";
 import { useMutation } from "@vue/apollo-composable";
 import { createUserMutation } from "../../src/queries/users";
+import AccountForm from "../components/AccountForm/AccountForm.vue";
+import FormHeader from "../components/AccountForm/FormHeader.vue";
 export default {
   mounted() {
     document.title = "Register";
@@ -27,7 +29,6 @@ export default {
         this.error = "Confirmed password doesn't match with current password";
         return;
       }
-
       const { mutate } = useMutation(createUserMutation);
       try {
         const isSuccess: any = await mutate({
@@ -46,6 +47,7 @@ export default {
       }
     },
   },
+  components: { AccountForm, FormHeader },
 };
 </script>
 
@@ -53,35 +55,29 @@ export default {
   <main class="text-white flex justify-center items-center w-full h-screen">
     <section class="space-y-4 w-fit">
       <aside class="text-center space-y-5">
-        <h1 className="font-bold text-4xl">Register</h1>
+        <FormHeader title="Register" />
       </aside>
       <aside class="w-full flex justify-center items-center">
-        <form method="post" @submit="handleSubmit" class="space-y-5">
-          <div v-for="ele in formEle" className="relative">
-            <input
-              :class="`${inputClass} border-secondColor`"
-              :type="ele.type"
-              :name="ele.name"
-              required
-            />
-            <span :class="`${spanClass}`">{{ capitalizeWord(ele.title) }}</span>
-          </div>
-          <aside v-if="error !== ''">
-            <p class="text-red-500 font-bold w-full">
-              {{ error }}
-            </p>
-          </aside>
-          <button
-            class="disabled:opacity-70 text-white bg-secondColor hover:bg-secondColorBrighter py-2 text-2xl rounded-md font-bold cursor-pointer w-full text-center"
-            type="submit"
-            :disabled="loading"
-          >
-            {{ loading ? "Loading..." : "Create" }}
-          </button>
-        </form>
+        <AccountForm
+          :error="error"
+          :handle-submit="handleSubmit"
+          :form-ele="formEle"
+          :loading="loading"
+          type="Sign-up"
+        />
       </aside>
+      <div className="flex justify-center mt-4">
+        <p>
+          You already have an account? Go
+          <router-link
+            to="/login"
+            className="text-secondColor font-bold hover:text-secondColorBrighter"
+          >
+            here
+          </router-link>
+          to sign-in
+        </p>
+      </div>
     </section>
   </main>
 </template>
-
-<style src="./styles/login-register.css" scoped></style>

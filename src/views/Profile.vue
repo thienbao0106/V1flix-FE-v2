@@ -52,6 +52,12 @@ export default {
       window.addEventListener("resize", this.onResize);
     });
   },
+  beforeMount() {
+    if (this.$route.params.username !== "me") return;
+    const username = window.localStorage.getItem("username");
+    if (username !== null) return;
+    window.location.href = "/login";
+  },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
   },
@@ -88,8 +94,8 @@ export default {
 
           const { total_episodes, days_watched } =
             result.data.findUserByName.stats;
-          this.totalEpisodes = total_episodes;
-          this.daysWatched = days_watched;
+          this.totalEpisodes = total_episodes || 0;
+          this.daysWatched = days_watched || 0;
           console.log(this.totalEpisodes);
 
           this.count = this.typeList.map((type: string, index: number) => {
@@ -150,7 +156,6 @@ export default {
   },
   methods: {
     capitalizeWord,
-
     setCurrentType: function (type: string) {
       this.currentType = type;
       if (type === "All") {

@@ -337,7 +337,11 @@ export default {
     <Loading message="Getting the video" />
   </div>
 
-  <section id="container" style="visibility: hidden">
+  <section
+    id="container"
+    style="visibility: hidden"
+    :class="isTheaterMode ? '-mx-8' : '-mx-0'"
+  >
     <div
       ref="videoContainerRef"
       class="video-container paused w-full captions"

@@ -12,9 +12,11 @@ export default {
     };
   },
   setup() {
-    const { onResult: resultFn } = useQuery(seriesQuery(0, 4));
+    const numPerPage = 5;
+    const { onResult: resultFn } = useQuery(seriesQuery(0, numPerPage));
     return {
       resultFn,
+      numPerPage,
     };
   },
   mounted() {
@@ -25,7 +27,7 @@ export default {
   components: { Card },
   methods: {
     seeMore: function () {
-      const { onResult, loading } = useQuery(seriesQuery(1, 4));
+      const { onResult, loading } = useQuery(seriesQuery(1, this.numPerPage));
       this.loading = true;
       onResult((result) => {
         if (result.data)
@@ -54,7 +56,7 @@ export default {
   </aside>
   <aside class="flex justify-center items-center">
     <div
-      v-if="series.length <= 4"
+      v-if="series.length <= numPerPage"
       @click="seeMore"
       class="bg-secondColor font-bold rounded-md py-2 px-5 mt-14 cursor-pointer"
     >

@@ -49,7 +49,7 @@ export default {
       />
     </div>
     <div
-      className="flex flex-col lg:basis-[80%]  md:basis-[70%] sm:basis-[65%] basis-3/5   my-auto space-y-3 "
+      className="flex flex-col lg:basis-[80%]  md:basis-[70%] sm:basis-[65%] basis-3/5   my-auto space-y-3 py-1.5 pr-2"
     >
       <h3
         className="xl:text-base lg:text-xl sm:text-lg pt-2 text-lg font-semibold line-clamp-1"
@@ -64,15 +64,10 @@ export default {
       <div
         className="flex flex-row items-start justify-between pr-5 py-0.5 mb-3 rounded-b-md"
       >
-        <Details
-          :type="type"
-          :newep="totalEpisodes"
-          :status="status"
-          :view="view"
-        />
+        <Details :type="type" :newep="totalEpisodes" :status="status" />
       </div>
       <div
-        class="w-fit flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2"
+        class="w-fit flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 mb-5"
       >
         <font-awesome-icon
           icon="fa-solid fa-eye"

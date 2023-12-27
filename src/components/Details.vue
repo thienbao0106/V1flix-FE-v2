@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  props: ["newep", "type", "status", "view"],
+  props: ["newep", "type", "status"],
 };
 </script>
 

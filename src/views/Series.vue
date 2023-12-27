@@ -219,7 +219,7 @@ export default {
   <section
     id="main-video"
     v-if="!loading && Object.keys(series).length > 0"
-    class="text-white space-y-5 px-8 pt-5 md:gap-x-16"
+    class="text-white space-y-5 px-8 md:gap-x-16"
     :class="isTheaterMode ? `lg:flex-none` : `xl:flex xl:flex-row lg:flex-none`"
   >
     <section
