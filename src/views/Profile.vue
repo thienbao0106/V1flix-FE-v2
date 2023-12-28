@@ -7,12 +7,12 @@ import { getUser } from "../queries/users";
 import { USER_QUERIES } from "../constants/user";
 import { DEFAULT_IMAGE } from "../constants/image";
 
-import { capitalizeWord } from "../../utils/handleWord";
+import { capitalizeWord } from "../utils/handleWord";
 
 import Card from "../components/Card.vue";
 import GridLayout from "../components/Profile/GridLayout.vue";
 import Loading from "../components/Loading.vue";
-import AddModal from "../components/AddModal.vue";
+import ListModal from "../components/Modal/ListModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
 import RowLayout from "../components/Profile/RowLayout.vue";
 import Error from "../components/Error.vue";
@@ -148,7 +148,7 @@ export default {
     Card,
     GridLayout,
     Loading,
-    AddModal,
+    ListModal,
     ListStatus,
     RowLayout,
     Error,
@@ -185,7 +185,7 @@ export default {
 
 <template>
   <Loading v-if="loading" message="Getting info" />
-  <AddModal
+  <ListModal
     v-if="Object.keys(series).length > 0"
     :series="series"
     :current-ep="1"

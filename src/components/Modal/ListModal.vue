@@ -1,18 +1,18 @@
 <script lang="ts">
 import { useQuery, useMutation } from "@vue/apollo-composable";
-import { getImageType } from "../../utils/handleImage";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 import {
   getUser,
   addSeriesMutation,
   removeSeriesMutation,
   editSeriesMutation,
-} from "../queries/users";
-
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+} from "../../queries/users";
 import { toastSettings } from "../../utils/toastSettings";
-import { USER_QUERIES } from "../constants/user";
-import Loading from "./Loading.vue";
+import { getImageType } from "../../utils/handleImage";
+
+import { USER_QUERIES } from "../../constants/user";
+import Loading from "..//Loading.vue";
 
 export default {
   props: ["series", "currentEp", "reload"],
@@ -99,7 +99,6 @@ export default {
           );
           return;
         }
-
         const { mutate } = useMutation(editSeriesMutation);
         mutate({
           seriesId: this.series._id,
@@ -109,7 +108,6 @@ export default {
           userId: this.userId,
         });
         toast.success("Edit successfully", toastSettings.success);
-
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
         if (this.reload) this.$router.go(0);

@@ -1,10 +1,11 @@
 <script lang="ts">
-import AccountForm from "../components/AccountForm/AccountForm.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { userLogin } from "../queries/users";
 import { loginEle } from "../../src/constants/form";
-import { capitalizeWord } from "../../utils/handleWord";
+import { capitalizeWord } from "../utils/handleWord";
+
 import FormHeader from "../components/AccountForm/FormHeader.vue";
+import AccountForm from "../components/AccountForm/AccountForm.vue";
 
 export default {
   data() {

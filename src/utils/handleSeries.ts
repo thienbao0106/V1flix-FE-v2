@@ -1,5 +1,5 @@
-import { VIDEO_QUERIES } from "../src/constants/video";
-import { findSeriesQuery } from "./../src/queries/series";
+import { VIDEO_QUERIES } from "../constants/video";
+import { findSeriesQuery } from "../queries/series";
 import { useQuery } from "@vue/apollo-composable";
 
 export const fetchSeries = (

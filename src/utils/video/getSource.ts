@@ -1,5 +1,5 @@
-import { Source } from "../../src/types/video";
-import { URL_TYPE } from "./../../src/constants/video";
+import { Source } from "../../types/video";
+import { URL_TYPE } from "../../constants/video";
 import { checkSource, formatDuration } from "./handleVideo";
 
 export function getSource(

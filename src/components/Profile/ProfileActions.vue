@@ -1,6 +1,6 @@
 <script lang="ts">
 import { toast } from "vue3-toastify";
-import { toastSettings } from "../../../utils/toastSettings";
+import { toastSettings } from "../../utils/toastSettings";
 
 export default {
   methods: {

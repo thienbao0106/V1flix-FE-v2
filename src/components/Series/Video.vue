@@ -1,6 +1,6 @@
 <script lang="ts">
 import { ref } from "vue";
-import handleVideo from "../../../utils/video/index";
+import handleVideo from "../../utils/video/index";
 
 import { createCanvas } from "canvas";
 import { URL_TYPE } from "../../constants/video.ts";

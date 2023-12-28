@@ -1,11 +1,11 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { getImageType } from "../../../utils/handleImage";
-import { formatDuration } from "../../../utils/handleSeries";
+import { getImageType } from "../../utils/handleImage";
+import { formatDuration } from "../../utils/handleSeries";
 import {
   addSeriesFavorite,
   removeSeriesFavorite,
-} from "../../../utils/handleFavorite";
+} from "../../utils/handleFavorite";
 import { USER_QUERIES } from "../../constants/user";
 import { getUser } from "../../queries/users";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 import ListGenres from "./ListGenres.vue";
-import { capitalizeWord } from "../../../utils/handleWord";
+import { capitalizeWord } from "../../utils/handleWord";
 export default {
   props: ["toggleSubNav"],
   data() {

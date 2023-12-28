@@ -4,7 +4,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client/core";
 import App from "./App.vue";
 import "virtual:uno.css";
 import router from "./router";
-import { addIcon } from "./../utils/handleIcons";
+import { addIcon } from "./utils/handleIcons";
 
 import { provideApolloClient } from "@vue/apollo-composable";
 import { createHead } from "@unhead/vue";

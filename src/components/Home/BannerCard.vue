@@ -1,6 +1,6 @@
 <script lang="ts">
-import { getImageType } from "../../../utils/handleImage";
-import { formatDuration } from "../../../utils/handleSeries";
+import { getImageType } from "../../utils/handleImage";
+import { formatDuration } from "../../utils/handleSeries";
 export default {
   props: ["images", "id", "title", "description", "season", "duration"],
   data() {

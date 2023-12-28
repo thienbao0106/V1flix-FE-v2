@@ -1,5 +1,5 @@
 <script lang="ts">
-import { capitalizeWord } from "../../utils/handleWord";
+import { capitalizeWord } from "../utils/handleWord";
 import { registerEle } from "../../src/constants/form";
 import { useMutation } from "@vue/apollo-composable";
 import { createUserMutation } from "../../src/queries/users";

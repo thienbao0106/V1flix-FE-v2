@@ -1,5 +1,5 @@
 import { useMutation } from "@vue/apollo-composable";
-import { addFavorite, removeFavorite } from "../src/queries/series";
+import { addFavorite, removeFavorite } from "../queries/series";
 
 export async function addSeriesFavorite(
   seriesId: string,

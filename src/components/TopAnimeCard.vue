@@ -1,5 +1,5 @@
 <script lang="ts">
-import { getImageType } from "../../utils/handleImage";
+import { getImageType } from "../utils/handleImage";
 import Details from "./Details.vue";
 
 export default {

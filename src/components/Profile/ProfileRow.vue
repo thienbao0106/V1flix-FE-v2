@@ -1,6 +1,6 @@
 <script lang="ts">
 import moment from "moment";
-import { getImageType } from "../../../utils/handleImage";
+import { getImageType } from "../../utils/handleImage";
 
 export default {
   data() {

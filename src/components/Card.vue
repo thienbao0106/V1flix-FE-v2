@@ -2,7 +2,7 @@
 import moment from "moment";
 
 import Details from "./Details.vue";
-import { getImageType } from "../../utils/handleImage";
+import { getImageType } from "../utils/handleImage";
 export default {
   props: [
     "id",

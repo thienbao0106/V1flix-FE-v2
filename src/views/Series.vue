@@ -8,21 +8,17 @@ import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
 import Loading from "../components/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
-import AddModal from "../components/AddModal.vue";
+import ListModal from "../components/Modal/ListModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";
 import Error from "../components/Error.vue";
 
-import { fetchSeries, handleHistory } from "../../utils/handleSeries";
-import { isIOS } from "../../utils/handleVersion";
-import {
-  convertToTimestamp,
-  historyTimeline,
-} from "../../utils/video/handleTime";
+import { fetchSeries, handleHistory } from "../utils/handleSeries";
+import { isIOS } from "../utils/handleVersion";
+import { convertToTimestamp, historyTimeline } from "../utils/video/handleTime";
+import { defaultImage } from "../utils/handleImage";
 
 import { addViewMutation } from "../queries/series";
-
-import { defaultImage } from "../../utils/handleImage";
 
 export default {
   data() {
@@ -165,7 +161,7 @@ export default {
       if (!dialog) return;
       dialog.showModal();
     },
-    toggleAddModal: function () {
+    toggleListModal: function () {
       const dialog: any = document.querySelector(`#add-modal`);
       if (!dialog) return;
 
@@ -199,7 +195,7 @@ export default {
     ShareModal,
     TopAnimeList,
     VideoMobile,
-    AddModal,
+    ListModal,
     Error,
   },
 };
@@ -207,7 +203,7 @@ export default {
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
-  <AddModal
+  <ListModal
     v-if="Object.keys(series).length > 0"
     :series="series"
     :current-ep="getInfoUrl.ep"
@@ -301,7 +297,7 @@ export default {
                 <div
                   class="cursor-pointer bg-green-700 hover:bg-green-500 p-2.5 rounded-lg text-white font-bold"
                   v-if="isUser !== '' && isUser"
-                  @click="toggleAddModal"
+                  @click="toggleListModal"
                 >
                   <font-awesome-icon class="mr-2" icon="fa-solid fa-gear" />
                   Settings

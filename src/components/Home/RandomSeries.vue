@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { randomSeriesQuery } from "../../queries/series";
-import { getImageType } from "../../../utils/handleImage";
+import { getImageType } from "../../utils/handleImage";
 export default {
   data() {
     return {

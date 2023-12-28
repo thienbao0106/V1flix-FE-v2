@@ -1,5 +1,5 @@
 <script lang="ts">
-import { capitalizeWord } from "../../utils/handleWord";
+import { capitalizeWord } from "../utils/handleWord";
 
 export default {
   props: ["loading", "title"],

@@ -1,5 +1,5 @@
 <script lang="ts">
-import handleVideo from "../../../utils/video/index";
+import handleVideo from "../../utils/video/index";
 
 import { URL_TYPE } from "../../constants/video";
 
