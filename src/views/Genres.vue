@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { capitalizeWord } from "../../utils/handleWord";
-import { fetchSeries } from "../../utils/handleSeries";
+import { capitalizeWord } from "../utils/handleWord";
+import { fetchSeries } from "../utils/handleSeries";
 import Card from "../components/Card.vue";
 import ResultLayout from "../layouts/ResultLayout.vue";
 export default {
@@ -31,7 +31,7 @@ export default {
         this.id
       );
       this.loading = loading.value;
-      onResult((result) => {
+      onResult((result: any) => {
         if (result.data) {
           this.loading = loading.value;
           this.listResult = result.data.findSeries;
