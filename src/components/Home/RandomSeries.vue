@@ -45,6 +45,9 @@ export default {
           class="absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:duration-1000 top-0 md:h-full h-[10rem] w-full flex justify-center items-center flex-col"
         >
           <div class="lg:text-lg md:text-base">
+            <span class="font-bold"> {{ series.title?.alt_title || "" }}</span>
+          </div>
+          <div class="lg:text-lg md:text-base">
             <label>Status: </label>
             <span class="font-bold text-green"> {{ series.status }}</span>
           </div>
@@ -64,7 +67,7 @@ export default {
       </router-link>
     </div>
     <h2 class="lg:text-4xl md:text-2xl text-lg text-center">
-      {{ series.title }}
+      {{ series.title?.main_title || "" }}
     </h2>
   </div>
 </template>

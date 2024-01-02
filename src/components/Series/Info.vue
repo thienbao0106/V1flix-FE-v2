@@ -39,6 +39,8 @@ export default {
     });
     this.fetchFavorite();
     this.favorNum = this.favors;
+    const descriptionBox: any = document.querySelector("#description");
+    descriptionBox.innerHTML = this.description
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
@@ -87,7 +89,7 @@ export default {
       <img
         :src="getImageType(images, `cover`)"
         :alt="`img-${id}`"
-        class="w-full md:h-full h-[200px] object-cover"
+        class="w-full md:h-fit h-[200px] object-cover"
       />
     </section>
     <section
@@ -95,8 +97,8 @@ export default {
       class="basis-4/5 space-y-4 h-full xl:mt-0 mt-5 xl:pr-4 md:px-0 px-4"
     >
       <div class="flex justify-between gap-x-3">
-        <h3 class="lg:text-4xl w-[70%] md:text-2xl sm:text-xl font-bold">
-          {{ title }}
+        <h3 class="lg:text-3xl w-[70%] sm:text-4xl text-4xl font-bold">
+          {{ title.main_title }}
         </h3>
         <div
           class="cursor-pointer w-fit h-fit hover:bg-red-600 p-2.5 rounded-lg text-white font-bold"
@@ -118,15 +120,16 @@ export default {
           {{ favorNum }}
         </div>
       </div>
-      <h4 class="font-extralight">{{ title }}</h4>
+      <h4 class="font-extralight">{{ title.alt_title }}</h4>
       <p
-        class="font-light lg:text-xl text-sm w-full xl:line-clamp-none"
+        id="description"
+        class="font-light lg:text-lg text-sm w-full "
         :class="!isSeeMore && `line-clamp-2`"
       >
-        {{ description }}
-      </p>
+        
+    </p>
 
-      <div v-if="width < 1280" class="flex justify-start items-start">
+      <div  class="flex justify-start items-start">
         <div
           class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white"
           @click="toggleSeeMore(isSeeMore)"

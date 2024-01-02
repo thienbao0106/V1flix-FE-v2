@@ -15,7 +15,7 @@ export default {
     fetchResult: function () {
       this.loading = true;
       const { onResult } = useQuery(
-        findSeriesQuery(["title"], this.keyword, 3)
+        findSeriesQuery([ "title {\n main_title \n }"], this.keyword, 3)
       );
       onResult((result) => {
         if (!result.data) return;
@@ -87,9 +87,9 @@ export default {
       >
         <a
           class="text-white decoration-none hover:text-secondColorBrighter"
-          :href="`/series/${film.title}?ep=1`"
+          :href="`/series/${film.title.main_title}?ep=1`"
         >
-          {{ film.title }}
+          {{ film.title.main_title }}
         </a>
       </li>
       <li

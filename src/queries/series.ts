@@ -27,7 +27,10 @@ export const seriesBannerQuery = (limit: number) => gql`
     series(${`limitPerPage:  ${limit}`}) {
       series {
         _id
-        title
+        title {
+          main_title
+          alt_title
+        }
         description
         duration
         season
@@ -49,7 +52,10 @@ export const seriesQuery = (currentPage?: number, limit?: number) => {
     series(${`pageNumber: ${pageNumber}, limitPerPage: ${limitPerPage}`}) {
       series {
         _id
-        title
+        title {
+          main_title
+          alt_title
+        }
         status
         total_episodes
         type
@@ -75,7 +81,10 @@ export const listSeriesQuery = (currentPage: number, limit: number) => {
       totalPage
       series {
         _id
-        title
+        title {
+          main_title
+          alt_title
+        }
         status
         total_episodes
         type
@@ -95,7 +104,10 @@ export const randomSeriesQuery = () => gql`
   query randomSeries {
     randomSeries {
       _id
-      title
+      title {
+        main_title
+        alt_title
+      }
       status
       total_episodes
       type
@@ -134,7 +146,10 @@ export const findSeriesByIds = (listSeries: any) => {
     query findSeriesByIds {
       findSeriesByIds(${`listSeries: [${result}]`}) {
         _id
-        title
+        title {
+          main_title
+          alt_title
+        }
         status
         total_episodes
         type

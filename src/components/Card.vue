@@ -16,8 +16,7 @@ export default {
     "epCreatedAt",
   ],
 
-  data(props) {
-    console.log(props.status);
+  data() {
     return {
       isNew: false,
     };
@@ -54,11 +53,11 @@ export default {
           >New</span
         >
       </div>
-      <router-link :to="`/series/${title}?ep=${epNum ? epNum : 1}`">
+      <router-link :to="`/series/${title.main_title}?ep=${epNum ? epNum : 1}`">
         <img
           class="group-hover:opacity-25 max-w-full"
           :src="getImageType(images, `cover`)"
-          :alt="`cover-image-${title}`"
+          :alt="`cover-image-${title.main_title}`"
           loading="lazy"
         />
 
@@ -114,6 +113,8 @@ export default {
         :view="view"
       />
     </div>
-    <h3 class="lg:text-xl text-lg w-full line-clamp-2">{{ title }}</h3>
+    <h3 class="lg:text-xl text-lg w-full line-clamp-2">
+      {{ title.main_title }}
+    </h3>
   </div>
 </template>

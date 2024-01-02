@@ -51,12 +51,12 @@ export default {
           <h1
             class="lg:text-3xl text-white text-xl font-bold capitalize xl:truncate w-full lg:text-start text-center line-clamp-1"
           >
-            {{ title }}
+            {{ title.main_title }}
           </h1>
           <h2
             class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center"
           >
-            {{ title }}
+            {{ title.alt_title }}
           </h2>
           <div
             class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center flex lg:flex-row flex-col lg:justify-start justify-center gap-2"
