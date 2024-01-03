@@ -31,6 +31,7 @@ export const seriesBannerQuery = (limit: number) => gql`
           main_title
           alt_title
         }
+        type
         description
         duration
         season

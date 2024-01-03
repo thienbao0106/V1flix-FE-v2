@@ -23,7 +23,7 @@ export const VIDEO_QUERIES: any = {
     "images { \n source \n type \n }",
     "_id",
     "description",
-    "title {\n main_title \n }",
+    "title {\n main_title \n alt_title \n}",
     "type",
     "view",
     "total_episodes",

@@ -39,7 +39,7 @@ export default {
     },
     navigateSeries: function () {
       this.router.push(
-        `/series/${this.title}?ep=${
+        `/series/${this.title.main_title}?ep=${
           this.date !== "" ? this.current_episode : "1"
         }`
       );
@@ -78,10 +78,10 @@ export default {
         </div>
 
         <div
-          class="absolute left-0 right-0 bottom-0 backdrop-blur-md bg-mainColor/30 px-2"
+          class="absolute left-0 right-0 bottom-0 backdrop-blur-md bg-black/50 px-2"
         >
           <h3 class="lg:text-xl text-lg w-full line-clamp-2 pt-2">
-            {{ title }}
+            {{ title.main_title }}
           </h3>
           <div
             v-if="current_episode !== undefined"

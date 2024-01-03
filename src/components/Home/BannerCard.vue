@@ -2,7 +2,7 @@
 import { getImageType } from "../../utils/handleImage";
 import { formatDuration } from "../../utils/handleSeries";
 export default {
-  props: ["images", "id", "title", "description", "season", "duration"],
+  props: ["images", "id", "title", "description", "season", "duration", "type"],
   data() {
     return {
       width: window.innerWidth,
@@ -19,6 +19,10 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
+    const descriptionBox: any = document.querySelector(
+      `#description-${this.id}`
+    );
+    descriptionBox.innerHTML = this.description;
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
@@ -59,7 +63,7 @@ export default {
             {{ title.alt_title }}
           </h2>
           <div
-            class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center flex lg:flex-row flex-col lg:justify-start justify-center gap-2"
+            class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center lg:flex lg:flex-row lg:justify-start grid grid-cols-2 gap-2"
           >
             <div class="bg-detail px-3 py-1.5 rounded-xl">
               <font-awesome-icon icon="fa-regular fa-calendar" class="pr-2" />
@@ -67,18 +71,24 @@ export default {
               {{ season }}
             </div>
             <div class="bg-detail px-3 py-1.5 rounded-xl">
+              <font-awesome-icon icon="fa-solid fa-tv" class="pr-2" />
+
+              {{ type }}
+            </div>
+            <div class="bg-detail px-3 py-1.5 rounded-xl">
               <font-awesome-icon icon="fa-regular fa-clock" class="pr-2" />
               {{ formatDuration(duration) }}
             </div>
           </div>
-          <p
-            class="lg:text-start text-center xl:text-2xl lg:text-lg text-sm w-full lg:line-clamp-3 text-white line-clamp-3 font-light lg:text-opacity-60 text-opacity-90"
-          >
-            {{ description }}
-          </p>
+          <div class="xl:h-[80%] lg:h-[60%]">
+            <p
+              :id="`description-${id}`"
+              class="lg:text-start text-center xl:text-lg lg:text-lg text-sm w-full text-white lg:line-clamp-0 line-clamp-3 text-opacity-90 lg:hover:overflow-y-auto h-full"
+            ></p>
+          </div>
         </div>
         <a
-          :href="`/series/${title}?ep=1`"
+          :href="`/series/${title.main_title}?ep=1`"
           class="decoration-none cursor-pointer bg-secondColor text-white hover:bg-opacity-70 xl:px-7 px-5 font-bold lg:py-3 py-2 xl:text-2xl lg:text-lg text-base rounded-md flex justify-center items-center gap-x-3"
         >
           <font-awesome-icon

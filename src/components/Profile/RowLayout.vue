@@ -23,7 +23,7 @@ export default {
       </div>
       <div class="w-4/12 flex justify-center">
         <h1 class="font-bold">
-          {{ listSeries[0].date ? "Time" : "Action" }}
+          {{ listSeries[0].date ? "Time" : "Type" }}
         </h1>
       </div>
     </div>

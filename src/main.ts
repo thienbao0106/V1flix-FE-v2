@@ -11,6 +11,11 @@ import { createHead } from "@unhead/vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "@unocss/reset/tailwind-compat.css";
 
+// import function to register Swiper custom elements
+import { register } from "swiper/element/bundle";
+// register Swiper custom elements
+register();
+
 const cache = new InMemoryCache();
 const apolloClient = new ApolloClient({
   cache,

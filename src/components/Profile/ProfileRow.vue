@@ -68,10 +68,10 @@ export default {
     </div>
     <div class="xl:w-8/12 lg:w-6/12 md:w-5/12 w-4/12 text-left">
       <router-link
-        :to="`/series/${title}?ep=${date !== '' ? current_episode : '1'}`"
+        :to="`/series/${title.main_title}?ep=${date !== '' ? current_episode : '1'}`"
         class="lg:line-clamp-0 line-clamp-2 font-bold hover:text-secondColor"
       >
-        {{ title }}
+        {{ title.main_title }}
       </router-link>
     </div>
     <div class="w-2/12 text-left">
@@ -80,7 +80,9 @@ export default {
       </p>
     </div>
     <div class="w-4/12 flex justify-center">
-      <div v-if="date === ''">Test</div>
+      <div v-if="date === ''">
+        {{ type }}
+      </div>
 
       <p v-else>{{ formatDate(date) }}</p>
     </div>

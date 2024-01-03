@@ -200,9 +200,10 @@ export default {
         />
         <div class="flex flex-col space-y-3 w-full">
           <h1 class="font-bold text-2xl lg:text-start text-center">
-            {{ series.title }}
+            {{ series.title.main_title }}
           </h1>
-          <h2 class="text-sm lg:text-start text-center">{{ series.title }}</h2>
+  
+          <h2 class="text-sm lg:text-start text-center">{{ series.title.alt_title }}</h2>
           <div
             class="flex lg:flex-row flex-col lg:gap-y-0 gap-y-4 gap-x-3 pt-3 lg:justify-start justify-center lg:items-start items-center"
           >
