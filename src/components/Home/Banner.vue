@@ -69,7 +69,7 @@ export default {
   <section aria-label="banner">
     <div
       v-if="series.length > 0"
-      class="absolute lg:bottom-[44.2%] bottom-[39%] lg:left-[82%] left-[45%] font-bold lg:text-2xl text-xl"
+      class="absolute xl:bottom-[44.2%] lg:bottom-[30%] md:bottom-[30.5%] sm:bottom-[32.5%] bottom-[34.5%] xl:left-[82%] lg:left-[79%] left-[47.5%] font-bold lg:text-2xl text-xl"
       :class="index !== 0 ? 'text-white ' : 'text-secondColor'"
     >
       {{ width > 1024 ? `NO. ${index + 1}` : `${index + 1}/${series.length}` }}

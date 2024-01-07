@@ -9,7 +9,7 @@ export default {
 <template>
   <aside
     v-if="results.length > 0"
-    class="grid lg:grid-cols-4 grid-cols-2 gap-3"
+    class="grid lg:grid-cols-5 grid-cols-2 gap-y-5 gap-x-4"
   >
     <Card
       v-for="s in results"

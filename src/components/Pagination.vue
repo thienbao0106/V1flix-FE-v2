@@ -9,8 +9,6 @@ export default {
   },
   methods: {
     handleNavigation: function (type: string) {
-      console.log("called");
-      console.log(this.currentPage);
       this.$router.push(
         `/${this.type}?page=${
           type === "next" ? this.currentPage + 1 : this.currentPage - 1
@@ -49,7 +47,7 @@ export default {
 
 <template>
   <section
-    class="list-none w-full flex justify-center items-center flex-row lg:gap-x-5 gap-x-2 lg:pt-0 pt-5"
+    class="list-none w-full flex justify-center items-center flex-row lg:gap-x-5 gap-x-2 pt-8"
   >
     <button
       :disabled="currentPage === 1"

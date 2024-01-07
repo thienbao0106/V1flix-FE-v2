@@ -26,7 +26,7 @@ export default {
       class="text-white bg-mainColor p-3 rounded-lg font-bold hover:bg-secondColor w-full"
     >
       <font-awesome-icon icon="fa-solid fa-share" class="mr-2" />
-      Profile
+      Share
     </button>
     <button
       class="text-white bg-red-500 p-3 rounded-lg font-bold hover:bg-red-700 w-full"

@@ -36,7 +36,7 @@ export default {
       :src="getImageType(images, `banner`)"
       alt="test"
       loading="lazy"
-      class="relative w-full xl:h-[450px] lg:h-[400px] md:h-[350px] h-[380px] opacity-20"
+      class="relative w-full xl:h-[450px] md:h-[400px] h-[380px] opacity-20"
     />
     <aside
       class="absolute inset-0 h-full flex lg:flex-row flex-col gap-3 lg:px-10 px-5 py-10 lg:gap-x-5 w-full"

@@ -40,7 +40,7 @@ export default {
     this.fetchFavorite();
     this.favorNum = this.favors;
     const descriptionBox: any = document.querySelector("#description");
-    descriptionBox.innerHTML = this.description
+    descriptionBox.innerHTML = this.description;
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
@@ -97,7 +97,10 @@ export default {
       class="basis-4/5 space-y-4 h-full xl:mt-0 mt-5 xl:pr-4 md:px-0 px-4"
     >
       <div class="flex justify-between gap-x-3">
-        <h3 class="lg:text-3xl w-[70%] sm:text-4xl text-4xl font-bold">
+        <h3
+          :class="isUser !== '' && isUser ? `w-[70%]` : `w-full`"
+          class="lg:text-3xl sm:text-xl text-xl font-bold"
+        >
           {{ title.main_title }}
         </h3>
         <div
@@ -120,16 +123,16 @@ export default {
           {{ favorNum }}
         </div>
       </div>
-      <h4 class="font-extralight">{{ title.alt_title }}</h4>
+      <h4 class="lg:text-lg text-sm font-extralight">
+        {{ title.alt_title }}
+      </h4>
       <p
         id="description"
-        class="font-light lg:text-lg text-sm w-full "
+        class="font-light lg:text-lg text-sm w-full"
         :class="!isSeeMore && `line-clamp-2`"
-      >
-        
-    </p>
+      ></p>
 
-      <div  class="flex justify-start items-start">
+      <div class="flex justify-start items-start">
         <div
           class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white"
           @click="toggleSeeMore(isSeeMore)"
