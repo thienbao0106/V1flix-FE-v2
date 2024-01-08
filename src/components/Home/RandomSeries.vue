@@ -9,7 +9,17 @@ export default {
     };
   },
   setup() {
-    const { onResult: resultFn } = useQuery(randomSeriesQuery);
+    const { onResult: resultFn } = useQuery(
+      randomSeriesQuery([
+        "_id",
+        "title \n { \n main_title \n alt_title  \n } ",
+        "status",
+        "total_episodes",
+        "type",
+        "view",
+        "images \n { \n _id \n source \n type \n } ",
+      ])
+    );
     return {
       resultFn,
     };

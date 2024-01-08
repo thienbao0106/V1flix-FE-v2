@@ -57,15 +57,19 @@ export default {
 <template>
   <main>
     <ResultLayout :loading="loading" :title="`Latest Anime`">
-      <Card
-        v-for="ep in episodes"
-        :key="ep._id"
-        :id="ep._id"
-        :images="ep.series.images"
-        :ep-num="ep.epNum"
-        :ep-created-at="ep.created_at"
-        :title="ep.series.title"
-      />
+      <section
+        className="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
+      >
+        <Card
+          v-for="ep in episodes"
+          :key="ep._id"
+          :id="ep._id"
+          :images="ep.series.images"
+          :ep-num="ep.epNum"
+          :ep-created-at="ep.created_at"
+          :title="ep.series.title"
+        />
+      </section>
     </ResultLayout>
 
     <div class="mt-5">

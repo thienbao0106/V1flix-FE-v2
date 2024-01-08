@@ -1,6 +1,8 @@
 <script lang="ts">
 import ListGenres from "./ListGenres.vue";
 import { capitalizeWord } from "../../utils/handleWord";
+import { useQuery } from "@vue/apollo-composable";
+import { randomSeriesQuery } from "../../queries/series";
 export default {
   props: ["toggleSubNav"],
   data() {
@@ -37,6 +39,20 @@ export default {
     capitalizeWord,
     toggleGenresList: function (isGenresList: boolean) {
       this.isGenresList = !isGenresList;
+    },
+    navigateRandom: function () {
+      const { onResult: resultFn } = useQuery(
+        randomSeriesQuery(["title \n { \n main_title \n } "])
+      );
+      resultFn((result) => {
+        if (!result.data) return;
+        const {
+          title: { main_title },
+        } = result.data.randomSeries;
+        console.log(main_title);
+
+        window.location.href = `/series/${main_title}?ep=1`;
+      });
     },
   },
   components: { ListGenres },
@@ -103,6 +119,12 @@ export default {
                 class="hover:text-secondColorBrighter cursor-pointer"
               >
                 Genres
+              </li>
+              <li
+                @click="navigateRandom()"
+                class="hover:text-secondColorBrighter cursor-pointer"
+              >
+                Random
               </li>
             </ul>
           </div>

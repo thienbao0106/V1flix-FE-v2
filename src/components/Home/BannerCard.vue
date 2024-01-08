@@ -63,7 +63,7 @@ export default {
             {{ title.alt_title }}
           </h2>
           <div
-            class="lg:text-lg text-white text-md xl:truncate w-full lg:text-start text-center lg:flex lg:flex-row lg:justify-start grid grid-cols-2 gap-2"
+            class="lg:text-lg text-white lg:text-md text-sm xl:truncate w-full lg:text-start text-center lg:flex lg:flex-row lg:justify-start grid grid-cols-2 gap-2"
           >
             <div class="bg-detail px-3 py-1.5 rounded-xl">
               <font-awesome-icon icon="fa-regular fa-calendar" class="pr-2" />

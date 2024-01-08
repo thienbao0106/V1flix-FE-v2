@@ -101,23 +101,10 @@ export const listSeriesQuery = (currentPage: number, limit: number) => {
 `;
 };
 
-export const randomSeriesQuery = () => gql`
+export const randomSeriesQuery = (seriesFields: string[]) => gql`
   query randomSeries {
     randomSeries {
-      _id
-      title {
-        main_title
-        alt_title
-      }
-      status
-      total_episodes
-      type
-      view
-      images {
-        _id
-        source
-        type
-      }
+      ${[...seriesFields].join("\n")}
     }
   }
 `;

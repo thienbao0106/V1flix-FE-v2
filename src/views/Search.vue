@@ -129,7 +129,7 @@ export default {
 
             <button
               type="button"
-              @click.prevent="handleReset()"
+              @click="handleReset()"
               class="bg-red-500 w-fit py-2 px-4 rounded-md font-bold flex sm:justify-start justify-center sm:items-start items-center gap-2 cursor-pointer text-white"
             >
               Reset

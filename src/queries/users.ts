@@ -34,6 +34,16 @@ export const getListUsers = (userFields: string[]) => {
   `;
 };
 
+export const findListUsers = (userFields: string[], username: string) => {
+  return gql`
+    query findUsers {
+        findUsers(username: "${username}") {
+          ${[...userFields].join("\n")}
+        }
+    }
+  `;
+};
+
 export const addSeriesMutation = () => {
   return gql`
     mutation addSeriesToList(

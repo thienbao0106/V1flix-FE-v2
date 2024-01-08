@@ -53,16 +53,20 @@ export default {
 <template>
   <main>
     <ResultLayout :loading="loading" :title="`List Series`">
-      <Card
-        v-for="s in listSeries"
-        :id="s._id"
-        :images="s.images"
-        :status="s.status"
-        :title="s.title"
-        :total_episodes="s.total_episodes"
-        :type="s.type"
-        :view="s.view"
-      />
+      <section
+        className="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
+      >
+        <Card
+          v-for="s in listSeries"
+          :id="s._id"
+          :images="s.images"
+          :status="s.status"
+          :title="s.title"
+          :total_episodes="s.total_episodes"
+          :type="s.type"
+          :view="s.view"
+        />
+      </section>
     </ResultLayout>
 
     <Pagination
