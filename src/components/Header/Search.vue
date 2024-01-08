@@ -1,6 +1,8 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { findSeriesQuery } from "../../queries/series";
+import { VIDEO_QUERIES } from "../../constants/video";
+import SearchCard from "./SearchCard.vue";
 
 export default {
   data() {
@@ -15,7 +17,7 @@ export default {
     fetchResult: function () {
       this.loading = true;
       const { onResult } = useQuery(
-        findSeriesQuery([ "title {\n main_title \n }"], this.keyword, 3)
+        findSeriesQuery(VIDEO_QUERIES.headerSearch, this.keyword, 3)
       );
       onResult((result) => {
         if (!result.data) return;
@@ -46,6 +48,7 @@ export default {
       { immediate: true }
     );
   },
+  components: { SearchCard },
 };
 </script>
 
@@ -83,13 +86,18 @@ export default {
       <li
         v-if="resultQuery.length > 0"
         v-for="film in resultQuery"
-        class="bg-mainColor text-left py-2 pl-2 even:bg-black-500 list-none"
+        :key="film._id"
+        class="bg-mainColor hover:bg-gray-500 text-left py-2 pl-2 even:bg-black-500 list-none"
       >
-        <a
-          class="text-white decoration-none hover:text-secondColorBrighter"
-          :href="`/series/${film.title.main_title}?ep=1`"
-        >
-          {{ film.title.main_title }}
+        <a :href="`/series/${film.title.main_title}?ep=1`">
+          <SearchCard
+            :type="film.type"
+            :duration="film.duration"
+            :id="film._id"
+            :images="film.images"
+            :title="film.title"
+            :view="film.view"
+          />
         </a>
       </li>
       <li

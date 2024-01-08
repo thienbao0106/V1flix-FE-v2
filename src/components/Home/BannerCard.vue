@@ -76,8 +76,10 @@ export default {
               {{ type }}
             </div>
             <div class="bg-detail px-3 py-1.5 rounded-xl">
-              <font-awesome-icon icon="fa-regular fa-clock" class="pr-2" />
-              {{ formatDuration(duration) }}
+              <div>
+                <font-awesome-icon icon="fa-regular fa-clock" class="pr-2" />
+                {{ formatDuration(duration) }}
+              </div>
             </div>
           </div>
           <div class="xl:h-[80%] lg:h-[60%]">

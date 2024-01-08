@@ -29,4 +29,13 @@ export const VIDEO_QUERIES: any = {
     "total_episodes",
     "status",
   ],
+  headerSearch: [
+    "_id",
+    "images { \n source \n type \n }",
+    "duration",
+    "view",
+    "total_episodes",
+    "type",
+    "title {\n main_title \n }",
+  ],
 };

@@ -10,7 +10,9 @@ export const getEpisodes = (currentPage: number, limit: number) => gql`
         created_at
         series {
           _id
-          title
+          title {
+            main_title
+          }
           images {
             _id
             source

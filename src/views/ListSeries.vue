@@ -23,13 +23,11 @@ export default {
       let currentPage = Number.isNaN(page) ? 1 : page;
       this.currentPage = currentPage;
 
-      const { onResult } = useQuery(listSeriesQuery(currentPage - 1, 5));
+      const { onResult } = useQuery(listSeriesQuery(currentPage - 1, 12));
       this.loading = true;
       onResult((result) => {
         if (!result.data) return;
-        console.log(result.data.series);
         const { series, totalPage } = result.data.series;
-        console.log(totalPage);
         this.listSeries = series;
         this.totalPage = totalPage;
         this.loading = false;
@@ -68,6 +66,7 @@ export default {
     </ResultLayout>
 
     <Pagination
+      v-if="totalPage > 1"
       type="series"
       :currentPage="currentPage"
       :totalPage="totalPage"

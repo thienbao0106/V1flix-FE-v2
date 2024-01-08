@@ -1,6 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { getGenresMenu } from "../../queries/genres";
+import { capitalizeWord } from "../../utils/handleWord";
 
 export default {
   props: ["listGenres", "toggleGenresMenu", "toggleSubNav"],
@@ -20,6 +21,7 @@ export default {
         this.listGenres = result.data.genres;
       });
     },
+    capitalizeWord,
   },
 };
 </script>
@@ -29,7 +31,7 @@ export default {
   >
     <div
       @mouseleave="toggleGenresMenu(true)"
-      class="w-full h-fit sticky top-[10rem] bg-mainColor grid lg:grid-cols-4 grid-cols-2 rounded-sm border-solid border-r-0 border-t-0 border-b-0"
+      class="w-full h-fit sticky top-[11rem] bg-mainColor grid lg:grid-cols-4 grid-cols-2 rounded border-solid border-r-0 border-t-0 border-b-0"
     >
       <router-link
         :to="`/genres/${genres._id}/${genres.name}`"
@@ -37,7 +39,7 @@ export default {
         class="hover:bg-secondColorBrighter font-bold cursor-pointer lg:p-4 p-2 text-white text-md decoration-none text-center"
         v-for="genres in listGenres"
       >
-        {{ genres.name }}
+        {{ capitalizeWord(genres.name) }}
       </router-link>
     </div>
   </div>

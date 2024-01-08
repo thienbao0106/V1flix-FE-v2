@@ -30,7 +30,7 @@ export default {
     fetchEpisodes: function (page: number) {
       let currentPage = Number.isNaN(page) ? 1 : page;
       this.currentPage = currentPage;
-      const { onResult, loading } = useQuery(getEpisodes(currentPage - 1, 5));
+      const { onResult, loading } = useQuery(getEpisodes(currentPage - 1, 12));
       this.loading = loading.value;
 
       onResult((result) => {
