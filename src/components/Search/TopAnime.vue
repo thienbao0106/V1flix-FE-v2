@@ -8,8 +8,13 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-3xl font-bold mb-4">{{ `Top Anime ${filter}` }}</h1>
+  <div class="space-y-3">
+    <h1 class="text-3xl font-bold">{{ `Top Anime` }}</h1>
+    <p
+      class="bg-mainColor lg:text-center text-left lg:pl-0 pl-2 py-3 rounded-lg"
+    >
+      This list is based on keyword that you search.
+    </p>
     <ul className="flex gap-3 flex-col" role="list">
       <li
         v-for="(s, index) in result"

@@ -13,11 +13,13 @@ export default {
 
 <template>
   <div class="flex flex-row w-full gap-x-3">
-    <div class="max-w-[60px]">
+    <div class="w-[60px]">
       <img :src="getImageType(images, `thumbnail`)" class="rounded-md" />
     </div>
-    <div class="flex flex-col gap-y-1">
-      <h1 class="truncate line-clamp-1 font-bold">{{ title.main_title }}</h1>
+    <div class="w-full flex flex-col gap-y-1">
+      <h1 class="w-full line-clamp-1 font-bold">
+        {{ title.main_title }}
+      </h1>
       <h2 class="text-sm font-light">{{ type }}</h2>
 
       <div

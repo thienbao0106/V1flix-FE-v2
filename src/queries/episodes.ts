@@ -5,6 +5,8 @@ export const getEpisodes = (currentPage: number, limit: number) => gql`
     episodes(${`pageNumber: ${currentPage}, limitPerPage: ${limit}`}) {
       totalPage
       episodes {
+        title
+        view
         _id
         epNum
         created_at

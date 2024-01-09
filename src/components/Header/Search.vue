@@ -58,7 +58,7 @@ export default {
       class="w-full flex justify-center items-center bg-gray-500 bg-opacity-40 px-2 py-4 rounded-md no-underline text-white gap-3"
     >
       <router-link
-        to="/search"
+        :to="`/search/?keyword=${keyword}`"
         class="no-underline text-white hover:text-secondColorBrighter flex justify-between items-center"
       >
         <svg class="search-icon" viewBox="0 0 20 20">
