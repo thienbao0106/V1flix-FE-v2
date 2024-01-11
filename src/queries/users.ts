@@ -108,6 +108,26 @@ export const createUserMutation = () => {
   `;
 };
 
+export const updateProfileUser = () => {
+  return gql`
+    mutation updateProfile(
+      $email: String
+      $username: String
+      $password: String
+      $avatar: String
+      $userId: String!
+    ) {
+      updateProfile(
+        email: $email
+        username: $username
+        password: $password
+        avatar: $avatar
+        userId: $userId
+      )
+    }
+  `;
+};
+
 // export const findList = (status: string, username: string, title: any) => {
 //   console.log([...VIDEO_QUERIES.search].join("\n"));
 //   return gql`

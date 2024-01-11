@@ -53,6 +53,11 @@ const routes: Array<RouteRecordRaw> = [
     component: defineAsyncComponent(() => import("../views/Users.vue")),
   },
   {
+    path: "/settings",
+    name: "Settings",
+    component: defineAsyncComponent(() => import("../views/UserSettings.vue")),
+  },
+  {
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: defineAsyncComponent(() => import("../views/NotFound.vue")),

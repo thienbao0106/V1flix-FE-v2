@@ -28,7 +28,7 @@ export default {
 </script>
 <template>
   <aside
-    class="grid lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
+    class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
   >
     <LatestEpCard
       v-for="ep in listEpisodes"
@@ -41,14 +41,5 @@ export default {
       :series-title="ep.series.title"
       :title="ep.title"
     />
-    <!-- <Card
-      v-for="ep in listEpisodes"
-      :key="ep._id"
-      :id="ep._id"
-      :images="ep.series.images"
-      :ep-num="ep.epNum"
-      :ep-created-at="ep.created_at"
-      :title="ep.series.title"
-    /> -->
   </aside>
 </template>

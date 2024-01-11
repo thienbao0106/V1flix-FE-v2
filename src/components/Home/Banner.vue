@@ -66,10 +66,10 @@ export default {
 </script>
 
 <template>
-  <section aria-label="banner">
+  <section class="relative" aria-label="banner">
     <div
       v-if="series.length > 0"
-      class="absolute 2xl:bottom-[44.2%] xl:bottom-[27.5%] lg:bottom-[33.5%] md:bottom-[34%] sm:bottom-[37%] bottom-[50%] xl:left-[82%] lg:left-[79%] left-[47.5%] font-bold lg:text-2xl text-xl"
+      class="absolute xl:bottom-[12px] lg:bottom-[10px] bottom-[15px] xl:left-[82%] lg:left-[79%] left-[47.5%] font-bold lg:text-2xl text-xl"
       :class="index !== 0 ? 'text-white ' : 'text-secondColor'"
     >
       {{ width > 1024 ? `NO. ${index + 1}` : `${index + 1}/${series.length}` }}

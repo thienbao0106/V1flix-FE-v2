@@ -17,6 +17,7 @@ export const USER_QUERIES = {
   ],
   header: ["avatar"],
   favor: ["_id", "favoriteList { \n _id \n }"],
+  settings: ["_id", "avatar", "username", "email"],
   // searchList: [
   //   `series {${VIDEO_QUERIES["search"].join(" \n ")}}`,
   //   "status",

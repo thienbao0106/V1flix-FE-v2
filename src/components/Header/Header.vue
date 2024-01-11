@@ -209,7 +209,9 @@ export default {
             >
               Logout
             </li>
-            <li class="hover:text-secondColor hover:cursor-pointer">Setting</li>
+            <li class="hover:text-secondColor hover:cursor-pointer">
+              <router-link to="/settings"> Setting </router-link>
+            </li>
           </ul>
         </div>
       </div>
