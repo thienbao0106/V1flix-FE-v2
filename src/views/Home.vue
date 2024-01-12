@@ -58,15 +58,33 @@ export default {
         </div>
         <hr />
         <div>
-          <h1 className="font-bold lg:text-2xl text-xl mb-5">Newly Added</h1>
+          <div class="flex justify-between items-start flex-row">
+            <h1 className="font-bold lg:text-2xl text-xl mb-5">Newly Added</h1>
+            <router-link to="/series">
+              <font-awesome-icon
+                icon="fa-solid fa-arrow-right "
+                size="xl"
+                class="text-white hover:text-secondColor"
+              />
+            </router-link>
+          </div>
           <NewlyAdded />
         </div>
         <hr />
 
         <div>
-          <h1 className="font-bold lg:text-2xl text-xl mb-5">
-            Latest Episodes
-          </h1>
+          <div class="flex justify-between items-start flex-row">
+            <h1 className="font-bold lg:text-2xl text-xl mb-5">
+              Latest Episodes
+            </h1>
+            <router-link to="/latest">
+              <font-awesome-icon
+                icon="fa-solid fa-arrow-right "
+                size="xl"
+                class="text-white hover:text-secondColor"
+              />
+            </router-link>
+          </div>
           <LatestEpisodes />
         </div>
       </section>

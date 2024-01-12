@@ -6,6 +6,7 @@ import { USER_QUERIES } from "../constants/user";
 import { getUser } from "../queries/users";
 //Components
 import Account from "../components/UserSettings/Account.vue";
+import Loading from "../components/Loading.vue";
 
 export default {
   data() {
@@ -15,6 +16,7 @@ export default {
       user: {},
       listMenu: ["Account", "Notification"],
       section: "Account",
+      loading: true,
     };
   },
   methods: {
@@ -30,6 +32,7 @@ export default {
         if (!result.data) return;
         this.user = result.data.findUserByName;
       });
+      this.loading = false;
     },
     toggleSection: function (section: string) {
       this.section = section;
@@ -40,13 +43,13 @@ export default {
     document.title = "Settings";
     this.fetchUserInfo();
   },
-  components: { Account },
+  components: { Account, Loading },
 };
 </script>
 
 <template>
   <main
-    class="lg:px-8 px-4 text-white flex lg:flex-row flex-col w-full h-screen lg:gap-x-3 gap-y-4"
+    class="lg:px-8 px-4 text-white flex lg:flex-row flex-col w-full lg:h-screen h-full lg:gap-x-3 gap-y-4"
   >
     <div class="lg:w-[15%] w-full space-y-3">
       <h1 class="font-bold text-2xl">Settings</h1>
@@ -61,10 +64,13 @@ export default {
       </ul>
     </div>
     <div class="lg:w-[85%] w-full">
-      <Account :account="user" v-if="section === 'Account'" />
+      <Account
+        :account="user"
+        v-if="section === 'Account' && Object.keys(user).length > 0"
+      />
       <div
         class="h-screen w-full flex justify-center items-center font-bold text-3xl"
-        v-else
+        v-if="section !== 'Account'"
       >
         This will be implemented soon.
       </div>

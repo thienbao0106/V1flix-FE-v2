@@ -15,7 +15,6 @@ export default {
       const { onResult } = useQuery(getEpisodes(0, 12));
       onResult((result) => {
         if (!result.data) return;
-        console.log(result.data.episodes);
         this.listEpisodes = result.data.episodes.episodes;
       });
     },

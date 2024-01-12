@@ -51,6 +51,9 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
+    const username: any = this.$route.params.username;
+    if (!username) return;
+    document.title = username === "me" ? "Profile" : username;
   },
   beforeMount() {
     if (this.$route.params.username !== "me") return;
@@ -206,7 +209,7 @@ export default {
           <img
             :src="user.avatar === '' ? defaultAvatar : user.avatar"
             alt="avatar"
-            class="w-[10rem] lg:rounded-0 rounded-xl lg:pb-0 pb-5"
+            class="w-[10rem] rounded-lg lg:pb-0 pb-5"
           />
           <ProfileActions v-if="width >= 1024" />
         </div>

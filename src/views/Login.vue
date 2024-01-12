@@ -35,10 +35,10 @@ export default {
       return;
     },
     handleSubmit: function (e: any) {
-      this.loading = true;
       e.preventDefault();
+      this.loading = true;
       const { password, email } = e.target.elements;
-      const { onResult } = useQuery(
+      const { onResult, onError } = useQuery(
         userLogin(email.value, password.value),
         {},
         {
@@ -49,7 +49,6 @@ export default {
         if (!result.data) {
           this.error =
             "Your password isn't matched or your account doesn't exist.";
-          this.loading = false;
           return;
         }
         console.log("called");
@@ -60,6 +59,10 @@ export default {
         window.localStorage.setItem("history", JSON.stringify([]));
         window.location.href = "/";
       });
+      onError((error: any) => {
+        this.error = error.networkError.result.errors[0].message;
+      });
+      this.loading = false;
     },
   },
   components: { AccountForm, FormHeader },
