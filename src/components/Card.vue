@@ -62,6 +62,7 @@ export default {
   <div class="flex flex-col w-full">
     <div class="relative group">
       <HoverCard
+        v-if="description"
         :isEndOfRow="
           width < 1320 &&
           width >= 1024 &&

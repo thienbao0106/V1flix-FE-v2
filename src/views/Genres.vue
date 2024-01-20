@@ -1,13 +1,14 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
 import { capitalizeWord } from "../utils/handleWord";
-import { fetchSeries } from "../utils/handleSeries";
 import Card from "../components/Card.vue";
 import ResultLayout from "../layouts/ResultLayout.vue";
+import { useQuery } from "@vue/apollo-composable";
+import { findGenres } from "../queries/genres";
 export default {
   data() {
     return {
-      listResult: [] as any,
+      genres: {} as any,
       loading: false,
     };
   },
@@ -23,20 +24,20 @@ export default {
   methods: {
     capitalizeWord,
     fetchSeriesGenres: function () {
-      console.log(this.genre);
-      const { onResult, loading } = fetchSeries(
-        "",
-        "search",
-        "default",
-        this.id
-      );
-      this.loading = loading.value;
-      onResult((result: any) => {
-        if (result.data) {
-          this.loading = loading.value;
-          this.listResult = result.data.findSeries;
-        }
-      });
+      try {
+        console.log(this.genre);
+        const { onResult, loading } = useQuery(findGenres(this.id));
+        this.loading = loading.value;
+        onResult((result: any) => {
+          if (result.data) {
+            console.log(result.data);
+            this.loading = loading.value;
+            this.genres = result.data.findGenresById;
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   created() {
@@ -55,8 +56,9 @@ export default {
 
 <template>
   <ResultLayout :loading="loading" :title="`${genre} Anime`">
+    <p class="py-4">{{ genres.description }}</p>
     <Card
-      v-for="series in listResult"
+      v-for="series in genres.series"
       :id="series._id"
       :images="series.images"
       :total_episodes="series.total_episodes"

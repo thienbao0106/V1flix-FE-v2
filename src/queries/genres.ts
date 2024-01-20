@@ -18,3 +18,16 @@ export const getGenresMenu = () => gql`
     }
   }
 `;
+
+export const findGenres = (genreId: any) => gql`
+  query getGenres {
+    findGenresById(genreId:  "${genreId}") {
+      _id
+      name 
+      description
+      series {
+        _id
+      }
+    }
+  }
+`
