@@ -31,7 +31,8 @@ export default {
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
     <Card
-      v-for="s in series"
+      v-for="(s, index) in series"
+      :index="index + 1"
       :id="s._id"
       :images="s.images"
       :status="s.status"
@@ -39,6 +40,8 @@ export default {
       :total_episodes="s.total_episodes"
       :type="s.type"
       :view="s.view"
+      :trailer="s.trailer"
+      :description="s.description"
     />
   </aside>
 </template>

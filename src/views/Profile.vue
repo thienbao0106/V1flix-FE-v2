@@ -1,20 +1,21 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { useHead } from "@unhead/vue";
-
+//Queries
 import { getUser } from "../queries/users";
-
+//Constants
 import { USER_QUERIES } from "../constants/user";
 import { DEFAULT_IMAGE } from "../constants/image";
-
+//Utils
 import { capitalizeWord } from "../utils/handleWord";
-
+//Layout
+import GridLayout from "../layouts/GridLayout.vue";
+import RowLayout from "../layouts/RowLayout.vue";
+//Components
 import Card from "../components/Card.vue";
-import GridLayout from "../components/Profile/GridLayout.vue";
 import Loading from "../components/Loading.vue";
 import ListModal from "../components/Modal/ListModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
-import RowLayout from "../components/Profile/RowLayout.vue";
 import Error from "../components/Error.vue";
 import ProfileActions from "../components/Profile/ProfileActions.vue";
 

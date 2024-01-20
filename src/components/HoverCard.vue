@@ -1,0 +1,51 @@
+<script lang="ts">
+import { ref } from "vue";
+
+export default {
+  props: [
+    "trailer",
+    "description",
+    "title",
+    "totalEpisodes",
+    "type",
+    "isEndOfRow",
+  ],
+  data() {
+    return {
+      isShown: false,
+    };
+  },
+
+  setup() {
+    const hoverRef = ref<HTMLDivElement>();
+    return {
+      hoverRef,
+    };
+  },
+};
+</script>
+
+<template>
+  <main
+    :class="
+      isEndOfRow
+        ? 'xl:right-[250px] lg:right-[238px]'
+        : ' xl:left-[250px] lg:left-[238px]'
+    "
+    class="z-12 absolute hidden lg:group-hover:block text-white bg-mainColor h-fit w-[400px] rounded-md top-1/3 p-2 space-y-3"
+  >
+    <h1 class="font-bold text-2xl">{{ title.main_title }}</h1>
+    <div class="flex flex-row italic gap-x-3">
+      <p>{{ type }}</p>
+      <p>{{ totalEpisodes }} eps</p>
+    </div>
+    <!-- <iframe
+      :src="`https://www.youtube.com/embed/${trailer.id}`"
+      width="380"
+      height="300"
+      preload="none"
+    >
+    </iframe> -->
+    <p class="line-clamp-4">{{ description }}</p>
+  </main>
+</template>

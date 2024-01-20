@@ -1,6 +1,4 @@
 <script lang="ts">
-import { useQuery } from "@vue/apollo-composable";
-import { findSeriesByIds } from "../../queries/series";
 export default {
   data() {
     return {
@@ -31,28 +29,12 @@ export default {
       if (this.isCollapse === false) this.isCollapse = true;
     },
     handleSearch: function () {
-      if (this.currentType === "history") {
-        if (this.historyList.length === 0) return;
-        if (this.keyword.length === 0) {
-          this.setListSeries(this.historyList);
-          return;
-        }
-
-        this.setListSeries(
-          this.historyList.filter((item: any) => {
-            const result = item.series.title
-              .toLowerCase()
-              .includes(this.keyword.toLowerCase());
-            return result;
-          })
-        );
-        return;
-      }
-
       if (this.currentType === "all") {
         this.setListSeries(
           this.userList.filter((item: any) =>
-            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+            item.series.title.main_title
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase())
           )
         );
         return;
@@ -61,7 +43,9 @@ export default {
         if (this.keyword === "") return this.favoriteList;
         this.setListSeries(
           [...this.favoriteList].filter((item: any) =>
-            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+            item.series.title.main_title
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase())
           )
         );
         return;
@@ -71,36 +55,12 @@ export default {
         this.userList.filter((item: any) => {
           return (
             item.status === this.currentType.toLowerCase() &&
-            item.series.title.toLowerCase().includes(this.keyword.toLowerCase())
+            item.series.title.main_title
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase())
           );
         })
       );
-    },
-    showHistory: function () {
-      this.setCurrentType("history");
-      const history = JSON.parse(window.localStorage.getItem("history") || "");
-      if (history.length === 0) {
-        this.setListSeries([]);
-        return;
-      }
-      const historyIds = history.map((series: any) => series.seriesId);
-      const dateWatches = history.map((series: any) => series.time);
-      const currentEps = history.map((series: any) => series.currentEp);
-
-      const { onResult } = useQuery(findSeriesByIds(historyIds));
-      onResult((result) => {
-        if (!result.data) return;
-        this.historyList = result.data.findSeriesByIds.map(
-          (series: any, index: number) => {
-            return {
-              series,
-              currentEp: currentEps[index],
-              date: dateWatches[index],
-            };
-          }
-        );
-        this.setListSeries(this.historyList);
-      });
     },
     showFavorite: function () {
       this.setCurrentType("favorite");
@@ -140,14 +100,7 @@ export default {
         class="w-full text-white font-bold pl-2 py-2 rounded-md bg-mainColor"
       />
     </div>
-    <div v-if="isOwner" class="my-5">
-      <h1
-        @click="showHistory()"
-        class="cursor-pointer hover:text-secondColor font-bold text-xl my-1.5"
-      >
-        Watching History
-      </h1>
-    </div>
+
     <div class="my-5">
       <h1
         @click="showFavorite()"

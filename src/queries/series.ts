@@ -59,6 +59,12 @@ export const seriesQuery = (currentPage?: number, limit?: number) => {
         }
         status
         total_episodes
+        description
+        trailer {
+          id 
+          site
+          thumbnail
+        }
         type
         view
         episodes {

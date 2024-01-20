@@ -1,14 +1,14 @@
 <script lang="ts">
-import ProfileRow from "./ProfileRow.vue";
+import RowItemCard from "../components/RowItemCard.vue";
 
 export default {
   props: ["listSeries", "setSeries"],
-  components: { ProfileRow },
+  components: { RowItemCard },
 };
 </script>
 
 <template>
-  <div class="w-full lg:ml-8 ml-0 flex flex-col gap-y-4 lg:pr-8 pr-0">
+  <div class="max-w-full lg:ml-8 ml-0 flex flex-col gap-y-4 lg:pr-8 pr-0">
     <div
       class="w-full flex flex-row bg-mainColor h-full justify-start items-center gap-x-3 py-4"
     >
@@ -27,7 +27,7 @@ export default {
         </h1>
       </div>
     </div>
-    <ProfileRow
+    <RowItemCard
       @click="setSeries(series)"
       v-for="({ series, currentEp, date }, index) in listSeries"
       :key="index"

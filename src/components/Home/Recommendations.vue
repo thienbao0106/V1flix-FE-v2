@@ -9,6 +9,7 @@ export default {
       series: [] as any[],
       currentPage: 0,
       loading: false,
+      width: window.innerWidth,
     };
   },
   setup() {
@@ -22,6 +23,7 @@ export default {
   mounted() {
     this.resultFn((result) => {
       if (result.data) this.series = result.data.series.series;
+      console.log(this.series);
     });
   },
   components: { Card },
@@ -33,7 +35,11 @@ export default {
         if (result.data)
           this.series = [...this.series, ...result.data.series.series];
         this.loading = loading.value;
+        console.log(result.data);
       });
+    },
+    onResize: function () {
+      this.width = window.innerWidth;
     },
   },
 };
@@ -44,7 +50,8 @@ export default {
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
     <Card
-      v-for="s in series"
+      v-for="(s, index) in series"
+      :index="index + 1"
       :id="s._id"
       :images="s.images"
       :status="s.status"
@@ -52,6 +59,8 @@ export default {
       :total_episodes="s.total_episodes"
       :type="s.type"
       :view="s.view"
+      :description="s.description"
+      :trailer="s.trailer"
     />
   </aside>
   <aside class="flex justify-center items-center">

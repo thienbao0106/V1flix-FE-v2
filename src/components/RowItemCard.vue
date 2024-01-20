@@ -1,6 +1,6 @@
 <script lang="ts">
 import moment from "moment";
-import { getImageType } from "../../utils/handleImage";
+import { getImageType } from "../utils/handleImage";
 
 export default {
   data() {
@@ -68,7 +68,9 @@ export default {
     </div>
     <div class="xl:w-8/12 lg:w-6/12 md:w-5/12 w-4/12 text-left">
       <router-link
-        :to="`/series/${title.main_title}?ep=${date !== '' ? current_episode : '1'}`"
+        :to="`/series/${title.main_title}?ep=${
+          date !== '' ? current_episode : '1'
+        }`"
         class="lg:line-clamp-0 line-clamp-2 font-bold hover:text-secondColor"
       >
         {{ title.main_title }}

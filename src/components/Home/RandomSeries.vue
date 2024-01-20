@@ -28,7 +28,6 @@ export default {
     this.resultFn((result: any) => {
       if (result.data) {
         this.series = result.data.randomSeries;
-        console.log(this.series);
       }
     });
   },
@@ -44,7 +43,12 @@ export default {
       Series Of The Day
     </h1>
     <div class="relative group decoration-none">
-      <router-link class="text-white" :to="`/series/${series.title}?ep=1`">
+      <router-link
+        class="text-white"
+        :to="`/series/${
+          Object.keys(series).length > 0 && series.title.main_title
+        }?ep=1`"
+      >
         <img
           class="w-full md:h-full h-[10rem] rounded-md group-hover:opacity-25"
           :src="getImageType(series.images, `banner`)"

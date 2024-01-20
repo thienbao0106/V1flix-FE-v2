@@ -54,6 +54,9 @@ export default {
         window.location.href = `/series/${main_title}?ep=1`;
       });
     },
+    navigateHistory: function () {
+      window.location.href = `/history`;
+    },
   },
   components: { ListGenres },
 };
@@ -119,6 +122,12 @@ export default {
                 class="hover:text-secondColorBrighter cursor-pointer"
               >
                 Genres
+              </li>
+              <li
+                @click="navigateHistory()"
+                class="hover:text-secondColorBrighter cursor-pointer"
+              >
+                History
               </li>
               <li
                 @click="navigateRandom()"

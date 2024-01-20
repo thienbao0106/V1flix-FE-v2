@@ -3,6 +3,7 @@ import moment from "moment";
 
 import Details from "./Details.vue";
 import { getImageType } from "../utils/handleImage";
+import HoverCard from "./HoverCard.vue";
 export default {
   props: [
     "id",
@@ -14,11 +15,15 @@ export default {
     "view",
     "epNum",
     "epCreatedAt",
+    "description",
+    "trailer",
+    "index",
   ],
 
   data() {
     return {
       isNew: false,
+      width: window.innerWidth,
     };
   },
 
@@ -36,15 +41,39 @@ export default {
     getDate: function (time: any) {
       return moment(time).fromNow();
     },
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
 
-  components: { Details },
+  components: { Details, HoverCard },
 };
 </script>
 
 <template>
   <div class="flex flex-col w-full">
     <div class="relative group">
+      <HoverCard
+        :isEndOfRow="
+          width < 1320 &&
+          width >= 1024 &&
+          (index % 4 === 0 || index === 3 || index === 7)
+        "
+        :type="type"
+        :totalEpisodes="total_episodes"
+        :description="description"
+        :trailer="trailer"
+        :title="title"
+      />
+
       <div
         class="absolute bg-red-500 rounded-lg -top-3 -right-3 py-2 px-4 group-hover:hidden"
         v-if="checkNewEpisode(epCreatedAt) && epCreatedAt && epNum"
