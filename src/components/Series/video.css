@@ -38,6 +38,17 @@ video {
   transition: opacity 150ms ease-in-out;
 }
 
+.video-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  opacity: 0;
+  color: white;
+  transition: opacity 150ms ease-in-out;
+}
+
 .video-controls-container::before {
   content: "";
   position: absolute;
@@ -49,9 +60,20 @@ video {
   pointer-events: none;
 }
 
+.video-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
 .video-container:hover .video-controls-container,
 .video-container:focus-within .video-controls-container,
-.video-container.paused .video-controls-container {
+.video-container.paused .video-controls-container, .video-container:hover .video-header {
   opacity: 1;
 }
 

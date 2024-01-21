@@ -38,4 +38,19 @@ export const VIDEO_QUERIES: any = {
     "type",
     "title {\n main_title \n }",
   ],
+  detail: [
+    "images { \n source \n type \n }",
+    "_id",
+    "description",
+    "title {\n main_title \n alt_title \n}",
+    "type",
+    "view",
+    "total_episodes",
+    "status",
+    "favors",
+    "episodes { \n _id  \n epNum \n title \n created_at \n view \n }",
+    "genres { \n _id \n name \n}",
+    "duration",
+    "trailer { \n id \n site \n thumbnail \n}",
+  ]
 };

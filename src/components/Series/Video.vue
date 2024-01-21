@@ -16,6 +16,8 @@ export default {
     "setTheaterMode",
     "keyframe",
     "isTheaterMode",
+    "title",
+    "epNum",
   ],
   data() {
     return {
@@ -29,6 +31,7 @@ export default {
       isBuffering: false,
       width: window.screen.width,
       editCue: false,
+      isFullScreen: false,
     };
   },
   created() {
@@ -59,6 +62,7 @@ export default {
     const previewTimeRef = ref<HTMLDivElement>();
     const controlContainerRef = ref<HTMLDivElement>();
     const trackRef = ref<HTMLTrackElement>();
+    const videoHeaderRef = ref<HTMLDivElement>();
 
     return {
       captions: {} as any,
@@ -79,6 +83,7 @@ export default {
       source: handleVideo.checkSource(props.source),
       keyframe: handleVideo.checkSource(props.keyframe),
       trackRef,
+      videoHeaderRef,
     };
   },
   mounted() {
@@ -98,6 +103,14 @@ export default {
       container.style.visibility = "visible";
       this.handleRenderVideo();
     }
+    document.addEventListener("fullscreenchange", () => {
+      if (
+        this.videoHeaderRef &&
+        this.videoHeaderRef.style.opacity == "1" &&
+        document.fullscreenElement === null
+      )
+        this.videoHeaderRef.style.opacity = "0";
+    });
   },
   unmounted() {
     window.removeEventListener("resize", this.onResize);
@@ -164,6 +177,7 @@ export default {
         this.controlContainerRef.style.opacity = "0";
         if (!this.settingBoxRef.classList.contains("hidden"))
           this.settingBoxRef.classList.add("hidden");
+        if (this.videoHeaderRef) this.videoHeaderRef.style.opacity = "0";
       });
 
       this.videoRef.addEventListener("enterpictureinpicture", () => {
@@ -181,15 +195,28 @@ export default {
 
         const controller: HTMLDivElement = this.controlContainerRef;
         const video: HTMLVideoElement = this.videoRef;
+        const videoHeader: any = this.videoHeaderRef;
         const { cues } = this.trackRef.track;
 
-        if (controller.style.opacity === "0") controller.style.opacity = "1";
+        if (controller.style.opacity === "0") {
+          controller.style.opacity = "1";
+        }
+        if (
+          videoHeader &&
+          videoHeader.style.opacity === "0" &&
+          document.fullscreenElement !== null
+        ) {
+          videoHeader.style.opacity = "1";
+        }
+
         if (video.style.cursor === "none") video.style.cursor = "default";
 
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
           video.style.cursor = "none";
           controller.style.opacity = "0";
+          videoHeader.style.opacity = "0";
+
           if (!cues) return;
           for (let i = 0; i < cues.length; i++) {
             const cue: any = cues[i];
@@ -244,7 +271,8 @@ export default {
     handleVideoPause: function () {
       handleVideo.handleVideoPause(this.videoContainerRef);
     },
-    toggleFullScreenMode: function () {
+    toggleFullScreenMode: function (isFullScreen: boolean) {
+      this.isFullScreen = !isFullScreen;
       handleVideo.toggleFullScreenMode(this.videoContainerRef);
     },
     toggleMiniPlayerMode: function () {
@@ -347,6 +375,11 @@ export default {
       class="video-container paused w-full captions"
       data-volume-level="high"
     >
+      <div ref="videoHeaderRef" class="video-header h-fit">
+        <h1 class="lg:text-3xl text-xl font-bold pt-4 pl-3">
+          {{ `Episode ${epNum} - ${title}` }}
+        </h1>
+      </div>
       <img ref="thumbnailImgRef" class="thumbnail-img" />
       <div ref="controlContainerRef" class="video-controls-container">
         <div
@@ -451,7 +484,10 @@ export default {
               />
             </svg>
           </button>
-          <button @click="toggleFullScreenMode" class="full-screen-btn">
+          <button
+            @click="toggleFullScreenMode(isFullScreen)"
+            class="full-screen-btn"
+          >
             <svg class="open" viewBox="0 0 24 24">
               <path
                 fill="currentColor"

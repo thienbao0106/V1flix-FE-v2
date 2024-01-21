@@ -155,9 +155,8 @@ export default {
       if (!video) return;
       this.seconds = video.currentTime;
       this.timestamp = convertToTimestamp(video);
-
       const dialog: any = document.querySelector("#share-modal");
-      console.log(dialog);
+
       if (!dialog) return;
       dialog.showModal();
     },
@@ -245,6 +244,8 @@ export default {
                 :set-theater-mode="setTheaterMode"
                 :keyframe="currentEpisode.keyframe"
                 :is-theater-mode="isTheaterMode"
+                :title="currentEpisode.title"
+                :ep-num="getInfoUrl.ep"
               />
               <VideoMobile
                 v-if="
