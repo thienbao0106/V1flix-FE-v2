@@ -24,10 +24,22 @@ export const findGenres = (genreId: any) => gql`
     findGenresById(genreId:  "${genreId}") {
       _id
       name 
-      description
       series {
         _id
+        images {
+          _id
+          name
+          type 
+          source
+        }
+        title {
+          main_title
+          alt_title
+        }
+        total_episodes
+        created_at
+        status
       }
     }
   }
-`
+`;

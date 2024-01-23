@@ -15,7 +15,6 @@ export default {
   setup() {
     const route = useRoute();
     const { id, name } = route.params;
-    console.log(name);
     return {
       genre: name,
       id,
@@ -30,7 +29,6 @@ export default {
         this.loading = loading.value;
         onResult((result: any) => {
           if (result.data) {
-            console.log(result.data);
             this.loading = loading.value;
             this.genres = result.data.findGenresById;
           }
@@ -56,15 +54,18 @@ export default {
 
 <template>
   <ResultLayout :loading="loading" :title="`${genre} Anime`">
-    <p class="py-4">{{ genres.description }}</p>
-    <Card
-      v-for="series in genres.series"
-      :id="series._id"
-      :images="series.images"
-      :total_episodes="series.total_episodes"
-      :ep-created-at="series.created_at"
-      :title="series.title"
-      :status="series.status"
-    />
+    <main
+      class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
+    >
+      <Card
+        v-for="series in genres.series"
+        :id="series._id"
+        :images="series.images"
+        :total_episodes="series.total_episodes"
+        :ep-created-at="series.created_at"
+        :title="series.title"
+        :status="series.status"
+      />
+    </main>
   </ResultLayout>
 </template>

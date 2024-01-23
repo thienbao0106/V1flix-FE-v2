@@ -20,11 +20,9 @@ export default {
     getImageType,
     fetchSeries: function () {
       this.loading = true;
-
       const { onResult } = fetchSeries(this.title, "detail");
       onResult((result: any) => {
         if (!result.data) return;
-
         this.series = result.data.findSeries[0];
       });
       this.loading = false;
@@ -45,7 +43,7 @@ export default {
   <Loading v-if="loading" message="Getting info" />
   <main
     v-if="Object.keys(series).length > 0 && !loading"
-    class="text-white lg:h-[100vh] h-[300vh]"
+    class="text-white lg:h-[100vh] h-[200vh]"
   >
     <div
       :style="{
@@ -53,7 +51,7 @@ export default {
       }"
       className="bg-center bg-no-repeat h-[20rem] w-full opacity-60 inset-0 relative"
     ></div>
-    <div class="-mt-50 px-10 space-y-5 absolute h-screen">
+    <div class="-mt-50 px-10 space-y-5 absolute h-screen left-0 right-0">
       <div
         class="flex lg:flex-row flex-col lg:space-y-0 space-y-5 lg:justify-start justify-center lg:items-start items-center gap-x-4"
       >
@@ -72,6 +70,7 @@ export default {
             :favors="series.favors"
             :title="series.title"
             :view="series.view"
+            :genres="series.genres"
           />
           <section class="space-y-3 w-full">
             <header
@@ -101,6 +100,19 @@ export default {
                   class="font-bold text-xl cursor-pointer hover:text-secondColor"
                 >
                   Trailer
+                </h1>
+              </div>
+              <div>
+                <h1
+                  @click="setSection(`episodes`)"
+                  :class="
+                    currentSection === 'episodes'
+                      ? 'text-secondColor'
+                      : 'text-white'
+                  "
+                  class="font-bold text-xl cursor-pointer hover:text-secondColor"
+                >
+                  Episodes
                 </h1>
               </div>
             </header>

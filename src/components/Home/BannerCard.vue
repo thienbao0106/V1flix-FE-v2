@@ -102,7 +102,7 @@ export default {
             PLAY NOW
           </a>
           <a
-            :href="`/series/${title.main_title}?ep=1`"
+            :href="`/series/${title.main_title}`"
             class="decoration-none cursor-pointer bg-gray text-white hover:bg-opacity-70 xl:px-7 px-5 font-bold lg:py-3 py-2 xl:text-2xl lg:text-lg text-base rounded-md flex justify-center items-center gap-x-3"
           >
             <font-awesome-icon
