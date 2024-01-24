@@ -49,7 +49,7 @@ export const VIDEO_QUERIES: any = {
     "status",
     "season",
     "favors",
-    "episodes { \n _id  \n epNum \n title \n created_at \n view \n }",
+    "episodes { \n _id \n source { \n kind \n value \n } \n epNum \n title \n created_at \n view \n }",
     "genres { \n _id \n name \n}",
     "tags { \n _id \n name \n}",
     "duration",

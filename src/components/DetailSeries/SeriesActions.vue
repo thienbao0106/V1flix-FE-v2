@@ -3,7 +3,7 @@ export default {
   props: ["title"],
   methods: {
     navigateSeries: function () {
-      this.$router.push(`/watch/${this.title}`);
+      this.$router.push(`/watch/${this.title}?ep=1`);
     },
   },
 };

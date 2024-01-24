@@ -7,7 +7,6 @@ export default {
     formatDuration,
   },
   mounted() {
-    console.log(this.series);
     const description: any = document.querySelector("#description");
     if (!description) return;
     description.innerHTML = this.series.description;
@@ -58,7 +57,9 @@ export default {
             v-for="tag in series.tags"
             :to="`/tag/${tag._id}/${tag.name}`"
           >
-            <div class="font-bold bg-gray-700 px-5 py-2 hover:bg-secondColor">
+            <div
+              class="font-bold bg-gray-700 px-5 py-2 hover:bg-secondColor lg:text-md text-sm"
+            >
               {{ tag.name }}
             </div>
           </router-link>

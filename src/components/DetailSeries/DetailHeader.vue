@@ -45,14 +45,14 @@ export default {
       </div>
     </div>
     <div
-      class="w-full flex flex-row items-center lg:justify-start justify-center gap-x-2"
+      class="w-full flex lg:flex-row flex-wrap items-center lg:justify-start justify-center gap-2"
     >
       <router-link
         v-for="genre in genres"
         :to="`/genres/${genre._id}/${genre.name}`"
       >
         <div
-          class="bg-gray-700 rounded-md py-2 px-5 font-bold hover:bg-secondColor"
+          class="bg-gray-700 rounded-md py-2 px-5 font-bold hover:bg-secondColor lg:text-md text-sm"
         >
           {{ genre.name }}
         </div>

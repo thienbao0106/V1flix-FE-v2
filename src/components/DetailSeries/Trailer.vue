@@ -8,7 +8,7 @@ export default {
   <div class="w-full">
     <iframe
       :src="`https://www.youtube.com/embed/${trailer.id}`"
-      class="w-full lg:h-[300px] h-[500px]"
+      class="lg:w-[500px] w-full lg:h-[300px] h-[500px]"
       preload="none"
     >
     </iframe>
