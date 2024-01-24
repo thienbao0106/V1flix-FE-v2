@@ -28,14 +28,17 @@ export default {
 </script>
 
 <template>
-  <div class="grid lg:grid-cols-3 grid-cols-1 gap-x-6 gap-y-4">
+  <div
+    v-if="episodes.length > 0"
+    class="grid lg:grid-cols-3 grid-cols-1 gap-x-6 gap-y-4"
+  >
     <div class="space-y-2" v-for="ep in episodes">
       <router-link :to="`/watch/${seriesTitle}?ep=${ep.epNum}`">
         <div class="relative group">
           <img
             @error="handleError"
             loading="lazy"
-            class="w-[500px] h-[200px] group-hover:opacity-60"
+            class="w-[500px] h-[200px] group-hover:opacity-60 rounded-lg"
             :src="formatThumbnail(ep.source) || defaultImage(`banner`)"
           />
           <div
@@ -65,5 +68,10 @@ export default {
         </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <h1 class="text-xl text-start">
+      This series doesn't have any episode yet.
+    </h1>
   </div>
 </template>

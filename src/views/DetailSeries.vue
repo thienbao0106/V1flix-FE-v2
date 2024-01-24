@@ -7,6 +7,7 @@ import DetailHeader from "../components/DetailSeries/DetailHeader.vue";
 import Overview from "../components/DetailSeries/Overview.vue";
 import Trailer from "../components/DetailSeries/Trailer.vue";
 import Episodes from "../components/DetailSeries/Episodes.vue";
+import Relations from "../components/DetailSeries/Relations.vue";
 
 export default {
   data() {
@@ -43,6 +44,7 @@ export default {
     Overview,
     Trailer,
     Episodes,
+    Relations,
   },
 };
 </script>
@@ -81,7 +83,7 @@ export default {
             :view="series.view"
             :genres="series.genres"
           />
-          <section class="space-y-3 w-full">
+          <section class="space-y-3 w-full lg:text-xl text-md">
             <header
               class="flex flex-row lg:justify-start justify-between w-full gap-x-10"
             >
@@ -93,7 +95,7 @@ export default {
                       ? 'text-secondColor'
                       : 'text-white'
                   "
-                  class="font-bold text-xl cursor-pointer hover:text-secondColor"
+                  class="font-bold cursor-pointer hover:text-secondColor"
                 >
                   Overview
                 </h1>
@@ -106,7 +108,7 @@ export default {
                       ? 'text-secondColor'
                       : 'text-white'
                   "
-                  class="font-bold text-xl cursor-pointer hover:text-secondColor"
+                  class="font-bold cursor-pointer hover:text-secondColor"
                 >
                   Trailer
                 </h1>
@@ -119,9 +121,22 @@ export default {
                       ? 'text-secondColor'
                       : 'text-white'
                   "
-                  class="font-bold text-xl cursor-pointer hover:text-secondColor"
+                  class="font-bold cursor-pointer hover:text-secondColor"
                 >
                   Episodes
+                </h1>
+              </div>
+              <div>
+                <h1
+                  @click="setSection(`relations`)"
+                  :class="
+                    currentSection === 'relations'
+                      ? 'text-secondColor'
+                      : 'text-white'
+                  "
+                  class="font-bold cursor-pointer hover:text-secondColor"
+                >
+                  Relations
                 </h1>
               </div>
             </header>
@@ -131,6 +146,10 @@ export default {
               <Trailer
                 :trailer="series.trailer"
                 v-if="currentSection === 'trailer'"
+              />
+              <Relations
+                :relations="series.relation"
+                v-if="currentSection === 'relations'"
               />
               <Episodes
                 v-if="currentSection === 'episodes'"

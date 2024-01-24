@@ -39,13 +39,14 @@ export default {
       <p>{{ type }}</p>
       <p>{{ totalEpisodes }} eps</p>
     </div>
-    <!-- <iframe
-      :src="`https://www.youtube.com/embed/${trailer.id}`"
-      width="380"
-      height="300"
-      preload="none"
-    >
-    </iframe> -->
+
     <p class="line-clamp-4">{{ description }}</p>
+    <router-link :to="`/series/${title.main_title}`">
+      <div
+        class="bg-secondColor hover:bg-secondColorBrighter px-2 py-1.5 font-bold rounded-lg w-fit my-2"
+      >
+        More Details
+      </div>
+    </router-link>
   </main>
 </template>
