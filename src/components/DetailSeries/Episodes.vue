@@ -38,7 +38,7 @@ export default {
           <img
             @error="handleError"
             loading="lazy"
-            class="w-[500px] h-[200px] group-hover:opacity-60 rounded-lg"
+            class="lg:w-[500px] w-full h-[200px] group-hover:opacity-60 rounded-lg"
             :src="formatThumbnail(ep.source) || defaultImage(`banner`)"
           />
           <div

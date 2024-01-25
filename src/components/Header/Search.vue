@@ -89,7 +89,7 @@ export default {
         :key="film._id"
         class="bg-mainColor hover:bg-gray-500 text-left py-2 pl-2 even:bg-black-500 list-none"
       >
-        <a :href="`/series/${film.title.main_title}?ep=1`">
+        <a :href="`/series/${film.title.main_title}`">
           <SearchCard
             :type="film.type"
             :duration="film.duration"

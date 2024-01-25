@@ -1,5 +1,5 @@
 import { VIDEO_QUERIES } from "../constants/video";
-import { findSeriesQuery } from "../queries/series";
+import { findSeriesByNameQuery, findSeriesQuery } from "../queries/series";
 import { useQuery } from "@vue/apollo-composable";
 import { defaultImage } from "./handleImage";
 
@@ -14,6 +14,22 @@ export const fetchSeries = (
       status: status === "default" ? "" : status,
       genres: genres === "default" ? "" : genres,
     }),
+    {},
+    {
+      fetchPolicy: "no-cache",
+    }
+  );
+
+  return {
+    onResult,
+    loading,
+    onError,
+  };
+};
+
+export const fetchSeriesByName = (keyword: any, kind: string) => {
+  const { onResult, loading, onError } = useQuery(
+    findSeriesByNameQuery(VIDEO_QUERIES[kind], keyword),
     {},
     {
       fetchPolicy: "no-cache",

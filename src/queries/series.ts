@@ -22,6 +22,19 @@ export const findSeriesQuery = (
 `;
 };
 
+export const findSeriesByNameQuery = (
+  seriesFields: string[],
+  keyword: String | any
+) => {
+  return gql`
+    query findSeriesByName {
+      findSeriesByName(seriesTitle: "${keyword}") {
+          ${[...seriesFields].join("\n")}
+      }
+    }
+  `;
+};
+
 export const seriesBannerQuery = (limit: number) => gql`
   query getBannerSeries {
     series(${`limitPerPage:  ${limit}`}) {

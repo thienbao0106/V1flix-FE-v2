@@ -13,7 +13,7 @@ import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import VideoMobile from "../components/Series/VideoMobile.vue";
 import Error from "../components/Error.vue";
 
-import { fetchSeries, handleHistory } from "../utils/handleSeries";
+import { fetchSeriesByName, handleHistory } from "../utils/handleSeries";
 import { isIOS } from "../utils/handleVersion";
 import { convertToTimestamp, historyTimeline } from "../utils/video/handleTime";
 import { defaultImage } from "../utils/handleImage";
@@ -85,7 +85,10 @@ export default {
       this.isIOS = isIOS();
     },
     fetchSeries: function () {
-      const { onResult, onError } = fetchSeries(this.getInfoUrl.title, "video");
+      const { onResult, onError } = fetchSeriesByName(
+        this.getInfoUrl.title,
+        "video"
+      );
       this.loading = true;
       onError((error) => {
         console.error(error);
@@ -95,8 +98,9 @@ export default {
         if (result.data) {
           //Update value
           this.loading = false;
-          if (result.data.findSeries.length === 0) return;
-          this.series = result.data.findSeries[0];
+          if (!result.data.findSeriesByName) return;
+
+          this.series = result.data.findSeriesByName;
           this.currentEpisode = this.series?.episodes.find(
             (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
           );

@@ -1,6 +1,6 @@
 <script lang="ts">
 import Loading from "../components/Loading.vue";
-import { fetchSeries } from "../utils/handleSeries";
+import { fetchSeriesByName } from "../utils/handleSeries";
 import { getImageType } from "../utils/handleImage";
 import SeriesActions from "../components/DetailSeries/SeriesActions.vue";
 import DetailHeader from "../components/DetailSeries/DetailHeader.vue";
@@ -22,12 +22,16 @@ export default {
     getImageType,
     fetchSeries: function () {
       this.loading = true;
-      const { onResult } = fetchSeries(this.title, "detail");
+      const { onResult, onError } = fetchSeriesByName(this.title, "detail");
       onResult((result: any) => {
+        console.log(result.data);
         if (!result.data) return;
-        this.series = result.data.findSeries[0];
+        this.series = result.data.findSeriesByName;
+        this.loading = false;
       });
-      this.loading = false;
+      onError((error) => {
+        console.log(error);
+      });
     },
     setSection: function (section: string) {
       this.currentSection = section;
