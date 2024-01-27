@@ -32,13 +32,13 @@ export default {
     v-if="episodes.length > 0"
     class="grid lg:grid-cols-3 grid-cols-1 gap-x-6 gap-y-4"
   >
-    <div class="space-y-2" v-for="ep in episodes">
+    <div class="lg:w-[500px] w-full space-y-2" v-for="ep in episodes">
       <router-link :to="`/watch/${seriesTitle}?ep=${ep.epNum}`">
         <div class="relative group">
           <img
             @error="handleError"
             loading="lazy"
-            class="lg:w-[500px] w-full h-[200px] group-hover:opacity-60 rounded-lg"
+            class="w-full h-[200px] group-hover:opacity-60 rounded-lg"
             :src="formatThumbnail(ep.source) || defaultImage(`banner`)"
           />
           <div

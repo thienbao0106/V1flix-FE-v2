@@ -22,9 +22,12 @@ export default {
     getImageType,
     fetchSeries: function () {
       this.loading = true;
-      const { onResult, onError } = fetchSeriesByName(this.title, "detail");
+      const { onResult, onError } = fetchSeriesByName(
+        this.title,
+        "detail",
+        true
+      );
       onResult((result: any) => {
-        console.log(result.data);
         if (!result.data) return;
         this.series = result.data.findSeriesByName;
         this.loading = false;
@@ -70,7 +73,7 @@ export default {
       <div
         class="w-full flex lg:flex-row flex-col lg:space-y-0 space-y-5 lg:justify-start justify-center lg:items-start items-center gap-x-4"
       >
-        <div class="lg:max-w-[15%] max-w-[15rem]">
+        <div class="lg:max-w-[10%] max-w-[15rem]">
           <img
             :src="getImageType(series.images, `cover`)"
             alt="avatar"
@@ -79,7 +82,7 @@ export default {
           <SeriesActions :title="series.title.main_title" />
         </div>
         <section
-          class="w-[85%] flex flex-col space-y-4 lg:text-start text-center lg:w-fit w-full gap-y-4"
+          class="w-[90%] flex flex-col space-y-4 lg:text-start text-center lg:w-fit w-full gap-y-4"
         >
           <DetailHeader
             :favors="series.favors"

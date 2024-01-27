@@ -1,10 +1,10 @@
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { capitalizeWord } from "../utils/handleWord";
-import Card from "../components/Card.vue";
-import ResultLayout from "../layouts/ResultLayout.vue";
 import { useQuery } from "@vue/apollo-composable";
+import { capitalizeWord } from "../utils/handleWord";
 import { findGenres } from "../queries/genres";
+import Card from "../components/Card.vue";
+import Loading from "../components/Loading.vue";
 export default {
   data() {
     return {
@@ -23,19 +23,19 @@ export default {
   methods: {
     capitalizeWord,
     fetchSeriesGenres: function () {
+      this.loading = true;
       try {
         console.log(this.genre);
         const { onResult } = useQuery(findGenres(this.id));
-        this.loading = false;
         onResult((result: any) => {
-          if (result.data) {
-            this.genres = result.data.findGenresById;
-          }
+          console.log(result.data);
+          if (!result.data) return;
+          this.genres = result.data.findGenresById;
         });
-        this.loading = true;
       } catch (error) {
         console.log(error);
       }
+      this.loading = false;
     },
   },
   created() {
@@ -48,14 +48,20 @@ export default {
       { immediate: true }
     );
   },
-  components: { Card, ResultLayout },
+  components: { Card, Loading },
 };
 </script>
 
 <template>
-  <ResultLayout :loading="loading" :title="`${genre} Anime`">
-    <main
-      v-if="genres.series?.length > 0"
+  <Loading v-if="loading" message="Getting data" />
+  <h1 class="px-8 font-bold text-xl text-white">{{ genre }} Anime</h1>
+  <main
+    class="text-white px-8"
+    v-if="
+      !loading && Object.keys(genres).length > 0 && genres.series.length > 0
+    "
+  >
+    <section
       class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >
       <Card
@@ -67,9 +73,12 @@ export default {
         :title="series.title"
         :status="series.status"
       />
-    </main>
-    <main class="flex w-full h-screen flex justify-center items-center" v-else>
-      <h1>This genres doesn't have any show</h1>
-    </main>
-  </ResultLayout>
+    </section>
+  </main>
+  <main
+    v-if="Object.keys(genres).length > 0 && genres.series.length === 0"
+    class="flex w-full h-screen flex justify-center items-center text-white font-bold"
+  >
+    <h1>This genres doesn't have any show</h1>
+  </main>
 </template>

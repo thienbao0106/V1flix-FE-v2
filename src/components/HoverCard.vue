@@ -41,11 +41,16 @@ export default {
     </div>
 
     <p class="line-clamp-4">{{ description }}</p>
-    <router-link :to="`/series/${title.main_title}`">
+    <router-link :to="`/watch/${title.main_title}?ep=1`">
       <div
         class="bg-secondColor hover:bg-secondColorBrighter px-2 py-1.5 font-bold rounded-lg w-fit my-2"
       >
-        More Details
+        <font-awesome-icon
+          icon="fa-solid fa-play "
+          size="lg"
+          class="text-white mr-2"
+        />
+        PLAY
       </div>
     </router-link>
   </main>

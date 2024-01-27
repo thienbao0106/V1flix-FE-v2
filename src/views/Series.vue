@@ -25,6 +25,7 @@ export default {
     return {
       series: {} as any,
       currentEpisode: {} as any,
+      error: {} as any,
       loading: false,
       isModal: false,
       timestamp: "00:00",
@@ -85,66 +86,77 @@ export default {
       this.isIOS = isIOS();
     },
     fetchSeries: function () {
-      const { onResult, onError } = fetchSeriesByName(
-        this.getInfoUrl.title,
-        "video"
-      );
-      this.loading = true;
-      onError((error) => {
-        console.error(error);
-        this.loading = false;
-      });
-      onResult((result) => {
-        if (result.data) {
-          //Update value
-          this.loading = false;
-          if (!result.data.findSeriesByName) return;
+      try {
+        console.log("called");
+        this.loading = true;
+        console.log(this.getInfoUrl.title);
+        const { onResult, onError } = fetchSeriesByName(
+          this.getInfoUrl.title,
+          "video",
+          false
+        );
+        onError((error) => {
+          this.error = error;
+          console.error(error);
+        });
+        onResult((result) => {
+          if (result.data) {
+            //Update value
+            this.loading = false;
+            if (!result.data.findSeriesByName) return;
 
-          this.series = result.data.findSeriesByName;
-          this.currentEpisode = this.series?.episodes.find(
-            (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
-          );
-          if (this.currentEpisode)
-            this.addView(this.series._id, this.currentEpisode._id);
-          const image = this.series?.images.find(
-            (image: any) => image.type === "cover"
-          );
-          if (window.localStorage.getItem("history") !== null) {
-            const history = JSON.parse(
-              window.localStorage.getItem("history") || ""
+            this.series = result.data.findSeriesByName;
+            this.currentEpisode = this.series?.episodes.find(
+              (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
             );
-            const newHistory = handleHistory(
-              history,
-              this.series._id,
-              this.getInfoUrl.ep,
-              this.getInfoUrl.title
+            if (this.currentEpisode)
+              this.addView(this.series._id, this.currentEpisode._id);
+            const image = this.series?.images.find(
+              (image: any) => image.type === "cover"
             );
-            window.localStorage.setItem("history", JSON.stringify(newHistory));
+            if (window.localStorage.getItem("history") !== null) {
+              const history = JSON.parse(
+                window.localStorage.getItem("history") || ""
+              );
+              const newHistory = handleHistory(
+                history,
+                this.series._id,
+                this.getInfoUrl.ep,
+                this.getInfoUrl.title
+              );
+              window.localStorage.setItem(
+                "history",
+                JSON.stringify(newHistory)
+              );
+            }
+            //Update head metadata
+            useHead({
+              title: `${this.getInfoUrl.title}`,
+              meta: [
+                {
+                  property: "og:image",
+                  content: image?.source || defaultImage,
+                },
+                {
+                  property: "og:title",
+                  content: `${this.getInfoUrl.title} - ${this.getInfoUrl.ep}`,
+                },
+                {
+                  property: "og:url",
+                  content: window.location.href,
+                },
+                {
+                  property: "og:description",
+                  content: this.series?.description,
+                },
+              ],
+            });
           }
-          //Update head metadata
-          useHead({
-            title: `${this.getInfoUrl.title}`,
-            meta: [
-              {
-                property: "og:image",
-                content: image?.source || defaultImage,
-              },
-              {
-                property: "og:title",
-                content: `${this.getInfoUrl.title} - ${this.getInfoUrl.ep}`,
-              },
-              {
-                property: "og:url",
-                content: window.location.href,
-              },
-              {
-                property: "og:description",
-                content: this.series?.description,
-              },
-            ],
-          });
-        }
-      });
+        });
+        this.loading = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
     getDate: function (dateNum: number): string {
       return moment(dateNum).format("MMM Do YYYY");
@@ -212,7 +224,10 @@ export default {
     :current-ep="getInfoUrl.ep"
     :reload="false"
   />
-  <div class="text-4xl font-bold text-white" v-if="loading">
+  <div
+    class="text-4xl font-bold text-white"
+    v-if="loading && Object.keys(series).length === 0"
+  >
     <Loading message="Getting the data" />
   </div>
   <section
@@ -380,7 +395,7 @@ export default {
       <TopAnimeList />
     </section>
   </section>
-  <main class="text-white" v-if="!loading && Object.keys(series).length === 0">
+  <main class="text-white" v-if="!loading && Object.keys(error).length > 0">
     <Error message="Can't find the series" />
   </main>
 </template>

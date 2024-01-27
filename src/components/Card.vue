@@ -95,7 +95,7 @@ export default {
           class="absolute top-0 h-full w-full flex justify-center items-center group-hover:translate-x-1 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"
         >
           <font-awesome-icon
-            icon="fa-solid fa-play "
+            icon="fa-solid fa-info-circle"
             size="4x"
             class="text-white"
           />

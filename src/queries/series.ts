@@ -24,11 +24,12 @@ export const findSeriesQuery = (
 
 export const findSeriesByNameQuery = (
   seriesFields: string[],
-  keyword: String | any
+  keyword: String | any,
+  isRelation?: boolean
 ) => {
   return gql`
     query findSeriesByName {
-      findSeriesByName(seriesTitle: "${keyword}") {
+      findSeriesByName(seriesTitle: "${keyword}", isRelation: ${isRelation}) {
           ${[...seriesFields].join("\n")}
       }
     }

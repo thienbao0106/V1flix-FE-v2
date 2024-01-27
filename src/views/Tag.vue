@@ -38,7 +38,7 @@ export default {
     v-if="loading || Object.keys(tag).length <= 0"
     :message="`Getting data`"
   />
-  <main class="text-white px-8 gap-y-8" v-else>
+  <main class="text-white px-8 space-y-3" v-else>
     <h1 class="font-bold text-2xl">{{ tagName }} Anime</h1>
     <p>{{ tag.description }}</p>
     <section

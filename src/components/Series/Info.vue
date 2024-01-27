@@ -159,14 +159,14 @@ export default {
               {{ total_episodes }}
             </span>
           </li>
-          <li>
+          <li class="text-left">
             Genres:
             <span v-for="(g, index) in genres">
               <a
-                class="text-secondColor hover:text-secondColorBrighter decoration-none ml-3 font-bold"
-                :href="`/genres/${g.name}`"
+                class="text-secondColor hover:text-secondColorBrighter decoration-none font-bold"
+                :href="`/genres/${g._id}/${g.name}`"
               >
-                {{ `${g.name} ${index === genres.length ? "," : ""} ` }}
+                {{ `${g.name}${index !== genres.length - 1 ? ", " : ""} ` }}
               </a>
             </span>
           </li>

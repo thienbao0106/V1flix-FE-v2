@@ -27,9 +27,13 @@ export const fetchSeries = (
   };
 };
 
-export const fetchSeriesByName = (keyword: any, kind: string) => {
+export const fetchSeriesByName = (
+  keyword: any,
+  kind: string,
+  isRelation?: boolean
+) => {
   const { onResult, loading, onError } = useQuery(
-    findSeriesByNameQuery(VIDEO_QUERIES[kind], keyword),
+    findSeriesByNameQuery(VIDEO_QUERIES[kind], keyword, isRelation),
     {},
     {
       fetchPolicy: "no-cache",
