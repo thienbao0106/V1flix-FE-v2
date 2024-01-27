@@ -4,11 +4,10 @@ import { capitalizeWord } from "../../utils/handleWord";
 import { useQuery } from "@vue/apollo-composable";
 import { randomSeriesQuery } from "../../queries/series";
 export default {
-  props: ["toggleSubNav"],
+  props: ["toggleSubNav", "listGenres"],
   data() {
     return {
       isGenresList: false,
-      listGenres: [],
       listSubMenu: ["series", "latest"],
       listSubMenuUser: ["users"],
     };

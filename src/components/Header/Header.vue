@@ -5,6 +5,7 @@ import { DEFAULT_IMAGE } from "../../constants/image";
 import { USER_QUERIES } from "../../constants/user";
 import SubNav from ".././SubNav/SubNav.vue";
 import Search from "../Header/Search.vue";
+import { getGenresMenu } from "../../queries/genres";
 export default {
   data() {
     return {
@@ -15,7 +16,7 @@ export default {
       isSubNav: false,
       width: window.innerWidth,
       timeOut: null,
-
+      listGenres: [],
       avatar: "",
       username: window.localStorage.getItem("username") || "",
       isHoverUsername: false,
@@ -26,6 +27,7 @@ export default {
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
+    this.fetchGenres();
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
@@ -82,6 +84,14 @@ export default {
 
       window.location.reload();
     },
+    fetchGenres: function () {
+      const { onResult } = useQuery(getGenresMenu);
+      onResult((result) => {
+        if (!result.data) return;
+        this.listGenres = result.data.genres;
+        console.log(this.listGenres);
+      });
+    },
   },
 
   created() {
@@ -99,7 +109,12 @@ export default {
 </script>
 
 <template>
-  <SubNav v-if="isSubNav" :toggle-sub-nav="toggleSubNav" />
+  <SubNav
+    v-if="isSubNav"
+    :isSubNav="isSubNav"
+    :listGenres="listGenres"
+    :toggle-sub-nav="toggleSubNav"
+  />
   <nav
     class="z-[800] max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
   >

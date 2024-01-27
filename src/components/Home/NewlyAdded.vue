@@ -27,6 +27,12 @@ export default {
 </script>
 
 <template>
+  <div
+    v-if="series.length === 0"
+    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+  >
+    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  </div>
   <aside
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >

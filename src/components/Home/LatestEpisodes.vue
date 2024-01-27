@@ -26,7 +26,14 @@ export default {
 };
 </script>
 <template>
+  <div
+    v-if="listEpisodes.length === 0"
+    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+  >
+    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  </div>
   <aside
+    v-else
     class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
   >
     <LatestEpCard

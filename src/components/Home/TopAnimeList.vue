@@ -28,7 +28,13 @@ export default {
 </script>
 
 <template>
-  <aside>
+  <div
+    v-if="series.length === 0"
+    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+  >
+    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  </div>
+  <aside v-else>
     <ul className="flex gap-3 flex-col" role="list">
       <li
         v-for="(s, index) in series"

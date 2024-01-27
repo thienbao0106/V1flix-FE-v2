@@ -25,14 +25,14 @@ export default {
     fetchSeriesGenres: function () {
       try {
         console.log(this.genre);
-        const { onResult, loading } = useQuery(findGenres(this.id));
-        this.loading = loading.value;
+        const { onResult } = useQuery(findGenres(this.id));
+        this.loading = false;
         onResult((result: any) => {
           if (result.data) {
-            this.loading = loading.value;
             this.genres = result.data.findGenresById;
           }
         });
+        this.loading = true;
       } catch (error) {
         console.log(error);
       }
@@ -55,6 +55,7 @@ export default {
 <template>
   <ResultLayout :loading="loading" :title="`${genre} Anime`">
     <main
+      v-if="genres.series?.length > 0"
       class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >
       <Card
@@ -66,6 +67,9 @@ export default {
         :title="series.title"
         :status="series.status"
       />
+    </main>
+    <main class="flex w-full h-screen flex justify-center items-center" v-else>
+      <h1>This genres doesn't have any show</h1>
     </main>
   </ResultLayout>
 </template>

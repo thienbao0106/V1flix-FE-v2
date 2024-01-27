@@ -83,9 +83,9 @@ export default {
           >New</span
         >
       </div>
-      <router-link :to="`/series/${title.main_title}?ep=${epNum ? epNum : 1}`">
+      <router-link :to="`/series/${title.main_title}`">
         <img
-          class="group-hover:opacity-25 max-w-full"
+          class="group-hover:opacity-25 w-full"
           :src="getImageType(images, `cover`)"
           :alt="`cover-image-${title.main_title}`"
           loading="lazy"
