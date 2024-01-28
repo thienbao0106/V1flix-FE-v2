@@ -16,6 +16,7 @@ import Error from "../components/Error.vue";
 import { fetchSeriesByName, handleHistory } from "../utils/handleSeries";
 import { isIOS } from "../utils/handleVersion";
 import { convertToTimestamp, historyTimeline } from "../utils/video/handleTime";
+import { defaultImage } from "../utils/handleImage";
 
 import { addViewMutation } from "../queries/series";
 
@@ -110,7 +111,9 @@ export default {
             );
             if (this.currentEpisode)
               this.addView(this.series._id, this.currentEpisode._id);
-
+            const image = this.series?.images.find(
+              (image: any) => image.type === "cover"
+            );
             if (window.localStorage.getItem("history") !== null) {
               const history = JSON.parse(
                 window.localStorage.getItem("history") || ""
@@ -130,6 +133,10 @@ export default {
             useHead({
               title: `${this.getInfoUrl.title}`,
               meta: [
+                {
+                  property: "og:image",
+                  content: image?.source || defaultImage,
+                },
                 {
                   property: "og:title",
                   content: `${this.getInfoUrl.title} - ${this.getInfoUrl.ep}`,
