@@ -55,8 +55,6 @@ export default {
       () => {
         this.keyword = this.$route.query.keyword || "";
         this.displayKeyword = this.$route.query.keyword || "";
-
-        console.log("first");
         this.fetchGenres();
         this.fetchResults();
       },

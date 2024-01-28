@@ -29,7 +29,8 @@ import {
   faPeopleGroup,
   faHeart,
   faStar,
-  faInfoCircle
+  faInfoCircle,
+  faList,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -47,6 +48,7 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faList,
     faInfoCircle,
     faStar,
     faHeart,

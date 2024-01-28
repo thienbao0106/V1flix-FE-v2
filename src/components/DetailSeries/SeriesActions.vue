@@ -1,9 +1,20 @@
 <script lang="ts">
 export default {
   props: ["title"],
+  data() {
+    return {
+      isUser: window.localStorage.getItem("username"),
+    };
+  },
   methods: {
     navigateSeries: function () {
       this.$router.push(`/watch/${this.title}?ep=1`);
+    },
+    toggleModal: function () {
+      const dialog: any = document.querySelector(`#add-modal`);
+      if (!dialog) return;
+      console.log("called");
+      dialog.showModal();
     },
   },
 };
@@ -19,6 +30,14 @@ export default {
     >
       <font-awesome-icon icon="fa-solid fa-play" class="mr-2" />
       Play
+    </button>
+    <button
+      v-if="isUser"
+      @click="toggleModal()"
+      class="text-white bg-gray-700 p-3 rounded-lg font-bold hover:bg-gray-500 w-full"
+    >
+      <font-awesome-icon icon="fa-solid fa-list" class="mr-2" />
+      List
     </button>
     <button
       class="text-white bg-red-500 p-3 rounded-lg font-bold hover:bg-red-700 w-full"

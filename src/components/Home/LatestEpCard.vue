@@ -24,7 +24,7 @@ export default {
 
 <template>
   <router-link
-    :to="`/series/${seriesTitle.main_title}?ep=${epNum}`"
+    :to="`/watch/${seriesTitle.main_title}?ep=${epNum}`"
     class="bg-mainColor hover:bg-gray-500 hover:cursor-pointer p-2 gap-x-2"
   >
     <div class="flex flex-row py-2 px-1 gap-x-2">

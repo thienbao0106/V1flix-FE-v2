@@ -47,10 +47,10 @@ export default {
         class="text-white"
         :to="`/series/${
           Object.keys(series).length > 0 && series.title.main_title
-        }?ep=1`"
+        }`"
       >
         <img
-          class="w-full md:h-full h-[10rem] rounded-md group-hover:opacity-25"
+          class="w-full md:h-[384px] h-[10rem] rounded-md group-hover:opacity-25"
           :src="getImageType(series.images, `banner`)"
           :alt="series._id"
         />

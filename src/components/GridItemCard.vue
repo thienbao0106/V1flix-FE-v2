@@ -39,7 +39,7 @@ export default {
     },
     navigateSeries: function () {
       this.router.push(
-        `/series/${this.title.main_title}?ep=${
+        `/watch/${this.title.main_title}?ep=${
           this.date !== "" ? this.current_episode : "1"
         }`
       );
@@ -53,7 +53,7 @@ export default {
     <div class="relative group">
       <div>
         <img
-          class="group-hover:opacity-25 max-w-full"
+          class="group-hover:opacity-25 w-full"
           :src="getImageType(images, `cover`)"
           :alt="`cover-image-${title}`"
           loading="lazy"

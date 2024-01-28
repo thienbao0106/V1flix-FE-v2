@@ -21,6 +21,10 @@ export default {
     </p>
     <div class="space-y-3">
       <p>
+        Series Type:
+        <span class="font-bold">{{ series.type }}</span>
+      </p>
+      <p>
         Total Episodes:
         <span class="font-bold">{{
           series.total_episodes === 0 ? "Not Updated" : series.total_episodes

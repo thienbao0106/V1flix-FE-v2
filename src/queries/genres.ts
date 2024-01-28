@@ -5,7 +5,6 @@ export const getGenres = () => gql`
     genres {
       _id
       name
-      description
     }
   }
 `;

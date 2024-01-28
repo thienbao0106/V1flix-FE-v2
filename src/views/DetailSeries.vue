@@ -8,6 +8,8 @@ import Overview from "../components/DetailSeries/Overview.vue";
 import Trailer from "../components/DetailSeries/Trailer.vue";
 import Episodes from "../components/DetailSeries/Episodes.vue";
 import Relations from "../components/DetailSeries/Relations.vue";
+import ListModal from "../components/Modal/ListModal.vue";
+import { setMetadata } from "../utils/handleMetadata";
 
 export default {
   data() {
@@ -30,7 +32,13 @@ export default {
       onResult((result: any) => {
         if (!result.data) return;
         this.series = result.data.findSeriesByName;
+        document.title = this.series.title.main_title;
         this.loading = false;
+        setMetadata(
+          getImageType(this.series.images, `thumbnail`),
+          this.series.title.main_title,
+          this.series.description
+        );
       });
       onError((error) => {
         console.log(error);
@@ -52,12 +60,19 @@ export default {
     Trailer,
     Episodes,
     Relations,
+    ListModal,
   },
 };
 </script>
 
 <template>
   <Loading v-if="loading" message="Getting info" />
+  <ListModal
+    v-if="Object.keys(series).length > 0"
+    :series="series"
+    :current-ep="1"
+    :reload="true"
+  />
   <main
     v-if="Object.keys(series).length > 0 && !loading"
     class="text-white h-full"
@@ -73,16 +88,16 @@ export default {
       <div
         class="w-full flex lg:flex-row flex-col lg:space-y-0 space-y-5 lg:justify-start justify-center lg:items-start items-center gap-x-4"
       >
-        <div class="lg:max-w-[10%] max-w-[15rem]">
+        <div class="2xl:max-w-[10%] max-w-[15rem]">
           <img
             :src="getImageType(series.images, `cover`)"
-            alt="avatar"
+            alt="cover"
             class="rounded-lg lg:pb-0 pb-5 w-full"
           />
           <SeriesActions :title="series.title.main_title" />
         </div>
         <section
-          class="w-[90%] flex flex-col space-y-4 lg:text-start text-center lg:w-fit w-full gap-y-4"
+          class="2xl:w-[90%] w-full flex flex-col space-y-4 lg:text-start text-center lg:w-fit gap-y-4"
         >
           <DetailHeader
             :favors="series.favors"

@@ -55,7 +55,7 @@ export default {
         className="xl:text-base lg:text-xl sm:text-lg pt-2 text-lg font-semibold line-clamp-1"
       >
         <router-link
-          :to="`/series/${title.main_title}?ep=1`"
+          :to="`/series/${title.main_title}`"
           class="decoration-none text-white hover:text-secondColorBrighter"
         >
           {{ title.main_title }}

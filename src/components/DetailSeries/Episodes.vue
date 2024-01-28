@@ -30,9 +30,9 @@ export default {
 <template>
   <div
     v-if="episodes.length > 0"
-    class="grid lg:grid-cols-3 grid-cols-1 gap-x-6 gap-y-4"
+    class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4"
   >
-    <div class="lg:w-[500px] w-full space-y-2" v-for="ep in episodes">
+    <div class="2xl:w-[500px] w-full space-y-2" v-for="ep in episodes">
       <router-link :to="`/watch/${seriesTitle}?ep=${ep.epNum}`">
         <div class="relative group">
           <img

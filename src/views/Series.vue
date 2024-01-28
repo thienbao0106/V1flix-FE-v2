@@ -1,6 +1,5 @@
 <script lang="ts">
 import moment from "moment";
-import { useHead } from "@unhead/vue";
 import { useMutation } from "@vue/apollo-composable";
 
 import Episodes from "../components/Series/Episodes.vue";
@@ -16,9 +15,9 @@ import Error from "../components/Error.vue";
 import { fetchSeriesByName, handleHistory } from "../utils/handleSeries";
 import { isIOS } from "../utils/handleVersion";
 import { convertToTimestamp, historyTimeline } from "../utils/video/handleTime";
-import { defaultImage } from "../utils/handleImage";
 
 import { addViewMutation } from "../queries/series";
+import { setMetadata } from "../utils/handleMetadata";
 
 export default {
   data() {
@@ -130,27 +129,12 @@ export default {
               );
             }
             //Update head metadata
-            useHead({
-              title: `${this.getInfoUrl.title}`,
-              meta: [
-                {
-                  property: "og:image",
-                  content: image?.source || defaultImage,
-                },
-                {
-                  property: "og:title",
-                  content: `${this.getInfoUrl.title} - ${this.getInfoUrl.ep}`,
-                },
-                {
-                  property: "og:url",
-                  content: window.location.href,
-                },
-                {
-                  property: "og:description",
-                  content: this.series?.description,
-                },
-              ],
-            });
+            setMetadata(
+              image?.source,
+              this.getInfoUrl.title,
+              this.series.description,
+              this.getInfoUrl.ep
+            );
           }
         });
         this.loading = false;
@@ -328,11 +312,11 @@ export default {
           <aside class="max-w-full">
             <ul
               v-if="series?.episodes?.length > 0"
-              className="flex lg:gap-x-5 gap-x-3 gap-y-3 max-w-full flex-wrap"
+              class="flex lg:gap-x-5 gap-x-3 gap-y-3 max-w-full flex-wrap"
               role="list"
             >
-              <router-link
-                :to="`/series/${getInfoUrl.title}?ep=${episode.epNum}`"
+              <a
+                :href="`/watch/${getInfoUrl.title}?ep=${episode.epNum}`"
                 :class="
                   episode.epNum.toString() === getInfoUrl.ep
                     ? `bg-secondColorBrighter`
@@ -343,7 +327,7 @@ export default {
                 :key="index"
               >
                 <Episodes :episode="episode" />
-              </router-link>
+              </a>
             </ul>
             <div v-else>
               <h1 class="text-4xl font-extrabold">Coming soon</h1>
