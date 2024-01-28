@@ -1,7 +1,9 @@
 <script lang="ts">
-import Loading from "../components/Loading.vue";
+import { useHead } from "@unhead/vue";
+
 import { fetchSeriesByName } from "../utils/handleSeries";
-import { getImageType } from "../utils/handleImage";
+import { defaultImage, getImageType } from "../utils/handleImage";
+import Loading from "../components/Loading.vue";
 import SeriesActions from "../components/DetailSeries/SeriesActions.vue";
 import DetailHeader from "../components/DetailSeries/DetailHeader.vue";
 import Overview from "../components/DetailSeries/Overview.vue";
@@ -9,7 +11,6 @@ import Trailer from "../components/DetailSeries/Trailer.vue";
 import Episodes from "../components/DetailSeries/Episodes.vue";
 import Relations from "../components/DetailSeries/Relations.vue";
 import ListModal from "../components/Modal/ListModal.vue";
-import { setMetadata } from "../utils/handleMetadata";
 
 export default {
   data() {
@@ -34,11 +35,28 @@ export default {
         this.series = result.data.findSeriesByName;
         document.title = this.series.title.main_title;
         this.loading = false;
-        setMetadata(
-          getImageType(this.series.images, `thumbnail`),
-          this.series.title.main_title,
-          this.series.description
-        );
+        useHead({
+          title: this.series.title.main_title,
+          meta: [
+            {
+              property: "og:image",
+              content:
+                getImageType(this.series.images, "cover") || defaultImage,
+            },
+            {
+              property: "og:title",
+              content: `${this.series.title.main_title}`,
+            },
+            {
+              property: "og:url",
+              content: window.location.href,
+            },
+            {
+              property: "og:description",
+              content: this.series.description,
+            },
+          ],
+        });
       });
       onError((error) => {
         console.log(error);
