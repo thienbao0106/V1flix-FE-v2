@@ -28,14 +28,15 @@ export default {
       >
         <div class="flex flex-row gap-x-3">
           <img
-            class="rounded-md w-[35%]"
+            class="rounded-md"
+            :class="episode.thumbnail === '' ? 'w-[80px]' : 'w-[35%]'"
             :src="
               episode.thumbnail === ''
-                ? defaultImage('cover')
+                ? defaultImage('thumbnail')
                 : episode.thumbnail
             "
           />
-          <div class="w-[65%] flex flex-col justify-between">
+          <div class="w-[65%] flex flex-col justify-between py-3">
             <div>
               <h1 class="font-bold">Episode: {{ episode.epNum }}</h1>
               <h2 class="lg:text-lg line-clamp-1 text-sm">
