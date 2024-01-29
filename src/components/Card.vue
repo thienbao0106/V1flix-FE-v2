@@ -83,7 +83,13 @@ export default {
           >New</span
         >
       </div>
-      <router-link :to="`/series/${title.main_title}`">
+      <router-link
+        :to="
+          epNum
+            ? `/watch/${title.main_title}?ep=${epNum}`
+            : `/series/${title.main_title}`
+        "
+      >
         <img
           class="group-hover:opacity-25 w-full"
           :src="getImageType(images, `cover`)"

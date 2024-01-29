@@ -147,7 +147,7 @@ export default {
                 },
                 {
                   property: "og:description",
-                  content: this.series?.description,
+                  content: this.currentEpisode.description,
                 },
               ],
             });
@@ -283,14 +283,11 @@ export default {
             <h2 class="text-2xl" v-if="currentEpisode">
               {{ `Episode ${getInfoUrl.ep} - ${currentEpisode?.title || ``}` }}
             </h2>
-
             <div
               v-if="currentEpisode"
-              class="flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start sm:gap-y-0 gap-y-4"
+              class="flex sm:flex-row flex-col sm:justify-between justify-start sm:items-center items-start sm:gap-y-0 gap-y-4 md:text-lg text-md"
             >
-              <div
-                class="text-lg flex flex-row justify-center items-center gap-x-4"
-              >
+              <div class="flex flex-row justify-center items-center gap-x-4">
                 <div
                   class="bg-mainColor rounded-md px-4 py-1.5 flex justify-center items-center"
                 >
@@ -306,7 +303,9 @@ export default {
                   </p>
                 </div>
               </div>
-              <div class="flex justify-center items-center gap-x-4">
+              <div
+                class="flex justify-center items-center gap-x-4 md:text-lg text-md"
+              >
                 <div
                   class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
                   @click="toggleShareModal"
@@ -325,30 +324,7 @@ export default {
               </div>
             </div>
           </header>
-          <aside class="max-w-full">
-            <ul
-              v-if="series?.episodes?.length > 0"
-              className="flex lg:gap-x-5 gap-x-3 gap-y-3 max-w-full flex-wrap"
-              role="list"
-            >
-              <router-link
-                :to="`/series/${getInfoUrl.title}?ep=${episode.epNum}`"
-                :class="
-                  episode.epNum.toString() === getInfoUrl.ep
-                    ? `bg-secondColorBrighter`
-                    : `bg-mainColor`
-                "
-                class="decoration-none py-3 px-4 hover:cursor-pointer hover:bg-secondColorBrighter rounded-md"
-                v-for="(episode, index) in series?.episodes"
-                :key="index"
-              >
-                <Episodes :episode="episode" />
-              </router-link>
-            </ul>
-            <div v-else>
-              <h1 class="text-4xl font-extrabold">Coming soon</h1>
-            </div>
-          </aside>
+
           <aside
             :class="
               isTheaterMode
@@ -359,6 +335,7 @@ export default {
           >
             <div :class="isTheaterMode ? `xl:w-4/6 :w-full` : `w-full`">
               <Info
+                :epDescription="currentEpisode.description"
                 :description="series?.description"
                 :images="series?.images"
                 :genres="series?.genres"
@@ -376,10 +353,21 @@ export default {
             <section
               v-if="isTheaterMode"
               aria-label="trending"
-              class="xl:w-2/6 w-full"
+              class="xl:w-2/6 w-full space-y-6"
             >
-              <h2 class="text-3xl sm:mt-0 mt-5 mb-5 font-bold">Top Trending</h2>
-              <TopAnimeList />
+              <div class="bg-opacityText px-2 py-4 rounded-lg">
+                <h2 class="text-3xl mb-5 font-bold px-2">List Episodes</h2>
+                <Episodes
+                  :episodes="series?.episodes"
+                  :current-info="getInfoUrl"
+                />
+              </div>
+              <div class="p-2">
+                <h2 class="text-3xl sm:mt-0 mt-5 mb-5 font-bold">
+                  Top Trending
+                </h2>
+                <TopAnimeList />
+              </div>
             </section>
           </aside>
         </section>
@@ -389,10 +377,16 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 w-full sm:mt-0"
+      class="xl:w-2/6 w-full sm:mt-0 space-y-6"
     >
-      <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
-      <TopAnimeList />
+      <div class="bg-opacityText px-2 py-4 rounded-lg">
+        <h2 class="text-3xl mb-5 font-bold px-2">List Episodes</h2>
+        <Episodes :episodes="series?.episodes" :current-info="getInfoUrl" />
+      </div>
+      <div class="p-2">
+        <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
+        <TopAnimeList />
+      </div>
     </section>
   </section>
   <main class="text-white" v-if="!loading && Object.keys(error).length > 0">

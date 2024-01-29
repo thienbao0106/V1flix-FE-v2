@@ -30,16 +30,20 @@ export default {
 <template>
   <div
     v-if="episodes.length > 0"
-    class="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4"
+    class="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4"
   >
-    <div class="2xl:w-[500px] w-full space-y-2" v-for="ep in episodes">
+    <div class="2xl:max-w-[500px] w-full space-y-2" v-for="ep in episodes">
       <router-link :to="`/watch/${seriesTitle}?ep=${ep.epNum}`">
         <div class="relative group">
           <img
             @error="handleError"
             loading="lazy"
             class="w-full h-[200px] group-hover:opacity-60 rounded-lg"
-            :src="formatThumbnail(ep.source) || defaultImage(`banner`)"
+            :src="
+              ep.thumbnail !== ``
+                ? ep.thumbnail
+                : formatThumbnail(ep.source) || defaultImage(`banner`)
+            "
           />
           <div
             class="absolute top-0 h-full w-full flex justify-center items-center group-hover:translate-x-1 group-hover:duration-1000 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer"

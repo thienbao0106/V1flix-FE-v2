@@ -10,6 +10,7 @@ export const getEpisodes = (currentPage: number, limit: number) => gql`
         _id
         epNum
         created_at
+        thumbnail
         series {
           _id
           title {

@@ -79,7 +79,7 @@ export default {
       <Loading message="Getting data" />
     </div>
 
-    <div v-if="totalPage > 5" class="mt-5">
+    <div class="mt-5">
       <Pagination
         type="latest"
         :current-page="currentPage"
