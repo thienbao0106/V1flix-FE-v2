@@ -15,8 +15,8 @@ export default {
       className="flex lg:gap-x-5 gap-x-3 gap-y-3 max-w-full flex-col"
       role="list"
     >
-      <router-link
-        :to="`/watch/${currentInfo.title}?ep=${episode.epNum}`"
+      <a
+        :href="`/watch/${currentInfo.title}?ep=${episode.epNum}`"
         :class="
           episode.epNum.toString() === currentInfo.ep
             ? `bg-secondColorBrighter`
@@ -46,7 +46,7 @@ export default {
             <div>{{ episode.view }} views</div>
           </div>
         </div>
-      </router-link>
+      </a>
     </ul>
     <div v-else>
       <h1 class="text-4xl font-extrabold">Coming soon</h1>

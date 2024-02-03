@@ -93,6 +93,7 @@ export default {
     <p class="px-4" v-if="epDescription !== ''">{{ epDescription }}</p>
 
     <div
+      v-if="epDescription !== ''"
       class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter mx-4 p-2.5 font-bold rounded-lg text-white w-fit"
       @click="toggleSeeMoreSeries(isSeeMoreSeries)"
     >
