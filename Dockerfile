@@ -1,15 +1,15 @@
-FROM node:alpine as base
-
-WORKDIR /V1flix-FE-V2
-
-COPY package.json tsconfig.json yarn.lock ./
-
-RUN rm -rf node_modules && yarn install --frozen-lockfile && yarn global add typescript tsc ts-node vite && yarn cache clean
-
+FROM node:lts-alpine
+# install simple http server for serving static content
+RUN yarn add -g http-server
+# make the 'app' folder the current working directory
+WORKDIR /app
+# copy 'package.json' to install dependencies
+COPY package*.json ./
+# install dependencies
+RUN yarn install
+# copy files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
-
-RUN tsc
-
+# build app for production with minification
+RUN yarn build build
 EXPOSE 5173
-
-CMD ["yarn", "dev"]
+CMD [ "http-server", "dist" ]
