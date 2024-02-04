@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: v1flix_fe
+    image: v1flix_fe
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    ports:
+      - "${PORT}:${PORT}"
