@@ -6,7 +6,7 @@ WORKDIR /app
 # copy 'package.json' to install dependencies
 COPY package*.json ./
 # install dependencies
-RUN yarn install
+RUN rm -rf node_modules && yarn cache clean && yarn install
 # copy files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 # build app for production with minification
