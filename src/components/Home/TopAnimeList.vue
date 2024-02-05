@@ -6,7 +6,8 @@ import TopAnimeCard from "../TopAnimeCard.vue";
 export default {
   data() {
     return {
-      series: [] as any[],
+      mostWatchedSeries: [] as any[],
+      topRatedSeries: [] as any[],
     };
   },
   setup() {
@@ -19,7 +20,12 @@ export default {
     this.resultFn((result) => {
       if (result.data) {
         const listSeries = [...result.data.series.series];
-        this.series = listSeries.sort((a: any, b: any) => b.view - a.view);
+        this.mostWatchedSeries = listSeries.sort(
+          (a: any, b: any) => b.view - a.view
+        );
+        this.topRatedSeries = listSeries.sort(
+          (a: any, b: any) => b.avg_score - a.avg_score
+        );
       }
     });
   },
@@ -28,8 +34,9 @@ export default {
 </script>
 
 <template>
+  <h1 className="font-bold lg:text-2xl text-xl mb-5">Most Watched</h1>
   <div
-    v-if="series.length === 0"
+    v-if="mostWatchedSeries.length === 0"
     class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
   >
     <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
@@ -37,7 +44,7 @@ export default {
   <aside v-else>
     <ul className="flex gap-3 flex-col" role="list">
       <li
-        v-for="(s, index) in series"
+        v-for="(s, index) in mostWatchedSeries"
         :key="s._id"
         class="list-none rounded-lg border-solid border-l-0 border-t-0 border-b-0 [&:nth-child(1)]:border-r-fistAnime [&:nth-child(2)]:border-r-secondAnime [&:nth-child(3)]:border-r-thirdAnime border-r-other border-r-4"
       >
@@ -50,6 +57,33 @@ export default {
           :type="s.type"
           :rank="index + 1"
           :view="s.view"
+        />
+      </li>
+    </ul>
+  </aside>
+  <h1 className="font-bold lg:text-2xl text-xl my-5">Top Rated</h1>
+  <div
+    v-if="topRatedSeries.length === 0"
+    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+  >
+    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  </div>
+  <aside v-else>
+    <ul className="flex gap-3 flex-col" role="list">
+      <li
+        v-for="(s, index) in topRatedSeries"
+        :key="s._id + 1"
+        class="list-none rounded-lg border-solid border-l-0 border-t-0 border-b-0 [&:nth-child(1)]:border-r-fistAnime [&:nth-child(2)]:border-r-secondAnime [&:nth-child(3)]:border-r-thirdAnime border-r-other border-r-4"
+      >
+        <TopAnimeCard
+          :id="s._id"
+          :images="s.images"
+          :status="s.status"
+          :title="s.title"
+          :totalEpisodes="s.total_episodes"
+          :type="s.type"
+          :rank="index + 1"
+          :rating="s.avg_score"
         />
       </li>
     </ul>

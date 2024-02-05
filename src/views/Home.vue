@@ -43,8 +43,13 @@ export default {
     <section v-if="!loading" class="text-white">
       <RandomSeries />
     </section>
-    <main className="bg-bgColor lg:px-9 px-4 py-2 flex xl:flex-row flex-col text-white" v-if="!loading">
-      <section className="2xl:basis-3/4 basis-[65%] mt-5 lg:pr-10 pr-0 space-y-8">
+    <main
+      className="bg-bgColor lg:px-9 px-4 py-2 flex xl:flex-row flex-col text-white"
+      v-if="!loading"
+    >
+      <section
+        className="2xl:basis-3/4 basis-[65%] mt-5 lg:pr-10 pr-0 space-y-8"
+      >
         <div>
           <h1 className="font-bold lg:text-2xl text-xl mb-5">
             Recommendations
@@ -56,7 +61,11 @@ export default {
           <div class="flex justify-between items-start flex-row">
             <h1 className="font-bold lg:text-2xl text-xl mb-5">Newly Added</h1>
             <router-link to="/series">
-              <font-awesome-icon icon="fa-solid fa-arrow-right " size="xl" class="text-white hover:text-secondColor" />
+              <font-awesome-icon
+                icon="fa-solid fa-arrow-right "
+                size="xl"
+                class="text-white hover:text-secondColor"
+              />
             </router-link>
           </div>
           <NewlyAdded />
@@ -69,14 +78,17 @@ export default {
               Latest Episodes
             </h1>
             <router-link to="/latest">
-              <font-awesome-icon icon="fa-solid fa-arrow-right " size="xl" class="text-white hover:text-secondColor" />
+              <font-awesome-icon
+                icon="fa-solid fa-arrow-right "
+                size="xl"
+                class="text-white hover:text-secondColor"
+              />
             </router-link>
           </div>
           <LatestEpisodes />
         </div>
       </section>
       <section className="2xl:basis-1/4 basis-[35%] lg:mt-5 mt-8">
-        <h1 className="font-bold lg:text-2xl text-xl mb-5">Top Anime</h1>
         <TopAnimeList />
       </section>
     </main>

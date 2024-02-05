@@ -89,6 +89,7 @@ export const seriesQuery = (currentPage?: number, limit?: number) => {
           source
           type
         }
+        avg_score
       }
     }
   }
@@ -144,6 +145,16 @@ export const addFavorite = () => gql`
 export const removeFavorite = () => gql`
   mutation deleteFavoriteSeries($seriesId: String!, $userId: String!) {
     deleteFavoriteSeries(seriesId: $seriesId, userId: $userId)
+  }
+`;
+
+export const rateSeries = () => gql`
+  mutation rateSeriesMutation(
+    $seriesId: String!
+    $userId: String!
+    $score: Int!
+  ) {
+    addRating(seriesId: $seriesId, userId: $userId, score: $score)
   }
 `;
 

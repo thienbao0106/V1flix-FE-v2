@@ -17,6 +17,7 @@ export const VIDEO_QUERIES: any = {
     "favors",
     "episodes { \n _id \n source { \n kind \n value \n } \n epNum \n description \n thumbnail \n title \n keyframe { \n kind \n value \n } \n created_at \n view \n subtitles { \n lang \n source { \n kind \n value \n } \n label \n } \n }",
     "genres { \n _id \n name \n}",
+    "rating { \n user { \n _id \n username } \n score \n }",
     "duration",
   ],
   search: [
@@ -28,6 +29,8 @@ export const VIDEO_QUERIES: any = {
     "view",
     "total_episodes",
     "status",
+    "avg_score",
+    "rating { \n user { \n _id \n username } \n score \n }",
   ],
   headerSearch: [
     "_id",
@@ -37,6 +40,7 @@ export const VIDEO_QUERIES: any = {
     "total_episodes",
     "type",
     "title {\n main_title \n }",
+    "avg_score",
   ],
   detail: [
     "images { \n source \n type \n }",
@@ -54,6 +58,8 @@ export const VIDEO_QUERIES: any = {
     "tags { \n _id \n name \n}",
     "duration",
     "trailer { \n id \n site \n thumbnail \n}",
+    "avg_score",
+    "rating { \n user { \n _id \n username } \n score \n }",
     "relation { \n role \n related_series { \n _id \n title {\n main_title \n alt_title \n } \n images { \n source \n type \n } \n total_episodes \n status \n } \n}",
   ],
 };

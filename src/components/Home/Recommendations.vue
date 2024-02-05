@@ -23,23 +23,19 @@ export default {
   methods: {
     fetchRecommendations: function () {
       this.firstLoading = true;
-      const { onResult: resultFn } = useQuery(seriesQuery(0, this.numPerPage));
+      const { onResult: resultFn } = useQuery(seriesQuery);
       resultFn((result) => {
-        if (result.data) this.series = result.data.series.series;
-        console.log(this.series);
+        if (!result.data) return;
+
+        this.series = [...result.data.series.series].sort(
+          (firstSeries: any, nextSeries: any) =>
+            nextSeries.avg_score - firstSeries.avg_score ||
+            nextSeries.view - firstSeries.view
+        );
       });
       this.firstLoading = false;
     },
-    seeMore: function () {
-      const { onResult, loading } = useQuery(seriesQuery(1, this.numPerPage));
-      this.loading = true;
-      onResult((result) => {
-        if (result.data)
-          this.series = [...this.series, ...result.data.series.series];
-        this.loading = loading.value;
-        console.log(result.data);
-      });
-    },
+
     onResize: function () {
       this.width = window.innerWidth;
     },
@@ -71,14 +67,5 @@ export default {
       :description="s.description"
       :trailer="s.trailer"
     />
-  </aside>
-  <aside class="flex justify-center items-center">
-    <div
-      v-if="series.length <= numPerPage"
-      @click="seeMore"
-      class="bg-secondColor font-bold rounded-md py-2 px-5 mt-14 cursor-pointer"
-    >
-      {{ loading ? "Loading..." : "See More" }}
-    </div>
   </aside>
 </template>

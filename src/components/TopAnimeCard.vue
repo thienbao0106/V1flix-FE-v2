@@ -12,9 +12,13 @@ export default {
     "rank",
     "type",
     "totalEpisodes",
+    "rating",
   ],
   methods: {
     getImageType,
+  },
+  data(props) {
+    console.log(props.rating);
   },
   components: { Details },
 };
@@ -67,6 +71,7 @@ export default {
         <Details :type="type" :newep="totalEpisodes" :status="status" />
       </div>
       <div
+        v-if="view !== undefined"
         class="w-fit flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 mb-5"
       >
         <font-awesome-icon
@@ -75,6 +80,19 @@ export default {
           class="text-white lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
         />
         <span class="lg:text-base md:text-md text-lg">{{ view }}</span>
+      </div>
+      <div
+        v-if="rating !== undefined"
+        class="w-fit flex justify-center items-center gap-2 bg-detail rounded-br-xl rounded-l-md rounded-t-md px-2 mb-5"
+      >
+        <font-awesome-icon
+          icon="fa-solid fa-star"
+          size="1x"
+          class="text-secondColor lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+        />
+        <span class="lg:text-base md:text-md text-lg">{{
+          rating === 0 ? "Not rated" : rating
+        }}</span>
       </div>
     </div>
   </div>

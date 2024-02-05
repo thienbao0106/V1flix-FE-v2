@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  props: ["title", "view", "favors", "genres"],
+  props: ["title", "view", "favors", "genres", "rating"],
 };
 </script>
 
@@ -39,9 +39,9 @@ export default {
         <font-awesome-icon
           icon="fa-solid fa-star"
           size="1x"
-          class="text-yellow-500 lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+          class="text-secondColor lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
         />
-        {{ 0 }}
+        {{ rating }}
       </div>
     </div>
     <div

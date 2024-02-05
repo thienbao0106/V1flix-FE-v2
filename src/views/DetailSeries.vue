@@ -122,6 +122,7 @@ export default {
             :title="series.title"
             :view="series.view"
             :genres="series.genres"
+            :rating="series.avg_score"
           />
           <section class="space-y-3 w-full lg:text-xl text-md">
             <header

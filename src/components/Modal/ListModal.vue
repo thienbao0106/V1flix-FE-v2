@@ -8,6 +8,7 @@ import {
   removeSeriesMutation,
   editSeriesMutation,
 } from "../../queries/users";
+import { rateSeries } from "../../queries/series";
 import { toastSettings } from "../../utils/toastSettings";
 import { getImageType } from "../../utils/handleImage";
 
@@ -24,6 +25,7 @@ export default {
       status: "default",
       note: "",
       currentEp: 0,
+      score: 0,
     };
   },
 
@@ -120,6 +122,24 @@ export default {
       const dialog: any = document.querySelector("#add-modal");
       dialog?.close();
     },
+    updateScore: function () {
+      try {
+        const { mutate, onError } = useMutation(rateSeries);
+        mutate({
+          seriesId: this.series._id,
+          userId: this.userId,
+          score: this.score,
+        });
+        toast.success("Add score successfully", toastSettings.success);
+        onError((error) => {
+          console.log(error);
+          toast.error("Add score failed", toastSettings.error);
+        });
+      } catch (error) {
+        toast.error("Add score failed", toastSettings.error);
+        throw error;
+      }
+    },
   },
   created() {
     this.$watch(
@@ -128,7 +148,12 @@ export default {
         console.log(this.$props.series);
         if (Object.keys(this.$props.series).length > 0) {
           this.series = this.$props.series;
-          console.log(this.series);
+          this.score = this.series.rating.find((rate: any) => {
+            return (
+              rate.user.username === window.localStorage.getItem("username")
+            );
+          }).score;
+          console.log(this.series.rating);
         }
       },
       { immediate: true }
@@ -283,6 +308,25 @@ export default {
                 </button>
               </div>
             </div>
+          </div>
+          <div class="flex flex-row w-full h-fit items-end gap-x-2">
+            <div class="w-[14rem]">
+              <h1 class="font-bold">Score</h1>
+              <input
+                type="number"
+                v-model="score"
+                placeholder="Note"
+                max="10"
+                min="1"
+                class="w-full text-white p-2 rounded-lg bg-opacityText"
+              />
+            </div>
+            <button
+              @click="() => updateScore()"
+              class="h-fit p-2 rounded-lg bg-secondColor font-bold hover:bg-secondColorBrighter"
+            >
+              Update
+            </button>
           </div>
         </div>
       </div>
