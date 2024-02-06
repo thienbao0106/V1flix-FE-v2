@@ -85,6 +85,7 @@ export default {
           :season="s.season"
           :type="s.type"
           :duration="s.duration"
+          :rating="s.avg_score"
         />
       </swiper-slide>
     </swiper-container>

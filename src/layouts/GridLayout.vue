@@ -4,7 +4,7 @@ import GridItemCard from "../components/GridItemCard.vue";
 export default {
   props: ["listSeries", "setSeries"],
   setup(props) {
-    console.log(props.listSeries.length);
+    console.log(props.listSeries[0].series.rating);
   },
   components: { GridItemCard },
 };
@@ -28,6 +28,7 @@ export default {
         :view="series.view"
         :current_episode="currentEp"
         :date="date || ``"
+        :rating="series.rating"
       />
     </div>
   </div>

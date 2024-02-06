@@ -54,6 +54,7 @@ export const seriesBannerQuery = (limit: number) => gql`
           source
           type
         }
+        avg_score
       }
     }
   }

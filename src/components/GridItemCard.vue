@@ -14,14 +14,24 @@ export default {
     "view",
     "current_episode",
     "date",
+    "rating",
   ],
   data() {
     return {
       isOwner: this.$route.params.username === "me",
+      score:
+        this.rating.find((rate: any) => {
+          if (this.$route.params.username === "me")
+            return (
+              rate.user.username === window.localStorage.getItem("username")
+            );
+          rate.user.username === this.$route.params.username;
+        })?.score || "",
     };
   },
   setup() {
     const router = useRouter();
+
     return {
       router,
     };
@@ -85,10 +95,21 @@ export default {
           </h3>
           <div
             v-if="current_episode !== undefined"
-            class="font-extrabold text-secondColor"
+            class="font-extrabold text-secondColor flex justify-between items-start pt-1"
           >
-            {{ current_episode
-            }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
+            <div>
+              {{ current_episode
+              }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
+            </div>
+            <div>
+              {{ score }}
+              <font-awesome-icon
+                v-if="score !== ''"
+                icon="fa-solid fa-star"
+                size="1x"
+                class="text-secondColor lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+              />
+            </div>
           </div>
         </div>
       </div>

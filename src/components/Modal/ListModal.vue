@@ -148,12 +148,12 @@ export default {
         console.log(this.$props.series);
         if (Object.keys(this.$props.series).length > 0) {
           this.series = this.$props.series;
-          this.score = this.series.rating.find((rate: any) => {
-            return (
-              rate.user.username === window.localStorage.getItem("username")
-            );
-          }).score;
-          console.log(this.series.rating);
+          this.score =
+            this.series.rating.find((rate: any) => {
+              return (
+                rate.user.username === window.localStorage.getItem("username")
+              );
+            })?.score || 0;
         }
       },
       { immediate: true }
@@ -195,6 +195,21 @@ export default {
       { immediate: true }
     );
   },
+  mounted() {
+    const dialog: any = document.querySelector("dialog");
+    if (!dialog) return;
+    dialog.addEventListener("click", (e: any) => {
+      const dialogDimensions = dialog.getBoundingClientRect();
+      if (
+        e.clientX < dialogDimensions.left ||
+        e.clientX > dialogDimensions.right ||
+        e.clientY < dialogDimensions.top ||
+        e.clientY > dialogDimensions.bottom
+      ) {
+        dialog.close();
+      }
+    });
+  },
   components: { Loading },
 };
 </script>
@@ -213,13 +228,13 @@ export default {
       <header class="w-full flex justify-end pt-5">
         <div
           @click="closeModal"
-          class="cursor-pointer text-4xl font-bold hover:text-secondColor text-right pr-5 w-fit"
+          class="cursor-pointer text-4xl font-bold hover:text-secondColor text-right pr-5 w-fit drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
         >
           X
         </div>
       </header>
       <div
-        class="flex lg:flex-row flex-col lg:justify-start justify-center lg:items-start items-center gap-x-5 space-y-5"
+        class="flex lg:flex-row flex-col lg:justify-start justify-center lg:items-start items-center gap-x-5 space-y-5 pb-5"
       >
         <img
           class="rounded-md w-[14rem] pl-5 shadow-md"
@@ -309,9 +324,13 @@ export default {
               </div>
             </div>
           </div>
-          <div class="flex flex-row w-full h-fit items-end gap-x-2">
-            <div class="w-[14rem]">
-              <h1 class="font-bold">Score</h1>
+          <div
+            class="flex lg:flex-row flex-col lg:justify-start lg:items-end justify-center items-center space-y-2 w-full gap-x-2"
+          >
+            <div class="lg:w-[14rem] w-[20rem]">
+              <h1 class="font-bold lg:text-start text-center lg:mb-2 mb-0">
+                Score
+              </h1>
               <input
                 type="number"
                 v-model="score"
@@ -323,7 +342,7 @@ export default {
             </div>
             <button
               @click="() => updateScore()"
-              class="h-fit p-2 rounded-lg bg-secondColor font-bold hover:bg-secondColorBrighter"
+              class="h-fit lg:my-0 my-4 p-2 rounded-lg bg-secondColor font-bold hover:bg-secondColorBrighter lg:w-fit w-[20rem]"
             >
               Update
             </button>

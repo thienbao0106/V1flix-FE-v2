@@ -3,11 +3,6 @@ import moment from "moment";
 import { getImageType } from "../utils/handleImage";
 
 export default {
-  data() {
-    return {
-      isOwner: this.$route.params.username === "me",
-    };
-  },
   props: [
     "id",
     "title",
@@ -18,7 +13,22 @@ export default {
     "view",
     "current_episode",
     "date",
+    "rating",
   ],
+  data() {
+    return {
+      isOwner: this.$route.params.username === "me",
+      score:
+        this.rating.find((rate: any) => {
+          if (this.$route.params.username === "me")
+            return (
+              rate.user.username === window.localStorage.getItem("username")
+            );
+          rate.user.username === this.$route.params.username;
+        })?.score || "",
+    };
+  },
+
   methods: {
     getImageType,
     toggleModal: function () {
@@ -76,10 +86,19 @@ export default {
         {{ title.main_title }}
       </router-link>
     </div>
-    <div class="w-2/12 text-left">
+    <div class="w-2/12 text-center">
       <p class="lg:line-clamp-0 line-clamp-2 font-bold">
         {{ current_episode }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
       </p>
+    </div>
+    <div class="w-2/12 text-center font-bold">
+      {{ score }}
+      <font-awesome-icon
+        v-if="score !== ''"
+        icon="fa-solid fa-star"
+        size="1x"
+        class="text-secondColor lg:text-[1vw] md:text-[2vw] sm:text-[3.5vw] text-[2.5vw]"
+      />
     </div>
     <div class="w-4/12 flex justify-center">
       <div v-if="date === ''">

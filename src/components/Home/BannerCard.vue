@@ -2,7 +2,16 @@
 import { getImageType } from "../../utils/handleImage";
 import { formatDuration } from "../../utils/handleSeries";
 export default {
-  props: ["images", "id", "title", "description", "season", "duration", "type"],
+  props: [
+    "images",
+    "id",
+    "title",
+    "description",
+    "season",
+    "duration",
+    "type",
+    "rating",
+  ],
   data() {
     return {
       width: window.innerWidth,
@@ -65,6 +74,14 @@ export default {
           <div
             class="lg:text-lg text-white lg:text-md text-sm xl:truncate w-full lg:text-start text-center lg:flex lg:flex-row lg:justify-start grid grid-cols-2 gap-2"
           >
+            <div class="bg-detail px-3 py-1.5 rounded-xl">
+              <font-awesome-icon
+                icon="fa-solid fa-star"
+                class="pr-2 text-secondColor"
+              />
+
+              {{ rating === 0 ? "Not rated" : rating }}
+            </div>
             <div class="bg-detail px-3 py-1.5 rounded-xl">
               <font-awesome-icon icon="fa-regular fa-calendar" class="pr-2" />
 

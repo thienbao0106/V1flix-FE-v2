@@ -16,10 +16,13 @@ export default {
       <div class="xl:w-8/12 lg:w-6/12 md:w-5/12 w-4/12 text-left">
         <h1 class="font-bold">Title</h1>
       </div>
-      <div class="w-2/12 text-left">
+      <div class="w-2/12 text-center">
         <h1 class="font-bold">
           {{ listSeries[0].date ? "Episode" : "Progress" }}
         </h1>
+      </div>
+      <div class="w-2/12 text-center">
+        <h1 class="font-bold">Score</h1>
       </div>
       <div class="w-4/12 flex justify-center">
         <h1 class="font-bold">
@@ -40,6 +43,7 @@ export default {
       :view="series.view"
       :current_episode="currentEp"
       :date="date || ``"
+      :rating="series.rating"
     />
   </div>
 </template>
