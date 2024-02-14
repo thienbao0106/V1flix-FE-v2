@@ -353,19 +353,18 @@ export default {
             <section
               v-if="isTheaterMode"
               aria-label="trending"
-              class="xl:w-2/6 w-full space-y-6"
+              class="xl:w-2/6 w-full space-y-6 xl:mt-0 mt-5"
             >
               <div class="bg-opacityText px-2 py-4 rounded-lg">
-                <h2 class="text-3xl mb-5 font-bold px-2">List Episodes</h2>
+                <h2 class="font-bold lg:text-2xl text-xl mb-5 px-2">
+                  List Episodes
+                </h2>
                 <Episodes
                   :episodes="series?.episodes"
                   :current-info="getInfoUrl"
                 />
               </div>
               <div class="p-2">
-                <h2 class="text-3xl sm:mt-0 mt-5 mb-5 font-bold">
-                  Top Trending
-                </h2>
                 <TopAnimeList />
               </div>
             </section>
@@ -377,14 +376,13 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 w-full sm:mt-0 space-y-6"
+      class="xl:w-2/6 w-full py-0 space-y-6"
     >
-      <div class="bg-opacityText px-2 py-4 rounded-lg">
-        <h2 class="text-3xl mb-5 font-bold px-2">List Episodes</h2>
+      <div class="bg-opacityText px-2 py-4 my-0 rounded-lg w-full">
+        <h2 class="font-bold lg:text-2xl text-xl mb-5 px-2">List Episodes</h2>
         <Episodes :episodes="series?.episodes" :current-info="getInfoUrl" />
       </div>
-      <div class="p-2">
-        <h2 class="text-3xl mb-5 font-bold">Top Trending</h2>
+      <div class="p-2 w-full">
         <TopAnimeList />
       </div>
     </section>

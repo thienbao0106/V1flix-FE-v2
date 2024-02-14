@@ -8,7 +8,7 @@ export const USER_QUERIES = {
     `list { \n series { ${VIDEO_QUERIES["search"].join(
       " \n "
     )} } \n status \n note \n currentEp \n }`,
-    `stats { \n total_episodes \n days_watched \n }`,
+    `stats { \n total_episodes \n days_watched \n mean_score \n }`,
     `favoriteList { \n ${VIDEO_QUERIES["search"].join(" \n ")} \n }`,
   ],
   modal: [

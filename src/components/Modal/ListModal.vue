@@ -38,7 +38,7 @@ export default {
           return;
         }
 
-        if (this.currentEp > this.series.total_episodes) {
+        if (this.currentEp > this.series.episodes.length) {
           toast.error(
             "Current episode isn't greater than total episode",
             toastSettings.error
@@ -148,6 +148,7 @@ export default {
         console.log(this.$props.series);
         if (Object.keys(this.$props.series).length > 0) {
           this.series = this.$props.series;
+
           this.score =
             this.series.rating.find((rate: any) => {
               return (
@@ -155,6 +156,14 @@ export default {
               );
             })?.score || 0;
         }
+      },
+      { immediate: true }
+    );
+    this.$watch(
+      () => [this.status],
+      () => {
+        if (this.status === "completed")
+          this.currentEp = this.series.total_episodes;
       },
       { immediate: true }
     );

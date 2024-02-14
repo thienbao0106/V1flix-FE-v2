@@ -42,6 +42,7 @@ export default {
       defaultBanner: DEFAULT_IMAGE.banner,
       totalEpisodes: 0,
       daysWatched: 0,
+      meanScore: 0,
       layout: "grid",
       storageUser: window.localStorage.getItem("username"),
       width: window.innerWidth,
@@ -96,10 +97,12 @@ export default {
           this.favorList = favoriteList;
           this.user = result.data.findUserByName;
 
-          const { total_episodes, days_watched } =
+          const { total_episodes, days_watched, mean_score } =
             result.data.findUserByName.stats;
+          console.log(mean_score);
           this.totalEpisodes = total_episodes || 0;
           this.daysWatched = days_watched || 0;
+          this.meanScore = mean_score || 0;
           console.log(this.totalEpisodes);
 
           this.count = this.typeList.map((type: string, index: number) => {
@@ -235,6 +238,12 @@ export default {
                 {{ daysWatched }}
               </p>
               <h1 class="lg:text-xl text-lg">Days Watched</h1>
+            </div>
+            <div class="text-center">
+              <p class="font-bold text-secondColor lg:text-2xl text-xl">
+                {{ meanScore }}
+              </p>
+              <h1 class="lg:text-xl text-lg">Mean Score</h1>
             </div>
           </div>
         </section>
