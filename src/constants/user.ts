@@ -15,7 +15,7 @@ export const USER_QUERIES = {
     "_id",
     "list { \n series { \n _id \n } \n status \n note \n currentEp \n }",
   ],
-  header: ["avatar"],
+  header: ["_id", "avatar"],
   favor: ["_id", "favoriteList { \n _id \n }"],
   settings: ["_id", "avatar", "username", "email"],
   // searchList: [

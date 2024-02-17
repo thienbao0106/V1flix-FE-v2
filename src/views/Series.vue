@@ -19,6 +19,7 @@ import { convertToTimestamp, historyTimeline } from "../utils/video/handleTime";
 import { defaultImage } from "../utils/handleImage";
 
 import { addViewMutation } from "../queries/series";
+import Comments from "../components/Series/Comments.vue";
 
 export default {
   data() {
@@ -212,6 +213,7 @@ export default {
     VideoMobile,
     ListModal,
     Error,
+    Comments,
   },
 };
 </script>
@@ -333,7 +335,10 @@ export default {
             "
             aria-label="info-film"
           >
-            <div :class="isTheaterMode ? `xl:w-4/6 :w-full` : `w-full`">
+            <div
+              class="space-y-5"
+              :class="isTheaterMode ? `xl:w-4/6 :w-full` : `w-full`"
+            >
               <Info
                 :epDescription="currentEpisode.description"
                 :description="series?.description"
@@ -349,6 +354,7 @@ export default {
                 :is-user="isUser"
                 :favors="series?.favors"
               ></Info>
+              <Comments :list-comments="currentEpisode.comments" />
             </div>
             <section
               v-if="isTheaterMode"
