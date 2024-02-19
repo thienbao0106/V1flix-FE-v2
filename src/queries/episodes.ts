@@ -26,3 +26,17 @@ export const getEpisodes = (currentPage: number, limit: number) => gql`
     }
   }
 `;
+
+export const addCommentMutation = () => gql`
+  mutation ($episodeId: String!, $userId: String!, $content: String!) {
+    addComments(episodeId: $episodeId, userId: $userId, content: $content) {
+      user {
+        username
+        avatar
+      }
+      content
+      updated_at
+      created_at
+    }
+  }
+`;

@@ -31,6 +31,8 @@ import {
   faStar,
   faInfoCircle,
   faList,
+  faSortDown,
+  faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -48,6 +50,8 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faSortDown,
+    faSortUp,
     faList,
     faInfoCircle,
     faStar,

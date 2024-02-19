@@ -34,6 +34,7 @@ export default {
       isTheaterMode: false,
       isIOS: null as any,
       isUser: window.localStorage.getItem("username"),
+      width: window.innerWidth,
       getInfoUrl: {
         ep: this.$route.query.ep,
         time: this.$route.query.t || 0,
@@ -71,11 +72,16 @@ export default {
 
   mounted() {
     this.handleIOS();
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
   },
 
   beforeUnmount() {
     this.setSeconds();
+    window.removeEventListener("resize", this.onResize);
   },
+
   setup() {
     const url = window.location.href;
     return {
@@ -83,6 +89,9 @@ export default {
     };
   },
   methods: {
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
     handleIOS: function () {
       this.isIOS = isIOS();
     },
@@ -354,7 +363,11 @@ export default {
                 :is-user="isUser"
                 :favors="series?.favors"
               ></Info>
-              <Comments :list-comments="currentEpisode.comments" />
+              <Comments
+                v-if="width >= 1280"
+                :list-comments="currentEpisode.comments"
+                :episode-id="currentEpisode._id"
+              />
             </div>
             <section
               v-if="isTheaterMode"
@@ -391,6 +404,11 @@ export default {
       <div class="p-2 w-full">
         <TopAnimeList />
       </div>
+      <Comments
+        :episode-id="currentEpisode._id"
+        v-if="width < 1280"
+        :list-comments="currentEpisode.comments"
+      />
     </section>
   </section>
   <main class="text-white" v-if="!loading && Object.keys(error).length > 0">
