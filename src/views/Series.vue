@@ -235,9 +235,10 @@ export default {
     :current-ep="getInfoUrl.ep"
     :reload="false"
   />
+
   <div
-    class="text-4xl font-bold text-white"
-    v-if="loading && Object.keys(series).length === 0"
+    class="text-4xl font-bold text-white h-screen"
+    v-if="Object.keys(series).length === 0"
   >
     <Loading message="Getting the data" />
   </div>

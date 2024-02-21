@@ -35,22 +35,23 @@ export default {
         }
       );
       onResult((result: any) => {
-        console.log(result);
         if (!result) return;
         this.avatar = result.data.findUserByName.avatar;
         this.userId = result.data.findUserByName._id;
       });
     },
-    handleShowButton: function () {
+    handleShowButton: function (isUser: boolean) {
       if (this.username !== "") {
-        this.isUser = true;
+        this.isUser = isUser;
+        if (isUser === false) this.content = "";
         return;
       }
       toast.error("You need to login to comment!", toastSettings.error);
     },
     sendComment: async function () {
       try {
-        console.log(this.episodeId);
+        if (this.content.length === 0)
+          throw new Error("Comment can't be emptied.");
         const { mutate } = useMutation(addCommentMutation);
 
         const data: any = await mutate({
@@ -66,8 +67,8 @@ export default {
         this.comments.unshift(newComment);
         toast.success("Comment successfully", toastSettings.success);
       } catch (error: any) {
-        toast.error(error, toastSettings.error);
-        throw error;
+        console.log(error.message);
+        toast.error(error.message, toastSettings.error);
       }
     },
     setSort: function (currentSort: string) {
@@ -92,45 +93,61 @@ export default {
 <template>
   <main class="xl:space-y-5 space-y-8">
     <section>
-      <h1 class="lg:text-3xl text-xl font-bold space-x-3">
+      <h1
+        class="xl:text-2xl text-xl font-bold space-x-3 flex flex-row justify-start items-center"
+      >
         <span>{{ comments.length }} Comments</span>
         <font-awesome-icon
           v-if="currentSort === 'decreasing'"
-          class="cursor-pointer"
+          class="cursor-pointer hover:text-secondColor"
           @click="setSort(`increasing`)"
           icon="fa-solid fa-sort-up"
         />
         <font-awesome-icon
           v-if="currentSort === 'increasing'"
-          class="cursor-pointer"
+          class="cursor-pointer hover:text-secondColor"
           @click="setSort(`decreasing`)"
           icon="fa-solid fa-sort-down"
         />
       </h1>
     </section>
-    <section class="w-full flex flex-row gap-x-2">
-      <div class="xl:w-[5%] w-[10%]">
-        <img :src="avatar" class="rounded-full" />
+    <section class="w-full flex flex-row gap-x-4">
+      <div class="2xl:w-[4.5%] lg:w-[7%] md:w-[8%] sm:w-[12%] w-[13%]">
+        <img
+          :src="avatar"
+          class="rounded-full h-full 2xl:max-h-[50px] xl:max-h-[58px] lg:max-h-[100px] md:max-h-[75px] sm:max-h-[65px] max-h-[50px]"
+        />
       </div>
-      <div class="xl:w-[95%] w-[90%] flex flex-col gap-y-2 h-full">
+      <div class="2xl:w-[95.5%] lg:w-[93%] md:w-[92%] sm:w-[88%] w-[87%]">
         <input
-          @click="() => handleShowButton()"
+          @click="() => handleShowButton(true)"
           type="text"
           :placeholder="
             username !== '' ? `Comment as ${username}` : `Add a comment...`
           "
-          class="rounded p-2 bg-opacityText xl:h-[58px] lg:h-[100px] md:h-[75px] sm:h-[65px] h-full"
+          class="rounded p-2 bg-opacityText w-full mb-2"
           v-model="content"
         />
-        <button
-          v-if="isUser"
-          @click="() => sendComment()"
-          class="w-fit rounded-lg font-bold p-2 bg-green-500 hover:bg-green-700"
-        >
-          Send
-        </button>
+        <div class="w-full flex justify-end items-end gap-x-3" v-if="isUser">
+          <div
+            @click="() => handleShowButton(false)"
+            class="w-fit rounded-lg font-bold p-2 font-bold hover:cursor-pointer hover:text-secondColor"
+          >
+            Cancel
+          </div>
+          <button
+            @click="() => sendComment()"
+            class="w-fit rounded-lg font-bold p-2 bg-green-500 hover:bg-green-700"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </section>
-    <CommentCard v-for="comment in comments" :comment="comment" />
+    <CommentCard
+      v-for="comment in comments"
+      :comment="comment"
+      :current-user="username"
+    />
   </main>
 </template>
