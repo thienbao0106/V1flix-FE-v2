@@ -71,6 +71,11 @@ export default {
         toast.error(error.message, toastSettings.error);
       }
     },
+    filterComment: async function (commentId: any) {
+      this.comments = this.comments.filter(
+        (comment: any) => comment._id !== commentId
+      );
+    },
     setSort: function (currentSort: string) {
       this.currentSort = currentSort;
       this.comments = this.comments.sort(
@@ -148,6 +153,8 @@ export default {
       v-for="comment in comments"
       :comment="comment"
       :current-user="username"
+      :episode-id="episodeId"
+      :filter-comment="filterComment"
     />
   </main>
 </template>

@@ -15,7 +15,7 @@ export const VIDEO_QUERIES: any = {
     "total_episodes",
     "status",
     "favors",
-    "episodes { _id \n source { \n kind \n value \n } \n epNum \n description \n comments { \n user { \n avatar \n username \n } content \n created_at \n updated_at \n } \n thumbnail \n title \n keyframe { \n kind \n value \n } \n created_at \n view \n subtitles { \n lang \n source { \n kind \n value \n } \n label \n } \n }",
+    "episodes { _id \n source { \n kind \n value \n } \n epNum \n description \n comments { \n _id \n user { \n avatar \n username \n } content \n created_at \n updated_at \n } \n thumbnail \n title \n keyframe { \n kind \n value \n } \n created_at \n view \n subtitles { \n lang \n source { \n kind \n value \n } \n label \n } \n }",
     "genres { \n _id \n name \n}",
     "rating { \n user { \n _id \n username } \n score \n }",
     "duration",

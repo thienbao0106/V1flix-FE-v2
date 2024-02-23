@@ -40,3 +40,15 @@ export const addCommentMutation = () => gql`
     }
   }
 `;
+
+export const deleteCommentMutation = () => gql`
+  mutation ($episodeId: String!, $commentId: String!) {
+    deleteComment(episodeId: $episodeId, commentId: $commentId)
+  }
+`;
+
+export const updateCommentMutation = () => gql`
+  mutation ($episodeId: String!, $commentId: String!, $content: String!) {
+    editComment(episodeId: $episodeId, commentId: $commentId, content: $content)
+  }
+`;

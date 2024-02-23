@@ -1,10 +1,19 @@
 <script lang="ts">
+import { useMutation } from "@vue/apollo-composable";
 import moment from "moment";
+import {
+  deleteCommentMutation,
+  updateCommentMutation,
+} from "../../queries/episodes";
+import { toast } from "vue3-toastify";
+import { toastSettings } from "../../utils/toastSettings";
 export default {
-  props: ["comment", "currentUser"],
+  props: ["comment", "currentUser", "episodeId", "filterComment"],
   data() {
     return {
       isSeeMore: false,
+      isUpdate: false,
+      updatedContent: "",
     };
   },
 
@@ -14,6 +23,51 @@ export default {
     },
     setSeeMore: function (isSeeMore: boolean) {
       this.isSeeMore = !isSeeMore;
+    },
+    setUpdate: function (isUpdate: boolean) {
+      this.isUpdate = isUpdate;
+      if (this.isUpdate === true) this.updatedContent = this.comment.content;
+    },
+    deleteComment: async function () {
+      try {
+        const { mutate } = useMutation(deleteCommentMutation);
+        const result = await mutate({
+          episodeId: this.episodeId,
+          commentId: this.comment._id,
+        });
+        if (!result) {
+          toast.error("Can't delete this comment", toastSettings.error);
+          return;
+        }
+        toast.success("Delete comment successfully", toastSettings.success);
+        this.filterComment(this.comment._id);
+        return;
+      } catch (error) {
+        throw error;
+      }
+    },
+    updateComment: async function () {
+      try {
+        const { mutate } = useMutation(updateCommentMutation);
+        const result = await mutate({
+          episodeId: this.episodeId,
+          commentId: this.comment._id,
+          content: this.updatedContent,
+        });
+        if (!result) {
+          toast.error("Can't update this comment", toastSettings.error);
+          return;
+        }
+        toast.success("Update comment successfully", toastSettings.success);
+        this.comment.content = this.updatedContent;
+        this.comment.updated_at = Date.parse(new Date().toLocaleString());
+        this.isUpdate = false;
+        return;
+      } catch (error) {
+        console.log(error);
+        toast.error("Can't update this comment", toastSettings.error);
+        throw error;
+      }
     },
   },
 };
@@ -50,27 +104,55 @@ export default {
           <span class="text-slate-300">{{
             formatTime(comment.created_at)
           }}</span>
+          <span
+            v-if="comment.created_at !== comment.updated_at"
+            class="ml-1 text-slate-300 italic"
+            >{{ `(Edited ${formatTime(comment.updated_at)})` }}</span
+          >
         </div>
         <div
           class="flex gap-x-5 flex-row"
-          v-if="comment.user.username === currentUser"
+          v-if="comment.user.username === currentUser && !isUpdate"
         >
           <font-awesome-icon
             class="cursor-pointer hover:text-secondColor"
+            @click="() => deleteComment()"
             size="md"
             icon="fa-solid fa-trash-can"
           />
           <font-awesome-icon
+            @click="() => setUpdate(true)"
             class="cursor-pointer hover:text-secondColor"
             icon="fa-solid fa-pen"
             size="md"
           />
         </div>
       </div>
-      <p :class="!isSeeMore ? 'line-clamp-2' : 'line-clamp-0'">
+      <p v-if="!isUpdate" :class="!isSeeMore ? 'line-clamp-2' : 'line-clamp-0'">
         {{ comment.content }}
       </p>
-      <div v-if="comment.content.length > 500">
+      <div v-else>
+        <input
+          class="rounded p-2 bg-opacityText w-full mb-2 text-white"
+          type="text"
+          v-model="updatedContent"
+        />
+        <div class="w-full flex justify-end items-end flex-row gap-x-2">
+          <button
+            @click="() => setUpdate(false)"
+            class="font-bold bg-yellow-500 p-2 rounded-lg hover:bg-yellow-700"
+          >
+            Cancel
+          </button>
+          <button
+            @click="() => updateComment()"
+            class="font-bold bg-green-500 p-2 rounded-lg hover:bg-green-700"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+      <div v-if="!isUpdate && comment.content.length > 500">
         <span
           @click="setSeeMore(isSeeMore)"
           class="hover:cursor-pointer hover:text-slate-200 text-sm text-slate-300"
