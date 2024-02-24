@@ -7,6 +7,7 @@ import {
 } from "../../queries/episodes";
 import { toast } from "vue3-toastify";
 import { toastSettings } from "../../utils/toastSettings";
+import { DEFAULT_IMAGE } from "../../constants/image";
 export default {
   props: ["comment", "currentUser", "episodeId", "filterComment"],
   data() {
@@ -14,6 +15,10 @@ export default {
       isSeeMore: false,
       isUpdate: false,
       updatedContent: "",
+      avatar:
+        this.comment.user.avatar === ""
+          ? DEFAULT_IMAGE.avatar
+          : this.comment.user.avatar,
     };
   },
 
@@ -82,7 +87,7 @@ export default {
         }`"
       >
         <img
-          :src="comment.user.avatar"
+          :src="avatar"
           class="rounded-full h-full 2xl:max-h-[50px] xl:max-h-[58px] lg:max-h-[100px] md:max-h-[75px] sm:max-h-[65px] max-h-[50px]"
         />
       </router-link>

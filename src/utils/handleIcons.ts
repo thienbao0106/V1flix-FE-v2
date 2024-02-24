@@ -35,6 +35,7 @@ import {
   faSortUp,
   faTrashCan,
   faPen,
+  faExpandAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCopy,
@@ -52,6 +53,7 @@ import {
 
 export const addIcon = () => {
   library.add(
+    faExpandAlt,
     faTrashCan,
     faPen,
     faSortDown,

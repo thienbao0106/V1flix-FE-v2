@@ -45,4 +45,3 @@ export default {
     </video>
   </section>
 </template>
-../../../utils/video/handleVideo

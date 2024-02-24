@@ -3,7 +3,7 @@ import Header from "../components/Header/Header.vue";
 import Footer from "../components/Footer/Footer.vue";
 //temp logic
 
-const isValid = ["/login", "/register"].some((route) =>
+const isValid = ["/login", "/register", "/room"].some((route) =>
   window.location.pathname.includes(route)
 );
 </script>
