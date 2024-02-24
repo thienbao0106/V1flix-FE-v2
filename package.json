@@ -22,6 +22,7 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.4",
+    "socket.io-client": "^4.7.4",
     "swiper": "^10.3.0",
     "vite-plugin-mkcert": "^1.16.0",
     "vue": "^3.3.4",

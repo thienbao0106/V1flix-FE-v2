@@ -4,6 +4,7 @@ import { useQuery } from "@vue/apollo-composable";
 import { getEpisode } from "../queries/episodes";
 import Chatbox from "../components/Room/Chatbox.vue";
 import Members from "../components/Room/Members.vue";
+import { io } from "socket.io-client";
 
 export default {
   data() {
@@ -32,6 +33,9 @@ export default {
     },
   },
   mounted() {
+    const socket = io("http://localhost:3306/");
+
+    socket.emit("connection");
     this.fetchEpisode();
   },
   components: { RoomVideo, Chatbox, Members },
