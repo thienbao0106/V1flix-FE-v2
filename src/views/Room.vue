@@ -13,7 +13,10 @@ export default {
       episodeId: this.$route.query.episodeId || "",
       episode: {},
       loading: false,
-      isShow: true,
+      isShow: false,
+      listUser: [] as any,
+      socket: null as any,
+      currentUser: window.localStorage.getItem("username") || "",
     };
   },
   methods: {
@@ -33,11 +36,29 @@ export default {
     },
   },
   mounted() {
-    const socket = io("http://localhost:3306/");
-
-    socket.emit("connection");
     this.fetchEpisode();
   },
+  created() {
+    this.$watch(
+      () => this.roomId,
+      () => {
+        this.socket = io("http://localhost:3306/", {
+          autoConnect: true,
+        });
+
+        this.socket.on("connect", () => {
+          console.log("called");
+          this.socket.emit("join", this.currentUser);
+        });
+        this.socket.on("listUser", (data: any) => {
+          this.listUser = data;
+          console.log(data);
+        });
+      },
+      { immediate: true }
+    );
+  },
+
   components: { RoomVideo, Chatbox, Members },
 };
 </script>
@@ -49,12 +70,12 @@ export default {
       <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
         <RoomVideo :set-show="setShow" :episode="episode" />
       </div>
-      <div v-if="!isShow" class="lg:w-[20%] w-full flex flex-col gap-y-2">
+      <div v-show="!isShow" class="lg:w-[20%] w-full flex flex-col gap-y-2">
         <section class="max-h-[3/5]">
-          <Chatbox />
+          <Chatbox :socket="socket" :current-user="currentUser" />
         </section>
         <section class="max-h-[2/5]">
-          <Members />
+          <Members :list-user="listUser" />
         </section>
       </div>
     </section>
