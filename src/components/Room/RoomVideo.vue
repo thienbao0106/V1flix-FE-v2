@@ -1,13 +1,16 @@
 <script lang="ts">
 import handleVideo from "../../utils/video/index";
 import { URL_TYPE } from "../../constants/video";
+import { ref } from "vue";
 export default {
-  props: ["episode", "setShow"],
+  props: ["episode", "setShow", "isHost", "socket"],
 
-  setup(props) {
-    console.log(props.episode.subtitles);
+  setup() {
+    const videoRef = ref<HTMLVideoElement>();
     return {
       isDevEnv: import.meta.env.DEV,
+      videoRef,
+      isPlaying: true,
     };
   },
   methods: {
@@ -16,7 +19,57 @@ export default {
         ? URL_TYPE.video
         : handleVideo.checkSource(this.episode.source);
     },
+    handleSocket: function (isPlay: boolean, currentTime?: any) {
+      console.log(isPlay);
+      this.socket.emit("userVideo", isPlay, currentTime);
+    },
     checkSubtitleSource: handleVideo.checkSource,
+    handleVideo: function () {
+      if (!this.videoRef) return;
+
+      if (!this.videoRef.paused) {
+        this.videoRef.play();
+        const currentTime = this.videoRef.currentTime;
+        this.handleSocket(true, currentTime);
+        return;
+      }
+
+      if (this.videoRef.paused) {
+        this.videoRef.pause();
+        const currentTime = this.videoRef.currentTime;
+        this.handleSocket(false, currentTime);
+        return;
+      }
+    },
+  },
+  mounted() {
+    // if (!this.videoRef) return;
+    // if (this.isHost === "false") {
+    //   this.videoRef.onpause = () => {
+    //     this.videoRef?.play();
+    //   };
+    // }
+
+    this.socket.on("playingVideo", (isPlaying: any, currentTime: any) => {
+      if (!this.videoRef || this.isHost === "true") return;
+
+      if (!isPlaying) {
+        this.videoRef.pause();
+        this.videoRef.onpause = () => {};
+        this.videoRef.onplay = () => {
+          this.videoRef?.pause();
+        };
+        this.videoRef.currentTime = currentTime;
+        return;
+      }
+      this.videoRef.play();
+      this.videoRef.onpause = () => {
+        this.videoRef?.play();
+      };
+      this.videoRef.onplay = () => {};
+      this.videoRef.currentTime = currentTime;
+      return;
+    });
   },
 };
 </script>
@@ -34,13 +87,18 @@ export default {
         <font-awesome-icon icon="fa-solid fa-expand" />
       </div>
     </div>
+
     <div>
       <video
+        @play="() => handleVideo()"
+        @pause="() => handleVideo()"
+        ref="videoRef"
         class="w-full rounded-lg"
         width="1280"
         height="760"
-        controls
+        :autoplay="true"
         preload="metadata"
+        controls
         crossorigin="anonymous"
       >
         <source :src="getSource()" type="video/mp4" />

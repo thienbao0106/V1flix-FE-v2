@@ -10,6 +10,7 @@ export default {
   data() {
     return {
       roomId: this.$route.params.roomId,
+      hostRoom: this.$route.query.host || "",
       episodeId: this.$route.query.episodeId || "",
       episode: {},
       loading: false,
@@ -35,6 +36,7 @@ export default {
       });
     },
   },
+
   mounted() {
     this.fetchEpisode();
   },
@@ -68,7 +70,12 @@ export default {
     <h1>Room Id: {{ roomId }}</h1>
     <section class="w-full flex lg:flex-row flex-col lg:gap-x-5">
       <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
-        <RoomVideo :set-show="setShow" :episode="episode" />
+        <RoomVideo
+          :is-host="hostRoom"
+          :set-show="setShow"
+          :episode="episode"
+          :socket="socket"
+        />
       </div>
       <div v-show="!isShow" class="lg:w-[20%] w-full flex flex-col gap-y-2">
         <section class="max-h-[3/5]">
