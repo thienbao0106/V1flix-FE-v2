@@ -20,6 +20,7 @@ import { defaultImage } from "../utils/handleImage";
 
 import { addViewMutation } from "../queries/series";
 import Comments from "../components/Series/Comments.vue";
+import WatchTogetherModal from "../components/Series/WatchTogetherModal.vue";
 
 export default {
   data() {
@@ -72,6 +73,7 @@ export default {
 
   mounted() {
     this.handleIOS();
+
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
@@ -192,6 +194,12 @@ export default {
 
       dialog.showModal();
     },
+    toggleWatchTogetherModal: function () {
+      console.log(this.currentEpisode);
+      const dialog: any = document.querySelector(`#watch-modal`);
+      if (!dialog) return;
+      dialog.showModal();
+    },
     addView: function (seriesId: string, episodeId: string) {
       const { mutate } = useMutation(addViewMutation);
       mutate({
@@ -223,12 +231,17 @@ export default {
     ListModal,
     Error,
     Comments,
+    WatchTogetherModal,
   },
 };
 </script>
 
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
+  <WatchTogetherModal
+    v-if="Object.keys(currentEpisode).length > 0"
+    :episode-id="currentEpisode._id"
+  />
   <ListModal
     v-if="Object.keys(series).length > 0"
     :series="series"
@@ -318,6 +331,13 @@ export default {
               <div
                 class="flex justify-center items-center gap-x-4 md:text-lg text-md"
               >
+                <div
+                  class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
+                  @click="toggleWatchTogetherModal"
+                >
+                  <font-awesome-icon class="mr-2" icon="fa-solid fa-tv" />
+                  Watch Together
+                </div>
                 <div
                   class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
                   @click="toggleShareModal"

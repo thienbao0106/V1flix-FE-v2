@@ -43,7 +43,6 @@ export default {
     },
   },
   mounted() {
-    // if (!this.videoRef) return;
     // if (this.isHost === "false") {
     //   this.videoRef.onpause = () => {
     //     this.videoRef?.play();
@@ -75,7 +74,7 @@ export default {
 </script>
 
 <template>
-  <main class="flex flex-col gap-y-3">
+  <main v-if="Object.keys(episode).length > 0" class="flex flex-col gap-y-3">
     <div class="text-2xl flex justify-between">
       <div>
         Episode
@@ -87,24 +86,27 @@ export default {
         <font-awesome-icon icon="fa-solid fa-expand" />
       </div>
     </div>
-
+    <div
+      class="w-full bg-mainColor rounded-lg lg:text-center text-left p-2 text-lg"
+    >
+      This feature is still in beta. Any problem is expected.
+    </div>
     <div>
       <video
         @play="() => handleVideo()"
         @pause="() => handleVideo()"
         ref="videoRef"
-        class="w-full rounded-lg"
-        width="1280"
-        height="760"
-        :autoplay="true"
+        class="w-full h-full rounded-lg"
         preload="metadata"
         controls
+        autoplay
+        :muted="false"
         crossorigin="anonymous"
       >
         <source :src="getSource()" type="video/mp4" />
         <track
           v-for="sub in episode.subtitles"
-          :id="sub.source"
+          :id="sub.label"
           :label="sub.label"
           kind="subtitles"
           :srclang="sub.lang"

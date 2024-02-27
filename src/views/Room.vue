@@ -5,6 +5,7 @@ import { getEpisode } from "../queries/episodes";
 import Chatbox from "../components/Room/Chatbox.vue";
 import Members from "../components/Room/Members.vue";
 import { io } from "socket.io-client";
+import Loading from "../components/Loading.vue";
 
 export default {
   data() {
@@ -50,7 +51,7 @@ export default {
 
         this.socket.on("connect", () => {
           console.log("called");
-          this.socket.emit("join", this.currentUser);
+          this.socket.emit("join", this.currentUser, this.roomId);
         });
         this.socket.on("listUser", (data: any) => {
           this.listUser = data;
@@ -61,12 +62,13 @@ export default {
     );
   },
 
-  components: { RoomVideo, Chatbox, Members },
+  components: { RoomVideo, Chatbox, Members, Loading },
 };
 </script>
 
 <template>
-  <main class="text-white p-2 max-h-full">
+  <Loading v-if="loading" message="Getting data" />
+  <main v-else class="text-white p-2 max-h-full">
     <h1>Room Id: {{ roomId }}</h1>
     <section class="w-full flex lg:flex-row flex-col lg:gap-x-5">
       <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">

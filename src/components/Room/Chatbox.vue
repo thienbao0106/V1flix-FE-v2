@@ -26,7 +26,7 @@ export default {
 <template>
   <section class="border border-white p-2 rounded-lg">
     <h1 class="font-bold text-lg">Chatbox</h1>
-    <div class="overflow-y-auto h-[23.8rem]">
+    <div class="overflow-y-auto h-[27.5rem]">
       <div v-for="msg in listMessages">
         <span class="font-bold">{{ msg.username }}: </span>
         <span> {{ msg.message }}</span>

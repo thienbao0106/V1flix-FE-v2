@@ -205,7 +205,7 @@ export default {
     );
   },
   mounted() {
-    const dialog: any = document.querySelector("dialog");
+    const dialog: any = document.querySelector("#add-modal");
     if (!dialog) return;
     dialog.addEventListener("click", (e: any) => {
       const dialogDimensions = dialog.getBoundingClientRect();
