@@ -45,7 +45,10 @@ export default {
     this.$watch(
       () => this.roomId,
       () => {
-        this.socket = io("http://localhost:3306/", {
+        const url = !import.meta.env.DEV
+          ? "http://localhost:3306/"
+          : import.meta.env.VITE_V1FLIX_API_URL;
+        this.socket = io(url, {
           autoConnect: true,
         });
 
@@ -72,7 +75,9 @@ export default {
     <h1>Room Id: {{ roomId }}</h1>
     <section class="w-full flex lg:flex-row flex-col lg:gap-x-5">
       <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
+        <Loading v-if="listUser.length < 2" message="Waiting more people" />
         <RoomVideo
+          v-else
           :is-host="hostRoom"
           :set-show="setShow"
           :episode="episode"
