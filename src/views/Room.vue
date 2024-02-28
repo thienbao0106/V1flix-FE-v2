@@ -32,20 +32,29 @@ export default {
       const { onResult } = useQuery(getEpisode(this.episodeId));
       onResult((result) => {
         if (!result.data) return;
-        this.loading = false;
         this.episode = result.data.findEpisode;
+        this.loading = false;
       });
     },
   },
 
   mounted() {
     this.fetchEpisode();
+    // if (this.hostRoom === "false") {
+    //   const body: any = document.querySelector("#chat-box");
+    //   console.log(body);
+    //   if (!body) return;
+    //   body.click = () => {
+    //     console.log("called");
+    //   };
+    //   body.click();
+    // }
   },
   created() {
     this.$watch(
       () => this.roomId,
       () => {
-        const url = !import.meta.env.DEV
+        const url = import.meta.env.DEV
           ? "http://localhost:3306/"
           : import.meta.env.VITE_V1FLIX_API_URL;
         this.socket = io(url, {
@@ -54,7 +63,14 @@ export default {
 
         this.socket.on("connect", () => {
           console.log("called");
-          this.socket.emit("join", this.currentUser, this.roomId);
+          this.socket.emit(
+            "join",
+            {
+              username: this.currentUser,
+              isHost: this.hostRoom === "true",
+            },
+            this.roomId
+          );
         });
         this.socket.on("listUser", (data: any) => {
           this.listUser = data;
@@ -72,9 +88,14 @@ export default {
 <template>
   <Loading v-if="loading" message="Getting data" />
   <main v-else class="text-white p-2 max-h-full">
-    <h1>Room Id: {{ roomId }}</h1>
-    <section class="w-full flex lg:flex-row flex-col lg:gap-x-5">
+    <div
+      class="w-full bg-mainColor rounded-lg lg:text-center text-left p-2 text-lg mb-3"
+    >
+      This feature is still in beta. Any problem is expected.
+    </div>
+    <section class="w-full flex lg:flex-row flex-col xl:gap-x-5 gap-y-5">
       <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
+        <!-- <h1>Room Id: {{ roomId }}</h1> -->
         <Loading v-if="listUser.length < 2" message="Waiting more people" />
         <RoomVideo
           v-else
@@ -85,11 +106,15 @@ export default {
         />
       </div>
       <div v-show="!isShow" class="lg:w-[20%] w-full flex flex-col gap-y-2">
-        <section class="max-h-[3/5]">
-          <Chatbox :socket="socket" :current-user="currentUser" />
-        </section>
         <section class="max-h-[2/5]">
-          <Members :list-user="listUser" />
+          <Members :list-user="listUser" :is-host="hostRoom" />
+        </section>
+        <section class="max-h-[3/5]">
+          <Chatbox
+            :socket="socket"
+            :current-user="currentUser"
+            :is-host="hostRoom"
+          />
         </section>
       </div>
     </section>

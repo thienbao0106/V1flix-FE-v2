@@ -43,15 +43,11 @@ export default {
     },
   },
   mounted() {
-    // if (this.isHost === "false") {
-    //   this.videoRef.onpause = () => {
-    //     this.videoRef?.play();
-    //   };
-    // }
+    //First load video
 
     this.socket.on("playingVideo", (isPlaying: any, currentTime: any) => {
       if (!this.videoRef || this.isHost === "true") return;
-
+      console.log(isPlaying);
       if (!isPlaying) {
         this.videoRef.pause();
         this.videoRef.onpause = () => {};
@@ -61,6 +57,7 @@ export default {
         this.videoRef.currentTime = currentTime;
         return;
       }
+
       this.videoRef.play();
       this.videoRef.onpause = () => {
         this.videoRef?.play();
@@ -75,22 +72,6 @@ export default {
 
 <template>
   <main v-if="Object.keys(episode).length > 0" class="flex flex-col gap-y-3">
-    <div class="text-2xl flex justify-between">
-      <div>
-        Episode
-        <span class="font-bold">{{ episode.epNum }}</span>
-        -
-        <span class="font-bold">{{ episode.title }}</span>
-      </div>
-      <div class="cursor-pointer" @click="() => setShow()">
-        <font-awesome-icon icon="fa-solid fa-expand" />
-      </div>
-    </div>
-    <div
-      class="w-full bg-mainColor rounded-lg lg:text-center text-left p-2 text-lg"
-    >
-      This feature is still in beta. Any problem is expected.
-    </div>
     <div>
       <video
         @play="() => handleVideo()"
@@ -99,9 +80,10 @@ export default {
         class="w-full h-full rounded-lg"
         preload="metadata"
         controls
-        autoplay
-        :muted="false"
         crossorigin="anonymous"
+        controlslist="nodownload"
+        width="1280"
+        height="760"
       >
         <source :src="getSource()" type="video/mp4" />
         <track
@@ -113,6 +95,17 @@ export default {
           :src="checkSubtitleSource(sub.source)"
         />
       </video>
+    </div>
+    <div class="text-2xl flex justify-between">
+      <div>
+        Episode
+        <span class="font-bold">{{ episode.epNum }}</span>
+        -
+        <span class="font-bold">{{ episode.title }}</span>
+      </div>
+      <div class="cursor-pointer" @click="() => setShow()">
+        <font-awesome-icon icon="fa-solid fa-expand" />
+      </div>
     </div>
   </main>
 </template>

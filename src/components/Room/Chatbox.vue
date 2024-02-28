@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  props: ["socket", "currentUser"],
+  props: ["socket", "currentUser", "isHost"],
   data() {
     return {
       content: "",
@@ -11,7 +11,14 @@ export default {
     sendMessage: function (e: any) {
       e.preventDefault();
       console.log(this.currentUser);
-      this.socket.emit("userChat", this.currentUser, this.content);
+      this.socket.emit(
+        "userChat",
+        {
+          username: this.currentUser,
+          isHost: this.isHost === "true",
+        },
+        this.content
+      );
       this.content = "";
     },
   },
@@ -24,16 +31,25 @@ export default {
 };
 </script>
 <template>
-  <section class="border border-white p-2 rounded-lg">
+  <section id="chat-box" class="border border-white p-2 rounded-lg">
     <h1 class="font-bold text-lg">Chatbox</h1>
-    <div class="overflow-y-auto h-[27.5rem]">
+    <div class="overflow-y-auto xl:h-[46rem] h-[30rem]">
       <div v-for="msg in listMessages">
-        <span class="font-bold">{{ msg.username }}: </span>
-        <span> {{ msg.message }}</span>
+        <div :class="msg.user.isHost ? 'mb-4' : 'mb-2'">
+          <span class="font-bold"
+            >{{ msg.user.username }}
+            <span v-if="msg.user.isHost" class="bg-secondColor p-1 rounded-lg"
+              >Host</span
+            >
+            :
+          </span>
+          <span> {{ msg.message }}</span>
+        </div>
       </div>
     </div>
     <form @submit.prevent="sendMessage">
       <input
+        required
         placeholder="Comment here"
         class="bg-opacityText rounded-lg w-full py-3 px-1"
         type="text"
