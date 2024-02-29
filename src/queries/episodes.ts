@@ -35,14 +35,15 @@ export const getEpisode = (episodeId: any) => gql`
         _id
         epNum
         thumbnail
+        description
         subtitles {
-        lang
-        source {
-          _id
-          kind
-          value
-        }
-        label
+          lang
+          source {
+            _id
+            kind
+            value
+          }
+          label
         }
         source {
           _id

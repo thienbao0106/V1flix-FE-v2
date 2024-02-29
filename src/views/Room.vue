@@ -6,6 +6,7 @@ import Chatbox from "../components/Room/Chatbox.vue";
 import Members from "../components/Room/Members.vue";
 import { io } from "socket.io-client";
 import Loading from "../components/Loading.vue";
+import InfoRoom from "../components/Room/InfoRoom.vue";
 
 export default {
   data() {
@@ -40,15 +41,6 @@ export default {
 
   mounted() {
     this.fetchEpisode();
-    // if (this.hostRoom === "false") {
-    //   const body: any = document.querySelector("#chat-box");
-    //   console.log(body);
-    //   if (!body) return;
-    //   body.click = () => {
-    //     console.log("called");
-    //   };
-    //   body.click();
-    // }
   },
   created() {
     this.$watch(
@@ -81,7 +73,7 @@ export default {
     );
   },
 
-  components: { RoomVideo, Chatbox, Members, Loading },
+  components: { RoomVideo, Chatbox, Members, Loading, InfoRoom },
 };
 </script>
 
@@ -94,8 +86,7 @@ export default {
       This feature is still in beta. Any problem is expected.
     </div>
     <section class="w-full flex lg:flex-row flex-col xl:gap-x-5 gap-y-5">
-      <div :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
-        <!-- <h1>Room Id: {{ roomId }}</h1> -->
+      <div class="space-y-4" :class="!isShow ? 'lg:w-[80%] w-full' : 'w-full'">
         <Loading v-if="listUser.length < 2" message="Waiting more people" />
         <RoomVideo
           v-else
@@ -103,6 +94,11 @@ export default {
           :set-show="setShow"
           :episode="episode"
           :socket="socket"
+        />
+        <InfoRoom
+          v-if="Object.keys(episode).length > 0"
+          :episode="episode"
+          :room-id="roomId"
         />
       </div>
       <div v-show="!isShow" class="lg:w-[20%] w-full flex flex-col gap-y-2">
