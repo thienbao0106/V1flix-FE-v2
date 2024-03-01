@@ -34,6 +34,7 @@ export default {
       if (this.isUpdate === true) this.updatedContent = this.comment.content;
     },
     deleteComment: async function () {
+      console.log(this.comment);
       try {
         const { mutate } = useMutation(deleteCommentMutation);
         const result = await mutate({
@@ -48,6 +49,7 @@ export default {
         this.filterComment(this.comment._id);
         return;
       } catch (error) {
+        console.log(error);
         throw error;
       }
     },

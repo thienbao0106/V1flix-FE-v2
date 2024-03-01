@@ -12,7 +12,13 @@ export default {
 };
 </script>
 <template>
+  <main v-if="relations.length <= 0">
+    <h1 class="text-xl text-start">
+      This series doesn't have any relation yet.
+    </h1>
+  </main>
   <main
+    v-else
     class="w-full grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-x-7 gap-y-4 lg:mt-4 mt-7"
   >
     <a

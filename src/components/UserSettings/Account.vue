@@ -52,13 +52,19 @@ export default {
                 avatar: urlImg,
                 password: password.value,
               }
-            : {
+            : username.value !== this.account.username
+            ? {
                 username: username.value,
+                userId: this.account._id,
+                avatar: urlImg,
+              }
+            : {
                 userId: this.account._id,
                 avatar: urlImg,
               };
         await mutate(newInfo);
-        window.localStorage.setItem("username", username.value);
+        if (username.value !== this.account.username)
+          window.localStorage.setItem("username", username.value);
         toast.success("Add successfully", toastSettings.success);
         window.location.reload();
       } catch (error: any) {

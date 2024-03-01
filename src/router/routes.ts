@@ -64,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/history",
-    name: "Settings",
+    name: "History",
     component: defineAsyncComponent(() => import("../views/History.vue")),
   },
   {

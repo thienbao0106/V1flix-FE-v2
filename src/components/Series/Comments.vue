@@ -66,6 +66,7 @@ export default {
         const newComment = data.data.addComments;
         this.comments.unshift(newComment);
         toast.success("Comment successfully", toastSettings.success);
+        this.content = "";
       } catch (error: any) {
         console.log(error.message);
         toast.error(error.message, toastSettings.error);

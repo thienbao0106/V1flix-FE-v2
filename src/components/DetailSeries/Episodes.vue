@@ -55,7 +55,7 @@ export default {
             />
           </div>
           <div
-            class="absolute hidden group-hover:block bg-black bottom-2 right-3 px-2 py-1 text-sm rounded-md"
+            class="absolute bg-black bottom-2 right-3 px-2 py-1 text-sm rounded-md"
           >
             {{ formatDuration(duration) }}
           </div>

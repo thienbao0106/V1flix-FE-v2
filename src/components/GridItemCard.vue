@@ -25,7 +25,7 @@ export default {
             return (
               rate.user.username === window.localStorage.getItem("username")
             );
-          rate.user.username === this.$route.params.username;
+          return rate.user.username === this.$route.params.username;
         })?.score || "",
     };
   },
