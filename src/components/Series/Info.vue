@@ -114,7 +114,7 @@ export default {
       </section>
       <section
         aria-label="content"
-        class="basis-4/5 space-y-4 h-full xl:mt-0 mt-5 xl:pr-4 md:px-0 px-4"
+        class="basis-4/5 space-y-4 h-full xl:mt-0 md:mt-0 mt-5 xl:pr-4 md:px-0 px-4"
       >
         <div class="flex justify-between gap-x-3">
           <h3
@@ -124,7 +124,7 @@ export default {
             {{ title.main_title }}
           </h3>
           <div
-            class="cursor-pointer w-fit h-fit hover:bg-red-600 p-2.5 rounded-lg text-white font-bold"
+            class="cursor-pointer w-fit h-fit hover:bg-red-600 p-2.5 rounded-lg text-white font-bold xl:mr-0 mr-3"
             :class="isLiked ? 'bg-red-700' : 'bg-red-500'"
             v-if="isUser !== '' && isUser"
             @click="

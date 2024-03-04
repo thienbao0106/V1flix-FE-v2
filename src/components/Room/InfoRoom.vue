@@ -1,6 +1,31 @@
 <script lang="ts">
+import { useHead } from "@unhead/vue";
+
 export default {
   props: ["episode", "roomId"],
+  mounted() {
+    useHead({
+      title: this.episode.title,
+      meta: [
+        {
+          property: "og:image",
+          content: this.episode.thumbnail,
+        },
+        {
+          property: "og:title",
+          content: `${this.episode.title}`,
+        },
+        {
+          property: "og:url",
+          content: window.location.href,
+        },
+        {
+          property: "og:description",
+          content: this.episode.description,
+        },
+      ],
+    });
+  },
 };
 </script>
 

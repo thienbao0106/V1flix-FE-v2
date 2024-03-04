@@ -14,7 +14,7 @@ export default {
       roomId: this.$route.params.roomId,
       hostRoom: this.$route.query.host || "",
       episodeId: this.$route.query.episodeId || "",
-      episode: {},
+      episode: {} as any,
       loading: false,
       isShow: false,
       listUser: [] as any,

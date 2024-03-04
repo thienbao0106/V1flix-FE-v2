@@ -329,7 +329,7 @@ export default {
                 </div>
               </div>
               <div
-                class="flex justify-center items-center gap-x-4 md:text-lg text-md"
+                class="flex justify-center items-center gap-x-4 xl:text-lg text-sm"
               >
                 <div
                   class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
