@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       room: `/room/${uuidv4()}?episodeId=${this.episodeId}`,
-      url: `${window.location.host}`,
+      url: `${window.location.origin}`,
     };
   },
   methods: {
@@ -54,7 +54,7 @@ export default {
         <input
           type="text"
           ref="urlInput"
-          :value="`${url}${room}&host=false`"
+          :value="`https://${url}${room}&host=false`"
           class="p-4 bg-mainColor text-white font-bold w-[20rem] border-secondColor border"
           disabled
         />

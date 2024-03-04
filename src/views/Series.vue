@@ -109,6 +109,7 @@ export default {
         );
         onError((error) => {
           this.error = error;
+
           console.error(error);
         });
         onResult((result) => {
@@ -118,6 +119,7 @@ export default {
             if (!result.data.findSeriesByName) return;
 
             this.series = result.data.findSeriesByName;
+            console.log(this.series);
             this.currentEpisode = this.series?.episodes.find(
               (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
             );
@@ -159,7 +161,7 @@ export default {
                 },
                 {
                   property: "og:description",
-                  content: this.currentEpisode.description,
+                  content: this.currentEpisode?.description || "",
                 },
               ],
             });
@@ -239,7 +241,7 @@ export default {
 <template>
   <ShareModal :seconds="seconds" :timestamp="timestamp" />
   <WatchTogetherModal
-    v-if="Object.keys(currentEpisode).length > 0"
+    v-if="currentEpisode && Object.keys(currentEpisode).length > 0"
     :episode-id="currentEpisode._id"
   />
   <ListModal
@@ -249,12 +251,12 @@ export default {
     :reload="false"
   />
 
-  <div
+  <!-- <div
     class="text-4xl font-bold text-white h-screen"
     v-if="Object.keys(series).length === 0"
   >
     <Loading message="Getting the data" />
-  </div>
+  </div> -->
   <section
     id="main-video"
     v-if="!loading && Object.keys(series).length > 0"
@@ -370,7 +372,7 @@ export default {
               :class="isTheaterMode ? `xl:w-4/6 :w-full` : `w-full`"
             >
               <Info
-                :epDescription="currentEpisode.description"
+                :epDescription="currentEpisode?.description || ''"
                 :description="series?.description"
                 :images="series?.images"
                 :genres="series?.genres"
@@ -385,7 +387,7 @@ export default {
                 :favors="series?.favors"
               ></Info>
               <Comments
-                v-if="width >= 1280"
+                v-if="width >= 1280 && currentEpisode"
                 :list-comments="currentEpisode.comments"
                 :episode-id="currentEpisode._id"
               />
