@@ -31,7 +31,7 @@ export default {
 
   methods: {
     getImageType,
-    addSeries: function () {
+    addSeries: async function () {
       try {
         if (this.status === "default") {
           toast.error("Status shouldn't be emptied", toastSettings.error);
@@ -54,6 +54,7 @@ export default {
           status: this.status,
           userId: this.userId,
         });
+        await this.updateScore();
         toast.success("Add successfully", toastSettings.success);
         this.isInList = true;
         const dialog: any = document.querySelector("#add-modal");
@@ -75,10 +76,11 @@ export default {
           seriesId: this.series._id,
           userId: this.userId,
         });
-        toast.error("Remove successfully", toastSettings.error);
+        toast.success("Remove successfully", toastSettings.error);
         this.isInList = false;
         this.note = "";
         this.status = "default";
+        this.score = 0;
 
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
@@ -88,8 +90,9 @@ export default {
         toast.error("Remove failed", toastSettings.error);
       }
     },
-    updateSeries: function () {
+    updateSeries: async function () {
       try {
+        if (this.score < 0) throw Error("Score can't be lower than 1.");
         if (this.status === "default") {
           toast.error("Status shouldn't be emptied", toastSettings.error);
           return;
@@ -109,6 +112,12 @@ export default {
           status: this.status,
           userId: this.userId,
         });
+        const currentScore = this.series.rating.find((rate: any) => {
+          return rate.user.username === window.localStorage.getItem("username");
+        });
+        if (this.score !== currentScore) {
+          await this.updateScore();
+        }
         toast.success("Edit successfully", toastSettings.success);
         const dialog: any = document.querySelector("#add-modal");
         dialog?.close();
@@ -124,16 +133,11 @@ export default {
     },
     updateScore: function () {
       try {
-        const { mutate, onError } = useMutation(rateSeries);
+        const { mutate } = useMutation(rateSeries);
         mutate({
           seriesId: this.series._id,
           userId: this.userId,
           score: this.score,
-        });
-        toast.success("Add score successfully", toastSettings.success);
-        onError((error) => {
-          console.log(error);
-          toast.error("Add score failed", toastSettings.error);
         });
       } catch (error) {
         toast.error("Add score failed", toastSettings.error);
@@ -148,7 +152,6 @@ export default {
         console.log(this.$props.series);
         if (Object.keys(this.$props.series).length > 0) {
           this.series = this.$props.series;
-
           this.score =
             this.series.rating.find((rate: any) => {
               return (
@@ -198,6 +201,7 @@ export default {
             this.status = "default";
             this.note = "";
             this.currentEp = 0;
+            this.score = 0;
           }
         });
       },
@@ -343,18 +347,18 @@ export default {
               <input
                 type="number"
                 v-model="score"
-                placeholder="Note"
+                placeholder="Add score"
                 max="10"
                 min="1"
                 class="w-full text-white p-2 rounded-lg bg-opacityText"
               />
             </div>
-            <button
+            <!-- <button
               @click="() => updateScore()"
               class="h-fit lg:my-0 my-4 p-2 rounded-lg bg-secondColor font-bold hover:bg-secondColorBrighter lg:w-fit w-[20rem]"
             >
               Update
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
