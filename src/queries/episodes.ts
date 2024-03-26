@@ -63,6 +63,7 @@ export const getEpisode = (episodeId: any) => gql`
 export const addCommentMutation = () => gql`
   mutation ($episodeId: String!, $userId: String!, $content: String!) {
     addComments(episodeId: $episodeId, userId: $userId, content: $content) {
+      _id
       user {
         username
         avatar

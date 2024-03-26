@@ -36,7 +36,10 @@ export default {
       );
       onResult((result: any) => {
         if (!result) return;
-        this.avatar = result.data.findUserByName.avatar;
+        this.avatar =
+          result.data.findUserByName.avatar === ""
+            ? DEFAULT_IMAGE.avatar
+            : result.data.findUserByName.avatar;
         this.userId = result.data.findUserByName._id;
       });
     },
@@ -64,6 +67,7 @@ export default {
           return;
         }
         const newComment = data.data.addComments;
+        console.log(newComment);
         this.comments.unshift(newComment);
         toast.success("Comment successfully", toastSettings.success);
         this.content = "";

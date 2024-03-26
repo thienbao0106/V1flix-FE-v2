@@ -15,13 +15,9 @@ export default {
       isSeeMore: false,
       isUpdate: false,
       updatedContent: "",
-      avatar:
-        this.comment.user.avatar === ""
-          ? DEFAULT_IMAGE.avatar
-          : this.comment.user.avatar,
+      defaultAvatar: DEFAULT_IMAGE.avatar,
     };
   },
-
   methods: {
     formatTime: function (time: any) {
       return moment(time).fromNow();
@@ -36,6 +32,7 @@ export default {
     deleteComment: async function () {
       console.log(this.comment);
       try {
+        console.log(this.comment);
         const { mutate } = useMutation(deleteCommentMutation);
         const result = await mutate({
           episodeId: this.episodeId,
@@ -56,14 +53,16 @@ export default {
     updateComment: async function () {
       try {
         const { mutate } = useMutation(updateCommentMutation);
+        console.log(this.episodeId);
+        console.log(this.comment);
+
         const result = await mutate({
           episodeId: this.episodeId,
           commentId: this.comment._id,
           content: this.updatedContent,
         });
         if (!result) {
-          toast.error("Can't update this comment", toastSettings.error);
-          return;
+          throw Error();
         }
         toast.success("Update comment successfully", toastSettings.success);
         this.comment.content = this.updatedContent;
@@ -89,7 +88,7 @@ export default {
         }`"
       >
         <img
-          :src="avatar"
+          :src="comment.user.avatar == `` ? defaultAvatar : comment.user.avatar"
           class="rounded-full h-full 2xl:max-h-[50px] xl:max-h-[58px] lg:max-h-[100px] md:max-h-[75px] sm:max-h-[65px] max-h-[50px]"
         />
       </router-link>
