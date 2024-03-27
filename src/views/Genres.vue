@@ -4,7 +4,7 @@ import { useQuery } from "@vue/apollo-composable";
 import { capitalizeWord } from "../utils/handleWord";
 import { findGenres } from "../queries/genres";
 import Card from "../components/Card.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 export default {
   data() {
     return {

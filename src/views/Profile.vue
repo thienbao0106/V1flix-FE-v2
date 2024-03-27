@@ -13,7 +13,7 @@ import GridLayout from "../layouts/GridLayout.vue";
 import RowLayout from "../layouts/RowLayout.vue";
 //Components
 import Card from "../components/Card.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 import ListModal from "../components/Modal/ListModal.vue";
 import ListStatus from "../components/Profile/ListStatus.vue";
 import Error from "../components/Error.vue";

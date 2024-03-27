@@ -5,7 +5,7 @@ import { getGenres } from "../queries/genres";
 import { fetchSeries } from "../utils/handleSeries";
 import ListResult from "../components/Search/ListResult.vue";
 import TopAnime from "../components/Search/TopAnime.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 
 export default {
   methods: {

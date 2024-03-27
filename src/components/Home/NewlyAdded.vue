@@ -2,11 +2,13 @@
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
 import Card from "../Card.vue";
+import SkeletonLoading from "../Loading/SkeletonLoading/Card.vue";
 
 export default {
   data() {
     return {
       series: [] as any,
+      loading: true,
     };
   },
   methods: {
@@ -16,24 +18,27 @@ export default {
         if (!result.data) return;
         console.log(result.data);
         this.series = result.data.series.series;
+        this.loading = false;
       });
     },
   },
   mounted() {
     this.fetchSeries();
   },
-  components: { Card },
+  components: { Card, SkeletonLoading },
 };
 </script>
 
 <template>
   <div
-    v-if="series.length === 0"
-    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+    v-if="loading"
+    class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
-    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+    <SkeletonLoading :key="index" v-for="index in Array(10).keys()" />
   </div>
+
   <aside
+    v-else
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
     <Card

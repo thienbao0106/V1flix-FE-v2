@@ -6,7 +6,7 @@ import { USER_QUERIES } from "../constants/user";
 import { getUser } from "../queries/users";
 //Components
 import Account from "../components/UserSettings/Account.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 
 export default {
   data() {

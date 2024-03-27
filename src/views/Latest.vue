@@ -4,7 +4,7 @@ import { getEpisodes } from "../queries/episodes";
 import Card from "../components/Card.vue";
 import Pagination from "../components/Pagination.vue";
 import ResultLayout from "../layouts/ResultLayout.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 
 export default {
   data() {

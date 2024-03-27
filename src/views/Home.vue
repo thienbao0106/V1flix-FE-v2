@@ -3,7 +3,7 @@ import Banner from "../components/Home/Banner.vue";
 import Recommendations from "../components/Home/Recommendations.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";
 import RandomSeries from "../components/Home/RandomSeries.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 import NewlyAdded from "../components/Home/NewlyAdded.vue";
 import LatestEpisodes from "../components/Home/LatestEpisodes.vue";
 

@@ -5,7 +5,7 @@ import { getEpisode } from "../queries/episodes";
 import Chatbox from "../components/Room/Chatbox.vue";
 import Members from "../components/Room/Members.vue";
 import { io } from "socket.io-client";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 import InfoRoom from "../components/Room/InfoRoom.vue";
 
 export default {

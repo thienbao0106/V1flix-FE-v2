@@ -3,7 +3,7 @@ import { useQuery } from "@vue/apollo-composable";
 import ResultLayout from "../layouts/ResultLayout.vue";
 import { findTags } from "../queries/tag";
 import Card from "../components/Card.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 
 export default {
   data() {

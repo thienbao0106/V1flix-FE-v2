@@ -2,7 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { listSeriesQuery } from "../queries/series";
 import Card from "../components/Card.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 
 import Pagination from "../components/Pagination.vue";
 import ResultLayout from "../layouts/ResultLayout.vue";

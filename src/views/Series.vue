@@ -6,7 +6,7 @@ import { useMutation } from "@vue/apollo-composable";
 import Episodes from "../components/Series/Episodes.vue";
 import Info from "../components/Series/Info.vue";
 import Video from "../components/Series/Video.vue";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 import ShareModal from "../components/Series/ShareModal.vue";
 import ListModal from "../components/Modal/ListModal.vue";
 import TopAnimeList from "../components/Home/TopAnimeList.vue";

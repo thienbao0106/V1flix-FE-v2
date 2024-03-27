@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BaseLayout from "./layouts/BaseLayout.vue";
-import Loading from "./components/Loading.vue";
+import Loading from "./components/Loading/Loading.vue";
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { useHead } from "@unhead/vue";
 
 import { fetchSeriesByName } from "../utils/handleSeries";
 import { defaultImage, getImageType } from "../utils/handleImage";
-import Loading from "../components/Loading.vue";
+import Loading from "../components/Loading/Loading.vue";
 import SeriesActions from "../components/DetailSeries/SeriesActions.vue";
 import DetailHeader from "../components/DetailSeries/DetailHeader.vue";
 import Overview from "../components/DetailSeries/Overview.vue";

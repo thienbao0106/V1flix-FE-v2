@@ -3,11 +3,12 @@ import { useQuery } from "@vue/apollo-composable";
 import { getEpisodes } from "../../queries/episodes";
 import Card from "../Card.vue";
 import LatestEpCard from "./LatestEpCard.vue";
-
+import LatestCard from "../Loading/SkeletonLoading/LatestCard.vue";
 export default {
   data() {
     return {
       listEpisodes: [] as any,
+      loading: true,
     };
   },
   methods: {
@@ -16,22 +17,24 @@ export default {
       onResult((result) => {
         if (!result.data) return;
         this.listEpisodes = result.data.episodes.episodes;
+        this.loading = false;
       });
     },
   },
   mounted() {
     this.fetchEpisodes();
   },
-  components: { Card, LatestEpCard },
+  components: { Card, LatestEpCard, LatestCard },
 };
 </script>
 <template>
   <div
-    v-if="listEpisodes.length === 0"
-    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+    v-if="loading"
+    class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
   >
-    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+    <LatestCard :key="index" v-for="index in Array(12).keys()" />
   </div>
+
   <aside
     v-else
     class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"

@@ -2,15 +2,15 @@
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
 import Card from "../Card.vue";
-import Loading from "../Loading.vue";
+import SkeletonLoading from "../Loading/SkeletonLoading/Card.vue";
 
 export default {
   data() {
     return {
       series: [] as any[],
       currentPage: 0,
-      loading: false,
-      firstLoading: false,
+      loading: true,
+
       width: window.innerWidth,
       numPerPage: 5,
     };
@@ -19,10 +19,9 @@ export default {
   mounted() {
     this.fetchRecommendations();
   },
-  components: { Card, Loading },
+  components: { Card, SkeletonLoading },
   methods: {
     fetchRecommendations: function () {
-      this.firstLoading = true;
       const { onResult: resultFn } = useQuery(seriesQuery);
       resultFn((result) => {
         if (!result.data) return;
@@ -32,8 +31,8 @@ export default {
             nextSeries.avg_score - firstSeries.avg_score ||
             nextSeries.view - firstSeries.view
         );
+        this.loading = false;
       });
-      this.firstLoading = false;
     },
 
     onResize: function () {
@@ -45,11 +44,12 @@ export default {
 
 <template>
   <div
-    v-if="series.length === 0"
-    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
+    v-if="loading"
+    class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
-    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+    <SkeletonLoading :key="index" v-for="index in Array(10).keys()" />
   </div>
+
   <aside
     v-else
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
