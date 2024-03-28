@@ -3,7 +3,7 @@ import { useQuery } from "@vue/apollo-composable";
 import { getEpisodes } from "../../queries/episodes";
 import Card from "../Card.vue";
 import LatestEpCard from "./LatestEpCard.vue";
-import LatestCard from "../Loading/SkeletonLoading/LatestCard.vue";
+import LatestCardLoading from "../Loading/SkeletonLoading/LatestCardLoading.vue";
 export default {
   data() {
     return {
@@ -24,7 +24,7 @@ export default {
   mounted() {
     this.fetchEpisodes();
   },
-  components: { Card, LatestEpCard, LatestCard },
+  components: { Card, LatestEpCard, LatestCardLoading },
 };
 </script>
 <template>
@@ -32,7 +32,7 @@ export default {
     v-if="loading"
     class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
   >
-    <LatestCard :key="index" v-for="index in Array(12).keys()" />
+    <LatestCardLoading :key="index" v-for="index in Array(12).keys()" />
   </div>
 
   <aside

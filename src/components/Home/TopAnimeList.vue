@@ -2,12 +2,13 @@
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
 import TopAnimeCard from "../TopAnimeCard.vue";
-
+import TopAnimeCardLoading from "../Loading/SkeletonLoading/TopAnimeCardLoading.vue";
 export default {
   data() {
     return {
       mostWatchedSeries: [] as any[],
       topRatedSeries: [] as any[],
+      loading: true,
     };
   },
   setup() {
@@ -26,20 +27,22 @@ export default {
         this.topRatedSeries = listSeries.sort(
           (a: any, b: any) => b.avg_score - a.avg_score
         );
+        this.loading = false;
       }
     });
   },
-  components: { TopAnimeCard },
+  components: { TopAnimeCard, TopAnimeCardLoading },
 };
 </script>
 
 <template>
   <h1 className="font-bold lg:text-2xl text-xl mb-5">Most Watched</h1>
-  <div
-    v-if="mostWatchedSeries.length === 0"
-    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
-  >
-    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  <div v-if="loading">
+    <TopAnimeCardLoading
+      :rank="index + 1"
+      :key="index"
+      v-for="index in Array(9).keys()"
+    />
   </div>
   <aside v-else>
     <ul className="flex gap-3 flex-col" role="list">
@@ -62,12 +65,14 @@ export default {
     </ul>
   </aside>
   <h1 className="font-bold lg:text-2xl text-xl my-5">Top Rated</h1>
-  <div
-    v-if="topRatedSeries.length === 0"
-    class="h-[200px] text-green-500 flex justify-center items-center w-full text-2xl font-bold"
-  >
-    <font-awesome-icon class="animate-spin" icon="fa-solid fa-spinner" />
+  <div v-if="loading">
+    <TopAnimeCardLoading
+      :rank="index + 1"
+      :key="index"
+      v-for="index in Array(9).keys()"
+    />
   </div>
+
   <aside v-else>
     <ul className="flex gap-3 flex-col" role="list">
       <li
