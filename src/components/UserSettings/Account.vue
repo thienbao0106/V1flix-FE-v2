@@ -9,7 +9,7 @@ import { updateProfileUser } from "../../queries/users";
 import { uploadToCloudinary } from "../../utils/handleImage";
 import { toastSettings } from "../../utils/toastSettings";
 //Components
-import Loading from "../Loading.vue";
+import Loading from "../Loading/Loading.vue";
 
 export default {
   data() {

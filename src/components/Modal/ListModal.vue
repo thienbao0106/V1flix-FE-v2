@@ -13,7 +13,7 @@ import { toastSettings } from "../../utils/toastSettings";
 import { getImageType } from "../../utils/handleImage";
 
 import { USER_QUERIES } from "../../constants/user";
-import Loading from "..//Loading.vue";
+import Loading from "../Loading/Loading.vue";
 
 export default {
   props: ["series", "currentEp", "reload"],

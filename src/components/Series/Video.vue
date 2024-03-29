@@ -5,7 +5,7 @@ import handleVideo from "../../utils/video/index";
 import { createCanvas } from "canvas";
 import { URL_TYPE } from "../../constants/video.ts";
 
-import Loading from "../Loading.vue";
+import Loading from "../Loading/Loading.vue";
 import Settings from "./Settings.vue";
 
 export default {
