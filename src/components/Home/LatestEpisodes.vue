@@ -28,18 +28,16 @@ export default {
 };
 </script>
 <template>
-  <div
-    v-if="loading"
-    class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
-  >
-    <LatestCardLoading :key="index" v-for="index in Array(12).keys()" />
-  </div>
-
   <aside
-    v-else
     class="grid 2xl:grid-rows-4 xl:grid-rows-6 lg:grid-rows-4 md:grid-rows-6 grid-rows-12 grid-flow-col gap-x-5"
   >
+    <LatestCardLoading
+      v-if="loading"
+      :key="index"
+      v-for="index in Array(12).keys()"
+    />
     <LatestEpCard
+      v-else
       v-for="ep in listEpisodes"
       :view="ep.view"
       :key="ep._id"

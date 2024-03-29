@@ -18,14 +18,14 @@ export default {
       v-if="listGenres.length > 0"
       class="w-full h-fit sticky bg-mainColor grid lg:grid-cols-4 grid-cols-2 rounded border-solid border-r-0 border-t-0 border-b-0"
     >
-      <router-link
-        :to="`/genres/${genres._id}/${genres.name}`"
+      <a
+        :href="`/genres/${genres._id}/${genres.name}`"
         @click="toggleSubNav(true)"
         class="hover:bg-secondColorBrighter font-bold cursor-pointer lg:p-4 p-2 text-white text-md decoration-none text-center line-clamp-0"
         v-for="genres in listGenres"
       >
         {{ capitalizeWord(genres.name) }}
-      </router-link>
+      </a>
     </div>
     <div
       class="sticky h-[100px] w-full bg-mainColor text-green-400 flex justify-center items-center"

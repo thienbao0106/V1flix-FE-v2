@@ -2,7 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
 import Card from "../Card.vue";
-import SkeletonLoading from "../Loading/SkeletonLoading/Card.vue";
+import CardLoading from "../Loading/SkeletonLoading/CardLoading.vue";
 
 export default {
   data() {
@@ -25,23 +25,21 @@ export default {
   mounted() {
     this.fetchSeries();
   },
-  components: { Card, SkeletonLoading },
+  components: { Card, CardLoading },
 };
 </script>
 
 <template>
-  <div
-    v-if="loading"
-    class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
-  >
-    <SkeletonLoading :key="index" v-for="index in Array(10).keys()" />
-  </div>
-
   <aside
-    v-else
     class="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 gap-y-8"
   >
+    <CardLoading
+      v-if="loading"
+      :key="index"
+      v-for="index in Array(10).keys()"
+    />
     <Card
+      v-else
       v-for="(s, index) in series"
       :index="index + 1"
       :id="s._id"

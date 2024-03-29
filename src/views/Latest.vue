@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       episodes: [] as any,
-      loading: false,
+      loading: true,
       totalPage: 0,
       currentPage: 0 as any,
     };
@@ -35,7 +35,6 @@ export default {
       let currentPage = Number.isNaN(page) ? 1 : page;
       this.currentPage = currentPage;
       const { onResult } = useQuery(getEpisodes(currentPage - 1, 12));
-      this.loading = true;
 
       onResult((result) => {
         if (result.data) {
@@ -49,9 +48,9 @@ export default {
           this.episodes = arrEps.sort(
             (a: any, b: any) => b.created_at - a.created_at
           );
+          this.loading = false;
         }
       });
-      this.loading = false;
     },
   },
   components: { Card, Pagination, ResultLayout, Loading },
@@ -59,11 +58,9 @@ export default {
 </script>
 
 <template>
-  <main class="text-white w-full px-8">
-    <h1 class="font-bold text-3xl">Latest Anime</h1>
+  <ResultLayout :loading="loading" :title="`List Series`">
     <section
-      v-if="!loading && episodes.length > 0"
-      className="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
+      class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >
       <Card
         v-for="ep in episodes"
@@ -75,16 +72,13 @@ export default {
         :title="ep.series.title"
       />
     </section>
-    <div class="flex justify-center items-center" v-else>
-      <Loading message="Getting data" />
-    </div>
+  </ResultLayout>
 
-    <div class="mt-5">
-      <Pagination
-        type="latest"
-        :current-page="currentPage"
-        :total-page="totalPage"
-      />
-    </div>
-  </main>
+  <div class="mt-5 px-8">
+    <Pagination
+      type="latest"
+      :current-page="currentPage"
+      :total-page="totalPage"
+    />
+  </div>
 </template>

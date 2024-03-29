@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       listSeries: [] as any[],
-      loading: false,
+      loading: true,
       totalPage: 0,
       currentPage: 0,
     };
@@ -24,7 +24,7 @@ export default {
       this.currentPage = currentPage;
 
       const { onResult } = useQuery(listSeriesQuery(currentPage - 1, 12));
-      this.loading = true;
+
       onResult((result) => {
         if (!result.data) return;
         const { series, totalPage } = result.data.series;
@@ -54,7 +54,7 @@ export default {
   <main>
     <ResultLayout :loading="loading" :title="`List Series`">
       <section
-        className="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
+        class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
       >
         <Card
           v-for="s in listSeries"
