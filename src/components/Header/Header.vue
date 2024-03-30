@@ -1,11 +1,10 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { getUser } from "../../queries/users";
 import { DEFAULT_IMAGE } from "../../constants/image";
-import { USER_QUERIES } from "../../constants/user";
+import { getGenresMenu } from "../../queries/genres";
 import SubNav from ".././SubNav/SubNav.vue";
 import Search from "../Header/Search.vue";
-import { getGenresMenu } from "../../queries/genres";
+import UserInfo from "../Header/UserInfo.vue";
 export default {
   data() {
     return {
@@ -17,7 +16,7 @@ export default {
       width: window.innerWidth,
       timeOut: null,
       listGenres: [],
-      avatar: "",
+      avatar: window.localStorage.getItem("avatar"),
       username: window.localStorage.getItem("username") || "",
       isHoverUsername: false,
     };
@@ -55,23 +54,14 @@ export default {
       if (this.keyword === "") return;
       this.isDropdown = true;
     },
-    fetchUser: function () {
-      if (this.username === "") return;
-
-      const { result } = useQuery(getUser(USER_QUERIES.header, this.username));
-      if (!result.value) return;
-      const {
-        findUserByName: { avatar },
-      } = result.value;
-      this.avatar = avatar === "" ? DEFAULT_IMAGE.avatar : avatar;
-    },
     toggleUserMenu: function (isHoverUsername: boolean) {
       window.addEventListener("click", (e: any) => {
         const usernameBox: any = document.getElementById("username");
         if (!usernameBox) return;
         if (usernameBox.contains(e.target)) {
           this.isHoverUsername = !isHoverUsername;
-          this.fetchUser();
+
+          // this.fetchUser();
         } else {
           this.isHoverUsername = false;
         }
@@ -99,12 +89,13 @@ export default {
       () => this.username,
       () => {
         if (this.username === "") return;
-        this.fetchUser();
+        this.avatar = this.avatar === "" ? DEFAULT_IMAGE.avatar : this.avatar;
       },
       { immediate: true }
     );
   },
-  components: { SubNav, Search },
+
+  components: { SubNav, Search, UserInfo },
 };
 </script>
 
@@ -196,39 +187,13 @@ export default {
         v-else
         class="w-1/6 flex flex-1 justify-center items-center font-bold relative text-white"
       >
-        <p
-          id="username"
-          @click="toggleUserMenu(isHoverUsername)"
-          class="hover:text-secondColor w-fit hover:cursor-pointer"
-        >
-          {{ username }}
-        </p>
-        <div
-          class="absolute py-5 xl:-bottom-[15rem] lg:-bottom-[17rem] md:-bottom-[22rem] sm:-bottom-[18rem] -bottom-[15rem] bg-mainColor left-0 right-0 w-full flex flex-col rounded-lg px-2"
-          v-if="isHoverUsername"
-        >
-          <div class="flex flex-col justify-center items-center w-full mb-6">
-            <img class="mb-4 w-1/2 h-1/2 rounded-lg" :src="avatar" />
-            <h2 class="decoration-none text-white hover:text-secondColor">
-              <router-link :to="`/profile/me`">
-                {{ username }}
-              </router-link>
-            </h2>
-          </div>
-
-          <hr />
-          <ul class="space-y-3 pt-3">
-            <li
-              @click="handleLogout()"
-              class="hover:text-secondColor hover:cursor-pointer"
-            >
-              Logout
-            </li>
-            <li class="hover:text-secondColor hover:cursor-pointer">
-              <router-link to="/settings"> Setting </router-link>
-            </li>
-          </ul>
-        </div>
+        <UserInfo
+          :username="username"
+          :avatar="avatar"
+          :handle-logout="handleLogout"
+          :is-hover-username="isHoverUsername"
+          :toggleUserMenu="toggleUserMenu"
+        />
       </div>
     </section>
   </nav>

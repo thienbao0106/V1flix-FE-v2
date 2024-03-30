@@ -53,9 +53,10 @@ export default {
         }
         console.log("called");
         if (this.error !== "") this.error = "";
-        const { username, token } = result.data.login;
+        const { username, token, avatar } = result.data.login;
         window.localStorage.setItem("username", username);
         window.localStorage.setItem("token", token);
+        window.localStorage.setItem("avatar", avatar);
         window.localStorage.setItem("history", JSON.stringify([]));
         window.location.href = "/";
       });

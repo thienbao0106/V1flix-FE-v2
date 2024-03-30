@@ -9,6 +9,7 @@ export const userLogin = (email: string, password: string) => {
       login(email: "${email}", password: "${password}") {
         token
         username
+        avatar
       }
     }
   `;

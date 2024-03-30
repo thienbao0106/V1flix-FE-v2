@@ -2,7 +2,6 @@
 import { useQuery } from "@vue/apollo-composable";
 import { getEpisodes } from "../queries/episodes";
 import Card from "../components/Card.vue";
-import Pagination from "../components/Pagination.vue";
 import ResultLayout from "../layouts/ResultLayout.vue";
 import Loading from "../components/Loading/Loading.vue";
 
@@ -30,10 +29,10 @@ export default {
   },
   methods: {
     fetchEpisodes: function (page: number) {
-      console.log("called");
       if (this.episodes.length > 0) this.episodes = [];
       let currentPage = Number.isNaN(page) ? 1 : page;
       this.currentPage = currentPage;
+      if (!this.loading) this.loading = true;
       const { onResult } = useQuery(getEpisodes(currentPage - 1, 12));
 
       onResult((result) => {
@@ -48,17 +47,24 @@ export default {
           this.episodes = arrEps.sort(
             (a: any, b: any) => b.created_at - a.created_at
           );
+          console.log(this.episodes);
           this.loading = false;
         }
       });
     },
   },
-  components: { Card, Pagination, ResultLayout, Loading },
+  components: { Card, ResultLayout, Loading },
 };
 </script>
 
 <template>
-  <ResultLayout :loading="loading" :title="`List Series`">
+  <ResultLayout
+    :current-page="currentPage"
+    :total-page="totalPage"
+    :loading="loading"
+    :title="`Latest Episode`"
+    type="latest"
+  >
     <section
       class="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >
@@ -73,12 +79,4 @@ export default {
       />
     </section>
   </ResultLayout>
-
-  <div class="mt-5 px-8">
-    <Pagination
-      type="latest"
-      :current-page="currentPage"
-      :total-page="totalPage"
-    />
-  </div>
 </template>

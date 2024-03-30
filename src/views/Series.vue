@@ -334,6 +334,7 @@ export default {
                 class="flex justify-center items-center gap-x-4 xl:text-lg text-sm"
               >
                 <div
+                  v-if="isUser !== '' && isUser"
                   class="cursor-pointer bg-secondColor hover:bg-secondColorBrighter p-2.5 rounded-lg text-white font-bold"
                   @click="toggleWatchTogetherModal"
                 >
