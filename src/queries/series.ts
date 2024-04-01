@@ -110,6 +110,7 @@ export const listSeriesQuery = (currentPage: number, limit: number) => {
         }
         status
         total_episodes
+        description
         type
         view
         images {

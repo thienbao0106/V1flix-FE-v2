@@ -16,8 +16,9 @@ export default {
     };
   },
 
-  setup() {
+  setup(props) {
     const hoverRef = ref<HTMLDivElement>();
+    console.log(props.isEndOfRow);
     return {
       hoverRef,
     };
@@ -29,8 +30,8 @@ export default {
   <main
     :class="
       isEndOfRow
-        ? 'xl:right-[250px] lg:right-[238px]'
-        : ' xl:left-[250px] lg:left-[238px]'
+        ? '2xl:right-[15rem] xl:right-[13rem] right-[17.5rem]'
+        : ' 2xl:left-[15rem] xl:left-[13rem] left-[17.5rem]'
     "
     class="z-12 absolute hidden lg:group-hover:block text-white bg-mainColor h-fit w-[400px] rounded-md top-1/3 p-2 space-y-3"
   >

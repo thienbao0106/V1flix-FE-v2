@@ -18,9 +18,11 @@ export default {
     "description",
     "trailer",
     "index",
+    "condition",
   ],
 
-  data() {
+  data(props) {
+    console.log(props.condition);
     return {
       isNew: false,
       width: window.innerWidth,
@@ -62,12 +64,8 @@ export default {
   <div class="flex flex-col w-full">
     <div class="relative group">
       <HoverCard
-        v-if="description"
-        :isEndOfRow="
-          width < 1320 &&
-          width >= 1024 &&
-          (index % 4 === 0 || index === 3 || index === 7)
-        "
+        v-if="description && width >= 1024"
+        :isEndOfRow="condition"
         :type="type"
         :totalEpisodes="total_episodes"
         :description="description"

@@ -13,11 +13,19 @@ export default {
 
       width: window.innerWidth,
       numPerPage: 5,
+      dividedNumber: 0,
+      secondDividedNumber: 0,
+      indexCondition: 0,
+      indexSubtract: 0,
     };
   },
 
   mounted() {
     this.fetchRecommendations();
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+      console.log(this.width);
+    });
   },
   components: { Card, CardLoading },
   methods: {
@@ -38,6 +46,25 @@ export default {
     onResize: function () {
       this.width = window.innerWidth;
     },
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
+  },
+  created() {
+    this.$watch(
+      () => this.width,
+      () => {
+        this.dividedNumber = this.width >= 1536 ? 5 : 4;
+
+        this.secondDividedNumber = this.width >= 1536 ? 4 : 3;
+
+        this.indexCondition = this.width >= 1536 ? 5 : 4;
+
+        this.indexSubtract = this.width >= 1536 ? 4 : 6;
+      },
+      { immediate: true }
+    );
   },
 };
 </script>
@@ -63,6 +90,14 @@ export default {
       :type="s.type"
       :view="s.view"
       :description="s.description"
+      :condition="
+        (index <= indexCondition && (index + 1) % dividedNumber === 0) ||
+        (index <= indexCondition && (index + 1) % secondDividedNumber === 0) ||
+        (index > indexCondition &&
+          (index - indexSubtract - 1) % dividedNumber === 0) ||
+        (index > indexCondition &&
+          (index - indexSubtract) % secondDividedNumber === 0)
+      "
       :trailer="s.trailer"
     />
   </aside>

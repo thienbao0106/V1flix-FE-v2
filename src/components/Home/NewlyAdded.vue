@@ -51,6 +51,7 @@ export default {
       :view="s.view"
       :trailer="s.trailer"
       :description="s.description"
+      :condition="(index + 1) % 5 === 0 || (index + 1) % 4 === 0"
     />
   </aside>
 </template>
