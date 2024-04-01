@@ -73,7 +73,7 @@ export default {
     <div class="w-fit z-20 relative">
       <div
         id="menu"
-        class="lg:w-[14rem] w-[11rem] bg-mainColor translate-x transition duration-1000"
+        class="lg:w-[14rem] w-[11rem] bg-mainColor translate-x transition duration-1000 h-[6000px]"
       >
         <div class="sticky top-0 pt-5 bottom-0">
           <div class="text-3xl font-bold flex gap-x-5 pl-4">

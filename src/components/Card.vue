@@ -19,6 +19,7 @@ export default {
     "trailer",
     "index",
     "condition",
+    "hoverPosition",
   ],
 
   data(props) {
@@ -71,6 +72,7 @@ export default {
         :description="description"
         :trailer="trailer"
         :title="title"
+        :hoverPosition="hoverPosition"
       />
 
       <div

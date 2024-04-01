@@ -1,6 +1,7 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
+import { HOVER_HOME } from "../../constants/hover";
 import Card from "../Card.vue";
 import CardLoading from "../Loading/SkeletonLoading/CardLoading.vue";
 
@@ -9,6 +10,12 @@ export default {
     return {
       series: [] as any,
       loading: true,
+      width: window.innerWidth,
+      dividedNumber: 0,
+      secondDividedNumber: 0,
+      indexCondition: 0,
+      indexSubtract: 0,
+      hoverPosition: HOVER_HOME,
     };
   },
   methods: {
@@ -21,9 +28,31 @@ export default {
         this.loading = false;
       });
     },
+    onResize: function () {
+      this.width = window.innerWidth;
+    },
   },
   mounted() {
     this.fetchSeries();
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+      console.log(this.width);
+    });
+  },
+  created() {
+    this.$watch(
+      () => this.width,
+      () => {
+        this.dividedNumber = this.width >= 1536 ? 5 : 4;
+
+        this.secondDividedNumber = this.width >= 1536 ? 4 : 3;
+
+        this.indexCondition = this.width >= 1536 ? 5 : 4;
+
+        this.indexSubtract = this.width >= 1536 ? 4 : 6;
+      },
+      { immediate: true }
+    );
   },
   components: { Card, CardLoading },
 };
@@ -51,7 +80,15 @@ export default {
       :view="s.view"
       :trailer="s.trailer"
       :description="s.description"
-      :condition="(index + 1) % 5 === 0 || (index + 1) % 4 === 0"
+      :hover-position="hoverPosition"
+      :condition="
+        (index <= indexCondition && (index + 1) % dividedNumber === 0) ||
+        (index <= indexCondition && (index + 1) % secondDividedNumber === 0) ||
+        (index > indexCondition &&
+          (index - indexSubtract - 1) % dividedNumber === 0) ||
+        (index > indexCondition &&
+          (index - indexSubtract) % secondDividedNumber === 0)
+      "
     />
   </aside>
 </template>

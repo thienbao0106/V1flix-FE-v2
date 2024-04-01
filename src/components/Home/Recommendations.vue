@@ -1,6 +1,8 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
+import { HOVER_HOME } from "../../constants/hover";
+
 import Card from "../Card.vue";
 import CardLoading from "../Loading/SkeletonLoading/CardLoading.vue";
 
@@ -17,6 +19,7 @@ export default {
       secondDividedNumber: 0,
       indexCondition: 0,
       indexSubtract: 0,
+      hoverPosition: HOVER_HOME,
     };
   },
 
@@ -24,7 +27,6 @@ export default {
     this.fetchRecommendations();
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
-      console.log(this.width);
     });
   },
   components: { Card, CardLoading },
@@ -90,6 +92,7 @@ export default {
       :type="s.type"
       :view="s.view"
       :description="s.description"
+      :hover-position="hoverPosition"
       :condition="
         (index <= indexCondition && (index + 1) % dividedNumber === 0) ||
         (index <= indexCondition && (index + 1) % secondDividedNumber === 0) ||
@@ -98,7 +101,6 @@ export default {
         (index > indexCondition &&
           (index - indexSubtract) % secondDividedNumber === 0)
       "
-      :trailer="s.trailer"
     />
   </aside>
 </template>

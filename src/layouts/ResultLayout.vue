@@ -26,7 +26,7 @@ export default {
     <h1 class="text-2xl font-bold">{{ capitalizeWord(title) }}</h1>
     <section
       v-if="loading"
-      class="w-full grid 2xl:grid-cols-7 xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-3 gap-y-4 lg:mt-4 mt-7"
+      class="w-full grid 2xl:grid-cols-7 xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 2xl:gap-x-3 xl:gap-x-7 lg:gap-x-5 gap-x-3 gap-y-4 lg:mt-4 mt-7"
     >
       <CardLoading :key="index" v-for="index in Array(12).keys()" />
     </section>

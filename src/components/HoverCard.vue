@@ -9,6 +9,7 @@ export default {
     "totalEpisodes",
     "type",
     "isEndOfRow",
+    "hoverPosition",
   ],
   data() {
     return {
@@ -18,7 +19,7 @@ export default {
 
   setup(props) {
     const hoverRef = ref<HTMLDivElement>();
-    console.log(props.isEndOfRow);
+    console.log(props.hoverPosition);
     return {
       hoverRef,
     };
@@ -28,11 +29,7 @@ export default {
 
 <template>
   <main
-    :class="
-      isEndOfRow
-        ? '2xl:right-[15rem] xl:right-[13rem] right-[17.5rem]'
-        : ' 2xl:left-[15rem] xl:left-[13rem] left-[17.5rem]'
-    "
+    :class="isEndOfRow ? hoverPosition.right : hoverPosition.left"
     class="z-12 absolute hidden lg:group-hover:block text-white bg-mainColor h-fit w-[400px] rounded-md top-1/3 p-2 space-y-3"
   >
     <h1 class="font-bold text-2xl">{{ title.main_title }}</h1>

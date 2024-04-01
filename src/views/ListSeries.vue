@@ -118,6 +118,10 @@ export default {
           :total_episodes="s.total_episodes"
           :type="s.type"
           :view="s.view"
+          :hoverPosition="{
+            right: '2xl:right-[15rem] xl:right-[13rem] right-[17.5rem]',
+            left: '2xl:left-[15rem] xl:left-[13rem] left-[17.5rem]',
+          }"
           :condition="
             (index <= indexCondition && (index + 1) % dividedNumber === 0) ||
             (index <= indexCondition &&
@@ -132,5 +136,3 @@ export default {
     </ResultLayout>
   </main>
 </template>
-
-<!-- 9, 13, 17, 22 -->
