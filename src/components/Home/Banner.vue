@@ -3,34 +3,34 @@ import { useQuery } from "@vue/apollo-composable";
 import { register } from "swiper/element/bundle";
 import { seriesBannerQuery } from "../../queries/series";
 import BannerCard from "./BannerCard.vue";
+import BannerCardLoading from "../Loading/SkeletonLoading/BannerCardLoading.vue";
 register();
 
 export default {
-  props: ["setLoading"],
   data() {
     return {
       series: [] as any[],
       index: 0,
       width: window.innerWidth,
-    };
-  },
-  setup() {
-    const { onResult: resultFn } = useQuery(seriesBannerQuery(5));
-
-    return {
-      resultFn,
+      loading: true,
     };
   },
   methods: {
     onResize: function () {
       this.width = window.innerWidth;
     },
+    fetchBanner: function () {
+      const { onResult: resultFn } = useQuery(seriesBannerQuery(5));
+      resultFn((result) => {
+        if (!result.data) return;
+        this.series = result.data.series.series;
+        this.loading = false;
+        console.log(this.loading);
+      });
+    },
   },
   mounted() {
-    this.resultFn((result) => {
-      if (result.data) this.series = result.data.series.series;
-      this.setLoading(false);
-    });
+    this.fetchBanner();
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
@@ -59,7 +59,7 @@ export default {
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
   },
-  components: { BannerCard },
+  components: { BannerCard, BannerCardLoading },
 };
 </script>
 
@@ -72,7 +72,8 @@ export default {
     >
       {{ width > 1024 ? `NO. ${index + 1}` : `${index + 1}/${series.length}` }}
     </div>
-    <swiper-container init="false">
+    <BannerCardLoading v-if="loading" />
+    <swiper-container v-else init="true">
       <swiper-slide :key="s._id" v-for="(s, index) in series">
         <BannerCard
           :index="index"

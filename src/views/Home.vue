@@ -10,15 +10,10 @@ import { HOVER_HOME } from "../constants/hover";
 export default {
   data() {
     return {
-      loading: true,
       hoverPosition: HOVER_HOME,
     };
   },
-  methods: {
-    setLoading: function (loading: boolean) {
-      this.loading = loading;
-    },
-  },
+
   setup() {
     document.title = "Home";
   },
@@ -35,18 +30,16 @@ export default {
 </script>
 
 <template>
-  <Loading v-if="loading" message="Getting data..." />
   <main class="space-y-5">
     <section class="text-white">
-      <Banner :setLoading="setLoading" />
+      <Banner />
     </section>
     <!-- temp fix for loading-->
-    <section v-if="!loading" class="text-white">
+    <section class="text-white">
       <RandomSeries />
     </section>
     <main
       className="bg-bgColor xl:px-9 px-4 py-2 flex xl:flex-row flex-col text-white"
-      v-if="!loading"
     >
       <section
         className="2xl:basis-3/4 basis-[65%] mt-5 xl:pr-10 pr-0 space-y-8"
