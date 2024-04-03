@@ -39,11 +39,11 @@ export default {
       :status="series.status"
       :title="series.title"
       :total_episodes="series.total_episodes"
-      :type="series.type"
+      :type="series?.type"
       :view="series.view"
       :current_episode="currentEp"
       :date="date || ``"
-      :rating="series.rating"
+      :rating="series?.rating"
     />
   </div>
 </template>

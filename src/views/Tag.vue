@@ -39,7 +39,15 @@ export default {
     :message="`Getting data`"
   />
   <main class="text-white px-8 space-y-3" v-else>
-    <h1 class="font-bold text-2xl">{{ tagName }} Anime</h1>
+    <h1
+      class="font-bold text-xl text-white flex w-full flex-row items-center gap-x-2"
+    >
+      <span> Tag </span>
+      <span class="text-sm"> > </span>
+      <span>
+        {{ tag.name }}
+      </span>
+    </h1>
     <p>{{ tag.description }}</p>
     <section
       v-if="tag.series.length > 0"

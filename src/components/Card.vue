@@ -65,7 +65,7 @@ export default {
   <div class="flex flex-col w-full">
     <div class="relative group">
       <HoverCard
-        v-if="description && width >= 1024"
+        v-if="description && width >= 1280"
         :isEndOfRow="condition"
         :type="type"
         :totalEpisodes="total_episodes"

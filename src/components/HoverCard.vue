@@ -1,6 +1,4 @@
 <script lang="ts">
-import { ref } from "vue";
-
 export default {
   props: [
     "trailer",
@@ -11,26 +9,13 @@ export default {
     "isEndOfRow",
     "hoverPosition",
   ],
-  data() {
-    return {
-      isShown: false,
-    };
-  },
-
-  setup(props) {
-    const hoverRef = ref<HTMLDivElement>();
-    console.log(props.hoverPosition);
-    return {
-      hoverRef,
-    };
-  },
 };
 </script>
 
 <template>
   <main
-    :class="isEndOfRow ? hoverPosition.right : hoverPosition.left"
     class="z-12 absolute hidden lg:group-hover:block text-white bg-mainColor h-fit w-[400px] rounded-md top-1/3 p-2 space-y-3"
+    :class="isEndOfRow ? hoverPosition.right : hoverPosition.left"
   >
     <h1 class="font-bold text-2xl">{{ title.main_title }}</h1>
     <div class="flex flex-row italic gap-x-3">

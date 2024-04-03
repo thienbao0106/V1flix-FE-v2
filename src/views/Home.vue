@@ -6,11 +6,12 @@ import RandomSeries from "../components/Home/RandomSeries.vue";
 import Loading from "../components/Loading/Loading.vue";
 import NewlyAdded from "../components/Home/NewlyAdded.vue";
 import LatestEpisodes from "../components/Home/LatestEpisodes.vue";
-
+import { HOVER_HOME } from "../constants/hover";
 export default {
   data() {
     return {
-      loading: false,
+      loading: true,
+      hoverPosition: HOVER_HOME,
     };
   },
   methods: {
@@ -54,7 +55,7 @@ export default {
           <h1 className="font-bold lg:text-2xl text-xl mb-5">
             Recommendations
           </h1>
-          <Recommendations />
+          <Recommendations :hover-position="hoverPosition" />
         </div>
         <hr />
         <div>
@@ -68,7 +69,7 @@ export default {
               />
             </router-link>
           </div>
-          <NewlyAdded />
+          <NewlyAdded :hover-position="hoverPosition" />
         </div>
         <hr />
 

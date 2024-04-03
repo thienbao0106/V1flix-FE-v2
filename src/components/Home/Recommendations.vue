@@ -1,12 +1,12 @@
 <script lang="ts">
 import { useQuery } from "@vue/apollo-composable";
 import { seriesQuery } from "../../queries/series";
-import { HOVER_HOME } from "../../constants/hover";
 
 import Card from "../Card.vue";
 import CardLoading from "../Loading/SkeletonLoading/CardLoading.vue";
 
 export default {
+  props: ["hoverPosition"],
   data() {
     return {
       series: [] as any[],
@@ -19,7 +19,6 @@ export default {
       secondDividedNumber: 0,
       indexCondition: 0,
       indexSubtract: 0,
-      hoverPosition: HOVER_HOME,
     };
   },
 
@@ -57,6 +56,7 @@ export default {
     this.$watch(
       () => this.width,
       () => {
+        if (this.width <= 1280) return;
         this.dividedNumber = this.width >= 1536 ? 5 : 4;
 
         this.secondDividedNumber = this.width >= 1536 ? 4 : 3;

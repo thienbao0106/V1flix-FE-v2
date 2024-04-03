@@ -20,13 +20,15 @@ export default {
     return {
       isOwner: this.$route.params.username === "me",
       score:
-        this.rating.find((rate: any) => {
-          if (this.$route.params.username === "me")
-            return (
-              rate.user.username === window.localStorage.getItem("username")
-            );
-          return rate.user.username === this.$route.params.username;
-        })?.score || "",
+        (this.rating &&
+          this.rating.find((rate: any) => {
+            if (this.$route.params.username === "me")
+              return (
+                rate.user.username === window.localStorage.getItem("username")
+              );
+            return rate.user.username === this.$route.params.username;
+          })?.score) ||
+        "",
     };
   },
   setup() {

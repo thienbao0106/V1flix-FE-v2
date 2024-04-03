@@ -28,7 +28,7 @@ export default {
     </div>
     <div className=" xl:basis-1/5 md:basis-[10%] sm:basis-[15%] basis-1/5 ">
       <svg
-        class="w-full h-[120px] text-gray-200 dark:text-gray-600"
+        class="w-full h-[120px] text-gray-200 dark:text-gray-600 xl:py-0 py-2"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"

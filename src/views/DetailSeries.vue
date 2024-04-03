@@ -19,7 +19,11 @@ export default {
       title: this.$route.params.title,
       loading: false,
       currentSection: "overview",
+      history: JSON.parse(localStorage.getItem("history") || ""),
     };
+  },
+  setup() {
+    console.log(JSON.parse(localStorage.getItem("history") || ""));
   },
   methods: {
     getImageType,
@@ -197,6 +201,7 @@ export default {
                 :episodes="series.episodes"
                 :seriesTitle="series.title.main_title"
                 :duration="series.duration"
+                :history="history === '' ? [] : history"
               />
             </div>
           </section>

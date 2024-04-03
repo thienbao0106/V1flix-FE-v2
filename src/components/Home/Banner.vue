@@ -15,11 +15,10 @@ export default {
     };
   },
   setup() {
-    const { onResult: resultFn, loading } = useQuery(seriesBannerQuery(5));
+    const { onResult: resultFn } = useQuery(seriesBannerQuery(5));
 
     return {
       resultFn,
-      loading,
     };
   },
   methods: {
@@ -28,10 +27,9 @@ export default {
     },
   },
   mounted() {
-    this.setLoading(this.loading);
     this.resultFn((result) => {
-      this.setLoading(this.loading);
       if (result.data) this.series = result.data.series.series;
+      this.setLoading(false);
     });
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
