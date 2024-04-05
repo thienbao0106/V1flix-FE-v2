@@ -36,6 +36,7 @@ export default {
     });
 
     const swiperEl: any = document.querySelector("swiper-container");
+
     if (!swiperEl) return;
     // swiper parameters
     const swiperParams = {
@@ -53,7 +54,8 @@ export default {
     };
     // now we need to assign all parameters to Swiper element
     Object.assign(swiperEl, swiperParams);
-    // and now initialize it
+
+    // and now initia lize it
     swiperEl.initialize();
   },
   beforeUnmount() {
@@ -65,15 +67,15 @@ export default {
 
 <template>
   <section class="relative" aria-label="banner">
+    <BannerCardLoading v-if="loading" />
     <div
-      v-if="series.length > 0"
+      v-else
       class="absolute xl:bottom-[12px] lg:bottom-[10px] bottom-[15px] xl:left-[82%] lg:left-[79%] left-[47.5%] font-bold lg:text-2xl text-xl"
       :class="index !== 0 ? 'text-white ' : 'text-secondColor'"
     >
       {{ width > 1024 ? `NO. ${index + 1}` : `${index + 1}/${series.length}` }}
     </div>
-    <BannerCardLoading v-if="loading" />
-    <swiper-container v-else init="true">
+    <swiper-container init="false">
       <swiper-slide :key="s._id" v-for="(s, index) in series">
         <BannerCard
           :index="index"

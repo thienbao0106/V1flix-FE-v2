@@ -1,6 +1,10 @@
 <script lang="ts">
+import { capitalizeWord } from "../../utils/handleWord";
 export default {
-  props: ["title", "view", "favors", "genres", "rating"],
+  props: ["title", "view", "favors", "genres", "rating", "userStatus"],
+  methods: {
+    capitalizeWord,
+  },
 };
 </script>
 
@@ -8,7 +12,23 @@ export default {
   <section
     class="flex lg:justify-between flex-col lg:h-[180px] h-full space-y-3 w-full"
   >
-    <h1 class="font-bold text-3xl">{{ title.main_title }}</h1>
+    <div class="flex xl:flex-row flex-col justify-start items-center">
+      <h1 class="font-bold text-3xl">{{ title.main_title }}</h1>
+      <span
+        v-if="userStatus !== ''"
+        :class="
+          userStatus === 'completed'
+            ? 'bg-green-500'
+            : userStatus === 'on-hold'
+            ? 'bg-yellow-500'
+            : userStatus === 'plans to watch'
+            ? 'bg-gray-500'
+            : 'bg-blue-4'
+        "
+        class="xl:ml-2 ml-0 xl:mt-0 mt-2 xl:p-1 p-2 rounded-md font-bold"
+        >{{ capitalizeWord(userStatus) }}</span
+      >
+    </div>
     <h2 class="text-md italic">{{ title.alt_title }}</h2>
     <div
       class="flex flex-row lg:justify-start justify-center items-center lg:gap-x-5 text-2xl font-bold"

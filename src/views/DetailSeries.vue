@@ -20,6 +20,7 @@ export default {
       loading: false,
       currentSection: "overview",
       history: JSON.parse(localStorage.getItem("history") || ""),
+      userStatus: "",
     };
   },
   setup() {
@@ -69,6 +70,10 @@ export default {
     setSection: function (section: string) {
       this.currentSection = section;
     },
+    setUserStatus: function (userStatus: string) {
+      this.userStatus = userStatus;
+      console.log(this.userStatus);
+    },
   },
   mounted() {
     this.fetchSeries();
@@ -94,6 +99,7 @@ export default {
     :series="series"
     :current-ep="1"
     :reload="true"
+    :setUserStatus="setUserStatus"
   />
   <main
     v-if="Object.keys(series).length > 0 && !loading"
@@ -127,6 +133,7 @@ export default {
             :view="series.view"
             :genres="series.genres"
             :rating="series.avg_score"
+            :userStatus="userStatus"
           />
           <section class="space-y-3 w-full lg:text-xl text-md">
             <header

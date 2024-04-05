@@ -16,7 +16,7 @@ import { USER_QUERIES } from "../../constants/user";
 import Loading from "../Loading/Loading.vue";
 
 export default {
-  props: ["series", "currentEp", "reload"],
+  props: ["series", "currentEp", "reload", "setUserStatus"],
   data() {
     return {
       series: {},
@@ -195,6 +195,7 @@ export default {
           this.isInList = filteredArr.length > 0;
           if (filteredArr.length > 0) {
             this.status = filteredArr[0].status;
+            if (this.setUserStatus) this.setUserStatus(this.status);
             this.note = filteredArr[0].note;
             this.currentEp = filteredArr[0].currentEp;
           } else {
@@ -353,12 +354,6 @@ export default {
                 class="w-full text-white p-2 rounded-lg bg-opacityText"
               />
             </div>
-            <!-- <button
-              @click="() => updateScore()"
-              class="h-fit lg:my-0 my-4 p-2 rounded-lg bg-secondColor font-bold hover:bg-secondColorBrighter lg:w-fit w-[20rem]"
-            >
-              Update
-            </button> -->
           </div>
         </div>
       </div>
