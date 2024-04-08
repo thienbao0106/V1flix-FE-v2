@@ -107,7 +107,7 @@ export default {
     :toggle-sub-nav="toggleSubNav"
   />
   <nav
-    class="z-[800] max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
+    class="z-[800] animate-fade-in max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
   >
     <div class="lg:w-3/6 w-2/6 flex gap-x-8 justify-start items-center">
       <svg

@@ -34,7 +34,6 @@ export default {
     <section class="text-white">
       <Banner />
     </section>
-    <!-- temp fix for loading-->
     <section class="text-white">
       <RandomSeries />
     </section>
