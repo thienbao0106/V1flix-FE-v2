@@ -57,7 +57,7 @@ export const VIDEO_QUERIES: any = {
     "genres { \n _id \n name \n}",
     "tags { \n _id \n name \n}",
     "duration",
-    "trailer { \n id \n site \n thumbnail \n}",
+    "trailer {  \n site \n thumbnail \n idTrailer \n}",
     "avg_score",
     "rating { \n user { \n _id \n username } \n score \n }",
     "relation { \n role \n related_series { \n _id \n title {\n main_title \n alt_title \n } \n images { \n source \n type \n } \n total_episodes \n status \n } \n}",
