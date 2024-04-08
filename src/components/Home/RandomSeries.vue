@@ -28,9 +28,8 @@ export default {
         ])
       );
       onResult((result: any) => {
-        if (result.data) {
-          this.series = result.data.randomSeries;
-        }
+        if (!result.data) return;
+        this.series = result.data.randomSeries;
         this.loading = false;
       });
     },
