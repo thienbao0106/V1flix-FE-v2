@@ -11,6 +11,7 @@ import Trailer from "../components/DetailSeries/Trailer.vue";
 import Episodes from "../components/DetailSeries/Episodes.vue";
 import Relations from "../components/DetailSeries/Relations.vue";
 import ListModal from "../components/Modal/ListModal.vue";
+import TrailerModal from "../components/DetailSeries/TrailerModal.vue";
 
 export default {
   data() {
@@ -21,6 +22,7 @@ export default {
       currentSection: "overview",
       history: JSON.parse(localStorage.getItem("history") || ""),
       userStatus: "",
+      trailer: {} as any,
     };
   },
   setup() {
@@ -74,6 +76,9 @@ export default {
       this.userStatus = userStatus;
       console.log(this.userStatus);
     },
+    setTrailer: function (trailer: any) {
+      this.trailer = trailer;
+    },
   },
   mounted() {
     this.fetchSeries();
@@ -88,6 +93,7 @@ export default {
     Episodes,
     Relations,
     ListModal,
+    TrailerModal,
   },
 };
 </script>
@@ -100,6 +106,11 @@ export default {
     :current-ep="1"
     :reload="true"
     :setUserStatus="setUserStatus"
+  />
+  <TrailerModal
+    v-if="trailer.idTrailer !== ''"
+    :id-trailer="trailer.idTrailer"
+    :index="trailer.index"
   />
   <main
     v-if="Object.keys(series).length > 0 && !loading"
@@ -198,6 +209,7 @@ export default {
               <Trailer
                 :trailer="series.trailer"
                 v-if="currentSection === 'trailer'"
+                :set-trailer="setTrailer"
               />
               <Relations
                 :relations="series.relation"
