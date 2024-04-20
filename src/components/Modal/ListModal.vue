@@ -65,17 +65,25 @@ export default {
         toast.error("Add failed", toastSettings.error);
       }
     },
-    deleteSeries: function () {
+    deleteSeries: async function () {
       try {
         const wantDelete: boolean = confirm(
           "Do you want to remove this out your list?"
         );
         if (!wantDelete) return;
         const { mutate } = useMutation(removeSeriesMutation);
-        mutate({
+        console.log(this.userId);
+        const result = await mutate({
           seriesId: this.series._id,
           userId: this.userId,
         });
+        if (!result) {
+          toast.error(
+            "Can't remove this series from list",
+            toastSettings.error
+          );
+          return;
+        }
         toast.success("Remove successfully", toastSettings.error);
         this.isInList = false;
         this.note = "";
