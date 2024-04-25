@@ -7,6 +7,7 @@ import Members from "../components/Room/Members.vue";
 import { io } from "socket.io-client";
 import Loading from "../components/Loading/Loading.vue";
 import InfoRoom from "../components/Room/InfoRoom.vue";
+import { generateString } from "../utils/handleWord";
 
 export default {
   data() {
@@ -19,7 +20,8 @@ export default {
       isShow: false,
       listUser: [] as any,
       socket: null as any,
-      currentUser: window.localStorage.getItem("username") || "",
+      currentUser:
+        window.localStorage.getItem("username") || `Guest-${generateString(4)}`,
     };
   },
   methods: {

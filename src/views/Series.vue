@@ -251,16 +251,10 @@ export default {
     :reload="false"
   />
 
-  <!-- <div
-    class="text-4xl font-bold text-white h-screen"
-    v-if="Object.keys(series).length === 0"
-  >
-    <Loading message="Getting the data" />
-  </div> -->
   <section
     id="main-video"
     v-if="!loading && Object.keys(series).length > 0"
-    class="text-white space-y-5 px-8 md:gap-x-16"
+    class="text-white px-8 md:gap-x-16"
     :class="isTheaterMode ? `lg:flex-none` : `xl:flex xl:flex-row lg:flex-none`"
   >
     <section

@@ -33,6 +33,7 @@ export default {
     fetchRecommendations: function () {
       const { onResult: resultFn } = useQuery(seriesQuery);
       resultFn((result) => {
+        console.log(result.data);
         if (!result.data) return;
 
         this.series = [...result.data.series.series].sort(

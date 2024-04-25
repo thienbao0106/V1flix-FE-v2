@@ -33,7 +33,7 @@ export default {
 <template>
   <section id="chat-box" class="border border-white p-2 rounded-lg">
     <h1 class="font-bold text-lg">Chatbox</h1>
-    <div class="overflow-y-auto xl:h-[52rem] h-[30rem]">
+    <div class="overflow-y-auto h-[30rem]">
       <div v-for="msg in listMessages">
         <div :class="msg.user.isHost ? 'mb-4' : 'mb-2'">
           <span class="font-bold"

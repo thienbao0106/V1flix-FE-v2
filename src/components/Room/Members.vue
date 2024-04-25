@@ -11,7 +11,7 @@ export default {
 </script>
 <template>
   <section
-    class="border border-white p-2 rounded-lg h-[20rem] overflow-y-auto space-y-2"
+    class="border border-white p-2 rounded-lg h-[17rem] overflow-y-auto space-y-2"
   >
     <h1 class="font-bold text-xl">{{ listUser.length }} Members</h1>
     <div class="grid grid-cols-2 gap-2">

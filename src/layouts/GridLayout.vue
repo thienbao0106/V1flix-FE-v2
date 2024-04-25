@@ -13,7 +13,7 @@ export default {
 <template>
   <div>
     <div
-      class="grid xl:grid-cols-7 lg:grid-cols-5 md:grid-cols-3 grid-cols-2 w-full lg:pl-8 pl-0 lg:pr-8 pr-0 gap-x-5 gap-y-5"
+      class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-3 grid-cols-2 w-full lg:pl-8 pl-0 lg:pr-8 pr-0 gap-x-5 gap-y-5"
     >
       <GridItemCard
         @click="setSeries(series)"
