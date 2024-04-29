@@ -32,6 +32,7 @@ export default {
       width: window.screen.width,
       editCue: false,
       isFullScreen: false,
+      currentSelection: "",
     };
   },
   created() {
@@ -116,6 +117,9 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
+    setSelection: function (selection: string) {
+      this.currentSelection = selection;
+    },
     handleCue: function () {
       if (!this.trackRef) return;
 
@@ -188,7 +192,11 @@ export default {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.remove("mini-player");
       });
+      this.videoRef.addEventListener("click", () => {
+        if (!this.settingBoxRef) return;
 
+        this.settingBoxRef.classList.add("hidden");
+      });
       this.videoRef.addEventListener("mousemove", () => {
         if (!this.controlContainerRef || !this.videoRef || !this.trackRef)
           return;
@@ -196,6 +204,7 @@ export default {
         const controller: HTMLDivElement = this.controlContainerRef;
         const video: HTMLVideoElement = this.videoRef;
         const videoHeader: any = this.videoHeaderRef;
+        const settingBox: any = this.settingBoxRef;
         const { cues } = this.trackRef.track;
 
         if (controller.style.opacity === "0") {
@@ -213,8 +222,13 @@ export default {
 
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
-          video.style.cursor = "none";
-          controller.style.opacity = "0";
+          if (settingBox) {
+            video.style.cursor = "default";
+            controller.style.opacity = "1";
+          } else {
+            video.style.cursor = "none";
+            controller.style.opacity = "0";
+          }
           videoHeader.style.opacity = "0";
 
           if (!cues) return;
@@ -343,6 +357,7 @@ export default {
       );
     },
     toggleSettings: function () {
+      if (this.currentSelection != "") this.currentSelection = "";
       handleVideo.toggleSettings(this.settingBoxRef);
     },
     setSubtitle: function (subtitle: any) {
@@ -504,6 +519,8 @@ export default {
         </div>
         <div ref="settingBoxRef" class="hidden">
           <Settings
+            :set-selection="setSelection"
+            :current-selection="currentSelection"
             :list-languages="subtitles"
             :set-subtitle="setSubtitle"
             v-if="subtitles.length > 0"

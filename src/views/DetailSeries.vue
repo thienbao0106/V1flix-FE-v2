@@ -20,14 +20,14 @@ export default {
       title: this.$route.params.title,
       loading: false,
       currentSection: "overview",
-      history: JSON.parse(localStorage.getItem("history") || ""),
+      history: localStorage.getItem("history")
+        ? JSON.parse(localStorage.getItem("history") || "")
+        : "",
       userStatus: "",
       trailer: {} as any,
     };
   },
-  setup() {
-    console.log(JSON.parse(localStorage.getItem("history") || ""));
-  },
+  setup() {},
   methods: {
     getImageType,
     fetchSeries: function () {
