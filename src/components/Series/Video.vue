@@ -18,6 +18,7 @@ export default {
     "isTheaterMode",
     "title",
     "epNum",
+    "totalEpisode",
   ],
   data() {
     return {
@@ -33,6 +34,7 @@ export default {
       editCue: false,
       isFullScreen: false,
       currentSelection: "",
+      isNext: false,
     };
   },
   created() {
@@ -117,6 +119,10 @@ export default {
     window.removeEventListener("resize", this.onResize);
   },
   methods: {
+    setIsNext: function (isNext: boolean) {
+      console.log(this.isNext);
+      this.isNext = isNext;
+    },
     setSelection: function (selection: string) {
       this.currentSelection = selection;
     },
@@ -192,6 +198,16 @@ export default {
         if (!this.videoContainerRef) return;
         this.videoContainerRef.classList.remove("mini-player");
       });
+      this.videoRef.addEventListener("ended", () => {
+        const currentEp: any = this.$route.query.ep;
+        const currentPath = this.$route.path;
+        if (
+          !this.isNext ||
+          parseInt(currentEp) + 1 > parseInt(this.totalEpisode)
+        )
+          return;
+        this.$router.push(`${currentPath}?ep=${parseInt(currentEp) + 1}`);
+      });
       this.videoRef.addEventListener("click", () => {
         if (!this.settingBoxRef) return;
 
@@ -222,7 +238,7 @@ export default {
 
         clearTimeout(this.timeout);
         this.timeout = setTimeout(function () {
-          if (settingBox) {
+          if (!settingBox?.classList.contains("hidden")) {
             video.style.cursor = "default";
             controller.style.opacity = "1";
           } else {
@@ -523,6 +539,7 @@ export default {
             :current-selection="currentSelection"
             :list-languages="subtitles"
             :set-subtitle="setSubtitle"
+            :set-is-next="setIsNext"
             v-if="subtitles.length > 0"
             :current-subtitle="currentSubtitle.label"
             :is-theater-mode="isTheaterMode"

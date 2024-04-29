@@ -286,6 +286,7 @@ export default {
                 :is-theater-mode="isTheaterMode"
                 :title="currentEpisode.title"
                 :ep-num="getInfoUrl.ep"
+                :total-episode="series?.episodes.length"
               />
               <VideoMobile
                 v-if="
