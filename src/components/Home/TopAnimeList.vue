@@ -36,7 +36,7 @@ export default {
 </script>
 
 <template>
-  <h1 className="font-bold lg:text-2xl text-xl mb-5">Most Watched</h1>
+  <h1 className="font-bold lg:text-2xl text-xl mb-3">Most Watched</h1>
   <div v-if="loading">
     <TopAnimeCardLoading
       :rank="index + 1"

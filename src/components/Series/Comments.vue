@@ -53,6 +53,7 @@ export default {
     },
     sendComment: async function () {
       try {
+        if (!this.isUser) throw new Error("You need to login to comment");
         if (this.content.length === 0)
           throw new Error("Comment can't be emptied.");
         const { mutate } = useMutation(addCommentMutation);
@@ -130,12 +131,14 @@ export default {
       </div>
       <div class="2xl:w-[95.5%] lg:w-[93%] md:w-[92%] sm:w-[88%] w-[87%]">
         <input
-          @click="() => handleShowButton(true)"
           type="text"
+          :disabled="username === ''"
           :placeholder="
-            username !== '' ? `Comment as ${username}` : `Add a comment...`
+            username !== ''
+              ? `Comment as ${username}`
+              : `You have to login to send comment.`
           "
-          class="rounded p-2 bg-opacityText w-full mb-2"
+          class="rounded p-2 bg-opacityText w-full mb-2 placeholder:font-bold"
           v-model="content"
         />
         <div class="w-full flex justify-end items-end gap-x-3" v-if="isUser">

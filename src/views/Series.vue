@@ -254,7 +254,7 @@ export default {
   <section
     id="main-video"
     v-if="!loading && Object.keys(series).length > 0"
-    class="text-white px-8 md:gap-x-16"
+    class="text-white px-8 md:gap-x-4"
     :class="isTheaterMode ? `lg:flex-none` : `xl:flex xl:flex-row lg:flex-none`"
   >
     <section
@@ -414,13 +414,13 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 w-full py-0 space-y-6"
+      class="xl:w-2/6 w-full py-0 space-y-4"
     >
-      <div class="bg-opacityText px-2 py-4 my-0 rounded-lg w-full">
+      <div class="bg-opacityText px-2 py-4 rounded-lg w-full">
         <h2 class="font-bold lg:text-2xl text-xl mb-5 px-2">List Episodes</h2>
         <Episodes :episodes="series?.episodes" :current-info="getInfoUrl" />
       </div>
-      <div class="p-2 w-full">
+      <div class="w-full">
         <TopAnimeList />
       </div>
       <Comments
