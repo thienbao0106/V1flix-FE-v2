@@ -39,12 +39,12 @@ export default {
             ? 'third'
             : 'other'
         "
-        class="text-7xl text-opacityText font-extrabold"
+        class="text-5xl text-opacityText font-extrabold"
       >
         {{ rank }}
       </span>
     </div>
-    <div className=" xl:basis-1/5 md:basis-[10%] sm:basis-[15%] basis-1/5 ">
+    <div className=" xl:basis-1/4 md:basis-[10%] sm:basis-[15%] basis-1/5 ">
       <img
         loading="lazy"
         class="xl:w-full xl:h-full md:h-[8rem] sm:h-[8rem] sm:w-fit h-full w-full"

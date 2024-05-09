@@ -19,8 +19,9 @@ export default {
       this.layout = layout;
     },
     showHistory: function () {
+      if (!window.localStorage.getItem("history")) return;
+
       const history = JSON.parse(window.localStorage.getItem("history") || "");
-      console.log(history);
       if (history.length === 0) {
         return;
       }

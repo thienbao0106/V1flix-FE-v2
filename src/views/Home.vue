@@ -13,7 +13,9 @@ export default {
       hoverPosition: HOVER_HOME,
     };
   },
-
+  mounted() {
+    window.localStorage.setItem("history", JSON.stringify([]));
+  },
   setup() {
     document.title = "Home";
   },

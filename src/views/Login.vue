@@ -57,7 +57,6 @@ export default {
         window.localStorage.setItem("username", username);
         window.localStorage.setItem("token", token);
         window.localStorage.setItem("avatar", avatar);
-        window.localStorage.setItem("history", JSON.stringify([]));
         window.location.href = "/";
       });
       onError((error: any) => {

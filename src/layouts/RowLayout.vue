@@ -21,9 +21,9 @@ export default {
           {{ listSeries[0].date ? "Episode" : "Progress" }}
         </h1>
       </div>
-      <div class="w-2/12 text-center">
+      <!-- <div class="w-2/12 text-center">
         <h1 class="font-bold">Score</h1>
-      </div>
+      </div> -->
       <div class="w-4/12 flex justify-center">
         <h1 class="font-bold">
           {{ listSeries[0].date ? "Time" : "Type" }}

@@ -60,7 +60,6 @@ export default {
     this.$watch(
       () => this.loading,
       () => {
-        if (!window.localStorage.getItem("history")) return;
         const history = JSON.parse(
           window.localStorage.getItem("history") || ""
         );
@@ -73,7 +72,8 @@ export default {
 
   mounted() {
     this.handleIOS();
-
+    if (!window.localStorage.getItem("history"))
+      window.localStorage.setItem("history", JSON.stringify([]));
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
@@ -414,7 +414,7 @@ export default {
     <section
       v-if="!isTheaterMode"
       aria-label="trending"
-      class="xl:w-2/6 w-full py-0 space-y-4"
+      class="xl:w-2/6 w-full py-0 space-y-4 xl:mt-0 mt-4"
     >
       <div class="bg-opacityText px-2 py-4 rounded-lg w-full">
         <h2 class="font-bold lg:text-2xl text-xl mb-5 px-2">List Episodes</h2>

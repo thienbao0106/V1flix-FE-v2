@@ -93,7 +93,7 @@ export default {
         {{ current_episode }}{{ `${date === "" ? `/${total_episodes}` : ``}` }}
       </p>
     </div>
-    <div class="w-2/12 text-center font-bold">
+    <div v-if="score" class="w-2/12 text-center font-bold">
       {{ score }}
       <font-awesome-icon
         v-if="score !== ''"

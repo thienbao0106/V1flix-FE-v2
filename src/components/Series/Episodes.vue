@@ -31,8 +31,8 @@ export default {
             class="rounded-md"
             :class="
               episode.thumbnail === ''
-                ? 'xl:w-[80px] w-[100px]'
-                : 'lg:w-[35%] w-[45%]'
+                ? 'xl:w-[80px] w-[100px] max-h-[106px]'
+                : 'lg:w-[35%] w-[45%] max-h-[106px]'
             "
             :src="
               episode.thumbnail === ''
