@@ -5,19 +5,26 @@ import { VIDEO_QUERIES } from "../../constants/video";
 import SearchCard from "./SearchCard.vue";
 
 export default {
+  props: ["isClosed"],
   data() {
     return {
       keyword: "",
       loading: false,
       resultQuery: [] as any,
       isDropdown: false,
+      maxLength: 4,
     };
   },
+
   methods: {
     fetchResult: function () {
       this.loading = true;
       const { onResult } = useQuery(
-        findSeriesQuery(VIDEO_QUERIES.headerSearch, this.keyword, 3)
+        findSeriesQuery(
+          VIDEO_QUERIES.headerSearch,
+          this.keyword,
+          this.maxLength
+        )
       );
       onResult((result) => {
         if (!result.data) return;
@@ -38,12 +45,26 @@ export default {
       });
     },
   },
+
   created() {
     this.$watch(
       () => this.keyword,
       () => {
+        console.log(this.keyword);
         if (this.keyword === "") return;
         this.fetchResult();
+      },
+      { immediate: true }
+    );
+    this.$watch(
+      () => this.isClosed,
+      () => {
+        console.log(this.isClosed);
+        if (this.isClosed) {
+          this.keyword = "";
+          this.resultQuery = [];
+        }
+        return;
       },
       { immediate: true }
     );
@@ -68,6 +89,7 @@ export default {
         </svg>
       </router-link>
       <input
+        id="search-input"
         type="text"
         class="2xl:w-full xl:w-[24rem] lg:w-[16rem] w-full bg-transparent px-2 focus:outline-none caret-transparent border-0 text-white placeholder:text-white placeholder:font-bold"
         placeholder="Search"
@@ -101,7 +123,7 @@ export default {
         </a>
       </li>
       <li
-        v-if="resultQuery.length === 3"
+        v-if="resultQuery.length === maxLength"
         className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2 list-none"
       >
         <router-link

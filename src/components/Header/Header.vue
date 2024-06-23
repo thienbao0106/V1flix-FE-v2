@@ -5,6 +5,8 @@ import { getGenresMenu } from "../../queries/genres";
 import SubNav from ".././SubNav/SubNav.vue";
 import Search from "../Header/Search.vue";
 import UserInfo from "../Header/UserInfo.vue";
+import SearchButton from "./SearchButton.vue";
+import SearchModal from "./SearchModal.vue";
 export default {
   data() {
     return {
@@ -19,6 +21,7 @@ export default {
       avatar: window.localStorage.getItem("avatar"),
       username: window.localStorage.getItem("username") || "",
       isHoverUsername: false,
+      isCloseSearch: false,
     };
   },
 
@@ -33,6 +36,9 @@ export default {
   },
 
   methods: {
+    setCloseSearch: function (isCloseSearch: boolean) {
+      this.isCloseSearch = isCloseSearch;
+    },
     onResize: function () {
       this.width = window.innerWidth;
     },
@@ -95,11 +101,15 @@ export default {
     );
   },
 
-  components: { SubNav, Search, UserInfo },
+  components: { SubNav, Search, UserInfo, SearchButton, SearchModal },
 };
 </script>
 
 <template>
+  <SearchModal
+    :setCloseSearch="setCloseSearch"
+    :isCloseSearch="isCloseSearch"
+  />
   <SubNav
     v-if="isSubNav"
     :isSubNav="isSubNav"
@@ -109,7 +119,7 @@ export default {
   <nav
     class="z-[800] animate-fade-in max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
   >
-    <div class="lg:w-3/6 w-2/6 flex gap-x-8 justify-start items-center">
+    <div class="w-4/6 flex gap-x-8 justify-start items-center">
       <svg
         class="hover:cursor-pointer menu-burger-icon"
         @click="toggleSubNav(isSubNav)"
@@ -127,18 +137,12 @@ export default {
       <router-link to="/" class="w-fit text-white decoration-none"
         >Logo
       </router-link>
-    </div>
-
-    <section
-      aria-label="search"
-      class="flex flex-row lg:w-3/6 w-4/6 h-12 text-white lg:gap-0"
-    >
-      <aside v-if="width > 1280" aria-label="input" class="w-4/6 flex flex-col">
-        <Search />
+      <aside v-if="width > 1280" class="w-full text-md" aria-label="input">
+        <SearchButton :setCloseSearch="setCloseSearch" />
       </aside>
       <aside
         v-else
-        class="w-2/6 h-full flex flex-col justify-center items-center pt-1"
+        class="w-full h-full flex flex-col justify-center items-center pt-1"
       >
         <router-link
           to="/search"
@@ -151,6 +155,12 @@ export default {
           </svg>
         </router-link>
       </aside>
+    </div>
+
+    <section
+      aria-label="search"
+      class="flex flex-row w-2/6 h-12 text-white lg:gap-0"
+    >
       <div class="w-1/6 flex lg:flex-1 justify-center items-center text-white">
         <svg
           v-if="theme === 'dark'"
