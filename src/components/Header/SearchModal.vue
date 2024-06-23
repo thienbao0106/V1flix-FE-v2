@@ -42,9 +42,12 @@ export default {
         e.clientY < dialogDimensions.top ||
         e.clientY > dialogDimensions.bottom
       ) {
-        this.setCloseSearch(true);
         dialog?.close();
       }
+    });
+    dialog.addEventListener("close", (_event: any) => {
+      this.setCloseSearch(true);
+      document.body.style.overflowY = "scroll";
     });
   },
   components: { Search },
