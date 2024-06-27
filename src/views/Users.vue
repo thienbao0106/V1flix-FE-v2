@@ -30,7 +30,7 @@ export default {
         findListUsers(["_id", "username", "avatar"], this.keyword)
       );
       onResult((result) => {
-        if (!result.data) return;
+        if (!result.data) return [];
         this.listUsers = result.data.findUsers;
         this.loading = false;
       });
@@ -47,22 +47,31 @@ export default {
 </script>
 
 <template>
-  <ResultLayout :loading="loading" :title="`List Users`">
+  <section class="px-8">
+    <h1 class="text-2xl font-bold text-white">List Users</h1>
     <form
       class="flex flex-row justify-between items-center gap-x-3 my-8"
       @submit="handleSearch"
       method="post"
     >
-      <input placeholder="Search" :class="css" v-model="keyword" type="text" />
+      <input
+        :disabled="loading"
+        placeholder="Search"
+        :class="css"
+        v-model="keyword"
+        type="text"
+      />
       <div class="flex flex-row gap-x-2">
         <button
           type="submit"
+          :disabled="loading"
           class="bg-secondColor w-fit py-2 px-4 rounded-md font-bold flex sm:justify-start justify-center sm:items-start items-center gap-2 cursor-pointer text-white"
         >
           Submit
         </button>
         <button
           type="button"
+          :disabled="loading"
           @click="handleReset()"
           class="bg-red-500 w-fit py-2 px-4 rounded-md font-bold flex sm:justify-start justify-center sm:items-start items-center gap-2 cursor-pointer text-white"
         >
@@ -70,6 +79,8 @@ export default {
         </button>
       </div>
     </form>
+  </section>
+  <ResultLayout :loading="loading" type="users">
     <section
       className="w-full grid xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-x-7 gap-y-4 lg:mt-4 mt-7"
     >

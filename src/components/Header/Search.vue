@@ -27,7 +27,7 @@ export default {
         )
       );
       onResult((result) => {
-        if (!result.data) return;
+        if (!result.data) return [];
         this.resultQuery = result.data.findSeries;
         this.isDropdown = true;
         this.loading = false;
