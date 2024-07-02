@@ -16,7 +16,7 @@ export default {
   <button
     id="search-button"
     @click="openModal()"
-    class="h-full py-3 text-left px-2 bg-transparent w-1/2 border hover:border-outColor border-white rounded-lg flex flex-row gap-x-2 justify-start items-center"
+    class="h-full py-2 text-left px-2 bg-transparent w-1/2 border hover:border-outColor border-white rounded-lg flex flex-row gap-x-2 justify-start items-center"
   >
     <svg class="fill-white w-[1.5rem] h-[1.5rem] flex-none" viewBox="0 0 20 20">
       <path

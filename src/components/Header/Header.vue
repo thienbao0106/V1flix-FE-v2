@@ -117,9 +117,9 @@ export default {
     :toggle-sub-nav="toggleSubNav"
   />
   <nav
-    class="z-[800] animate-fade-in max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-5 sm:px-10 px-3"
+    class="z-[800] animate-fade-in max-w-screen sticky top-0 bg-bgColor bg-gradient-to-b from-black to-transparent flex items-center justify-center gap-5 text-white sm:py-7 py-3 sm:px-10 px-3"
   >
-    <div class="w-4/6 flex gap-x-8 justify-start items-center">
+    <div class="w-5/6 flex gap-x-8 justify-start items-center">
       <svg
         class="hover:cursor-pointer menu-burger-icon"
         @click="toggleSubNav(isSubNav)"
@@ -159,7 +159,7 @@ export default {
 
     <section
       aria-label="search"
-      class="flex flex-row w-2/6 h-12 text-white lg:gap-0"
+      class="flex flex-row w-1/6 h-12 text-white lg:gap-0"
     >
       <div class="w-1/6 flex lg:flex-1 justify-center items-center text-white">
         <svg
@@ -189,13 +189,13 @@ export default {
       <a
         v-if="username === ''"
         href="/login"
-        class="xl:mx-0 lg:mx-9 mx-6 w-1/6 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white rounded-lg w-full no-underline"
+        class="xl:mx-0 w-1/2 flex-1 flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor text-white rounded-lg no-underline"
       >
         Login
       </a>
       <div
         v-else
-        class="w-1/6 flex flex-1 justify-center items-center font-bold relative text-white"
+        class="flex flex-1 justify-center items-center font-bold relative text-white"
       >
         <UserInfo
           :username="username"
