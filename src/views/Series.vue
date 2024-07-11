@@ -418,7 +418,11 @@ export default {
     >
       <div class="bg-opacityText px-2 py-4 rounded-lg w-full">
         <h2 class="font-bold lg:text-2xl text-xl mb-5 px-2">List Episodes</h2>
-        <Episodes :episodes="series?.episodes" :current-info="getInfoUrl" />
+        <Episodes
+          :series-thumbnail="series?.images"
+          :episodes="series?.episodes"
+          :current-info="getInfoUrl"
+        />
       </div>
       <div class="w-full">
         <TopAnimeList />

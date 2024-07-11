@@ -21,12 +21,12 @@ export default {
     this.resultFn((result) => {
       if (result.data) {
         const listSeries = [...result.data.series.series];
-        this.mostWatchedSeries = listSeries.sort(
-          (a: any, b: any) => b.view - a.view
-        );
-        this.topRatedSeries = listSeries.sort(
-          (a: any, b: any) => b.avg_score - a.avg_score
-        );
+        this.mostWatchedSeries = listSeries
+          .sort((a: any, b: any) => b.view - a.view)
+          .slice(0, 10);
+        this.topRatedSeries = listSeries
+          .sort((a: any, b: any) => b.avg_score - a.avg_score)
+          .slice(0, 10);
         this.loading = false;
       }
     });

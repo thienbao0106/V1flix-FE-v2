@@ -9,6 +9,7 @@ export default {
 
   methods: {
     defaultImage,
+
     formatThumbnail,
     formatDuration,
     handleError: function (e: any) {
@@ -35,7 +36,6 @@ export default {
         return true;
       }
     });
-    console.log(filtered);
 
     const result = checkWatchedEpisode(filtered, props.episodes);
 
@@ -69,9 +69,9 @@ export default {
             loading="lazy"
             class="w-full h-[200px] group-hover:opacity-60 rounded-lg"
             :src="
-              ep.thumbnail !== ``
-                ? ep.thumbnail
-                : formatThumbnail(ep.source) || defaultImage(`banner`)
+              ep.thumbnail === `` || !ep.thumbnail
+                ? formatThumbnail(ep.source)
+                : ep.thumbnail
             "
           />
           <div

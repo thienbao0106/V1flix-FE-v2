@@ -1,9 +1,10 @@
 <script lang="ts">
-import { defaultImage } from "../../utils/handleImage";
+import { defaultImage, getImageType } from "../../utils/handleImage";
 export default {
-  props: ["episodes", "currentInfo"],
+  props: ["episodes", "currentInfo", "seriesThumbnail"],
   methods: {
     defaultImage,
+    getImageType,
   },
 };
 </script>
@@ -27,23 +28,19 @@ export default {
         :key="index"
       >
         <div class="flex flex-row gap-x-3">
-          <img
-            class="rounded-md"
-            :class="
-              episode.thumbnail === ''
-                ? 'xl:w-[80px] w-[100px] max-h-[106px]'
-                : 'lg:w-[35%] w-[45%] max-h-[106px]'
-            "
-            :src="
-              episode.thumbnail === ''
-                ? defaultImage('thumbnail')
-                : episode.thumbnail
-            "
-          />
           <div
-            :class="episode.thumbnail === '' ? 'w-full' : 'lg:w-[65%] w-full'"
-            class="flex flex-col justify-between py-3"
-          >
+            v-if="episode.thumbnail === '' || !episode.thumbnail"
+            class="rounded-md lg:w-[35%] w-[45%] h-[106px] bg-center bg-no-repeat"
+            :style="{
+              backgroundImage: `url(${getImageType(seriesThumbnail, 'cover')})`,
+            }"
+          ></div>
+          <img
+            v-else
+            class="rounded-md lg:w-[35%] w-[45%] h-[106px]"
+            :src="episode.thumbnail"
+          />
+          <div class="flex flex-col justify-between py-3 lg:w-[65%] w-full">
             <div>
               <h1
                 class="font-bold sm:text-md md:text-lg lg:text-2xl xl:text-sm"
