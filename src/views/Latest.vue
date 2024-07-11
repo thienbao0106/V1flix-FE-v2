@@ -63,7 +63,7 @@ export default {
     :total-page="totalPage"
     :loading="loading"
     :title="`Latest Episode`"
-    type="latest"
+    type="series"
   >
     <section
       class="w-full grid 2xl:grid-cols-7 xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 2xl:gap-x-3 xl:gap-x-7 lg:gap-x-5 gap-x-3 gap-y-4 lg:mt-4 mt-7"

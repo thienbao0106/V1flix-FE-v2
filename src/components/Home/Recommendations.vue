@@ -36,11 +36,13 @@ export default {
         console.log(result.data);
         if (!result.data) return;
 
-        this.series = [...result.data.series.series].sort(
-          (firstSeries: any, nextSeries: any) =>
-            nextSeries.avg_score - firstSeries.avg_score ||
-            nextSeries.view - firstSeries.view
-        );
+        this.series = [...result.data.series.series]
+          .sort(
+            (firstSeries: any, nextSeries: any) =>
+              nextSeries.avg_score - firstSeries.avg_score ||
+              nextSeries.view - firstSeries.view
+          )
+          .slice(0, 10);
         this.loading = false;
       });
     },
@@ -60,11 +62,11 @@ export default {
         if (this.width <= 1280) return;
         this.dividedNumber = this.width >= 1536 ? 5 : 4;
 
-        this.secondDividedNumber = this.width >= 1536 ? 4 : 3;
+        this.secondDividedNumber = this.width >= 1536 ? 10 : 8;
 
-        this.indexCondition = this.width >= 1536 ? 5 : 4;
+        this.indexCondition = this.width >= 1536 ? 4 : 3;
 
-        this.indexSubtract = this.width >= 1536 ? 4 : 6;
+        this.indexSubtract = this.width >= 1536 ? 9 : 7;
       },
       { immediate: true }
     );
@@ -95,12 +97,10 @@ export default {
       :description="s.description"
       :hover-position="hoverPosition"
       :condition="
-        (index <= indexCondition && (index + 1) % dividedNumber === 0) ||
-        (index <= indexCondition && (index + 1) % secondDividedNumber === 0) ||
-        (index > indexCondition &&
-          (index - indexSubtract - 1) % dividedNumber === 0) ||
-        (index > indexCondition &&
-          (index - indexSubtract) % secondDividedNumber === 0)
+        index + 1 === dividedNumber ||
+        index + 1 === secondDividedNumber ||
+        index + 1 === indexCondition ||
+        index + 1 === indexSubtract
       "
     />
   </aside>

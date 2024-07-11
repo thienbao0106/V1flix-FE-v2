@@ -52,11 +52,12 @@ export default {
             Object.keys(series).length > 0 && series.title.main_title
           }`"
         >
-          <img
-            class="w-full xl:h-[20rem] h-[15rem] rounded-md group-hover:opacity-25"
-            :src="getImageType(series.images, `banner`)"
-            :alt="series._id"
-          />
+          <div
+            class="w-full xl:h-[20rem] h-[15rem] rounded-md group-hover:opacity-25 bg-no-repeat bg-center"
+            :style="{
+              backgroundImage: `url(${getImageType(series.images, 'banner')})`,
+            }"
+          ></div>
 
           <div
             class="xl:space-y-3 space-y-0 absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1.5 group-hover:duration-1000 top-0 md:h-full xl:h-[20rem] h-[15rem] w-full flex justify-center items-center flex-col"
