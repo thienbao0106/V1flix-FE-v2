@@ -27,6 +27,13 @@ const apolloClient = new ApolloClient({
   }),
 });
 
+if (import.meta.env.production) {
+  console = {
+    ...console,
+    log: () => {},
+  };
+}
+
 /* import font awesome icon component */
 addIcon();
 const app = createSSRApp({
@@ -35,6 +42,7 @@ const app = createSSRApp({
   },
   render: () => h(App),
 });
+
 const head = createHead();
 
 app.use(router);
