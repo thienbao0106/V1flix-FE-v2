@@ -27,7 +27,7 @@ const apolloClient = new ApolloClient({
   }),
 });
 
-if (import.meta.env.production) {
+if (import.meta.env.PROD) {
   console = {
     ...console,
     log: () => {},
