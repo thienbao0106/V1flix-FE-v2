@@ -1,10 +1,10 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import UnoCSS from "unocss/vite";
-
+import babel from 'vite-plugin-babel';
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), UnoCSS()],
+  plugins: [vue(), UnoCSS(), babel(),],
   server: {
     host: true,
     port: 5173, // This is the port which we will use in docker

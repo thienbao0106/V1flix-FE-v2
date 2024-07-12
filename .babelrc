@@ -1,0 +1,23 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        ["transform-remove-console", { "exclude": ["error", "warn"] }]
+      ]
+    }
+  },
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
+  ]
+}

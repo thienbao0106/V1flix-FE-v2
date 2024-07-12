@@ -3281,6 +3281,11 @@ uuid@^9.0.1:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
   integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
+vite-plugin-babel@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-babel/-/vite-plugin-babel-1.2.0.tgz#0d803d489c2a7e63ceb93e37533de298e1537c71"
+  integrity sha512-ltAnq535Ubf9sDbVCkztAdkwx5aQbNrwPFs+iZTJ5FaAhTdxjqmLGpxsAaRfJWEKBJ/kFf9KwMoTdArm0IRUUw==
+
 vite-plugin-mkcert@^1.16.0:
   version "1.16.0"
   resolved "https://registry.yarnpkg.com/vite-plugin-mkcert/-/vite-plugin-mkcert-1.16.0.tgz#f02cce5747295dd3d8b1958b920bb6b9b7fdace8"
