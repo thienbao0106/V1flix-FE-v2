@@ -50,6 +50,19 @@ export default {
       },
       { immediate: true }
     );
+    this.$watch(
+      () => this.$props.source,
+      () => {
+        console.log(this.$props.source);
+        if (!this.videoRef || !this.trackRef) return;
+
+        this.videoRef.src = handleVideo.checkSource(this.$props.source);
+        this.currentSubtitle =
+          this.subtitles.find((sub: any) => sub.lang === "en") ||
+          this.subtitles[0];
+      },
+      { immediate: true }
+    );
   },
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();

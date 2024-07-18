@@ -47,6 +47,7 @@ export default {
     this.$watch(
       () => this.$route.fullPath,
       () => {
+        console.log("called");
         this.setSeconds();
         this.getInfoUrl = {
           ep: this.$route.query.ep,
@@ -54,9 +55,11 @@ export default {
           title: this.$route.params.title,
         };
         this.fetchSeries();
+        console.log(this.currentEpisode.source);
       },
       { immediate: true }
     );
+
     this.$watch(
       () => this.loading,
       () => {
@@ -400,6 +403,7 @@ export default {
                 <Episodes
                   :episodes="series?.episodes"
                   :current-info="getInfoUrl"
+                  :series-thumbnail="series?.images"
                 />
               </div>
               <div class="p-2">

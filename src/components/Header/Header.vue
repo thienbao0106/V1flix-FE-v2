@@ -159,7 +159,7 @@ export default {
 
     <section
       aria-label="search"
-      class="flex flex-row w-1/6 h-12 text-white lg:gap-0"
+      class="flex flex-row lg:w-1/6 w-1/2 h-12 text-white lg:gap-0 gap-8"
     >
       <div class="w-1/6 flex lg:flex-1 justify-center items-center text-white">
         <svg
