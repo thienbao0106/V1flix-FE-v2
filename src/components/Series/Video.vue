@@ -27,7 +27,7 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: import.meta.env.DEV,
+      isDevEnv: !import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
       width: window.screen.width,
@@ -53,13 +53,13 @@ export default {
     this.$watch(
       () => this.$props.source,
       () => {
-        console.log(this.$props.source);
-        if (!this.videoRef || !this.trackRef) return;
-
+        if (!this.videoRef || !this.videoContainerRef) return;
+        this.captions.mode = "hidden";
         this.videoRef.src = handleVideo.checkSource(this.$props.source);
         this.currentSubtitle =
           this.subtitles.find((sub: any) => sub.lang === "en") ||
           this.subtitles[0];
+        this.captions.mode = "showing";
       },
       { immediate: true }
     );
