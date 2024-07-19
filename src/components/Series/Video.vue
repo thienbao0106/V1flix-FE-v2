@@ -50,20 +50,20 @@ export default {
       },
       { immediate: true }
     );
-    this.$watch(
-      () => this.$props.source,
-      () => {
-        if (!this.videoRef || !this.videoContainerRef) return;
-        this.captions.mode = "hidden";
-        // this.videoRef.autoplay = true;
-        this.videoRef.src = handleVideo.checkSource(this.$props.source);
-        this.currentSubtitle =
-          this.subtitles.find((sub: any) => sub.lang === "en") ||
-          this.subtitles[0];
-        this.captions.mode = "showing";
-      },
-      { immediate: true }
-    );
+    // this.$watch(
+    //   () => this.$props.source,
+    //   () => {
+    //     if (!this.videoRef || !this.videoContainerRef) return;
+    //     this.captions.mode = "hidden";
+    //     // this.videoRef.autoplay = true;
+    //     this.videoRef.src = handleVideo.checkSource(this.$props.source);
+    //     this.currentSubtitle =
+    //       this.subtitles.find((sub: any) => sub.lang === "en") ||
+    //       this.subtitles[0];
+    //     this.captions.mode = "showing";
+    //   },
+    //   { immediate: true }
+    // );
   },
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();
