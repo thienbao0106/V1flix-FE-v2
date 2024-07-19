@@ -55,7 +55,6 @@ export default {
           title: this.$route.params.title,
         };
         this.fetchSeries();
-        console.log(this.currentEpisode.source);
       },
       { immediate: true }
     );
@@ -75,6 +74,7 @@ export default {
 
   mounted() {
     this.handleIOS();
+    this.fetchSeries();
     if (!window.localStorage.getItem("history"))
       window.localStorage.setItem("history", JSON.stringify([]));
     this.$nextTick(() => {
@@ -126,6 +126,7 @@ export default {
             this.currentEpisode = this.series?.episodes.find(
               (episode: any) => episode?.epNum.toString() === this.getInfoUrl.ep
             );
+            console.log(this.currentEpisode.source);
             if (this.currentEpisode)
               this.addView(this.series._id, this.currentEpisode._id);
             const image = this.series?.images.find(

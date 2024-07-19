@@ -38,7 +38,7 @@ export const handlePercent = (
 };
 
 export const checkSource = (sources: any[]): string => {
-  console.log(sources);
+  console.log(sources[1]);
   if (sources.length === 0) return "";
   if (sources.length < 2) return sources[0].value;
   const source = sources.filter((src) => src.value.includes("https://"));

@@ -27,7 +27,7 @@ export default {
       currentSubtitle:
         this.subtitles.find((sub: any) => sub.lang === "en") ||
         this.subtitles[0],
-      isDevEnv: import.meta.env.DEV,
+      isDevEnv: !import.meta.env.DEV,
       timeout: null as any,
       isBuffering: false,
       width: window.screen.width,
@@ -50,20 +50,21 @@ export default {
       },
       { immediate: true }
     );
-    // this.$watch(
-    //   () => this.$props.source,
-    //   () => {
-    //     if (!this.videoRef || !this.videoContainerRef) return;
-    //     this.captions.mode = "hidden";
-    //     // this.videoRef.autoplay = true;
-    //     this.videoRef.src = handleVideo.checkSource(this.$props.source);
-    //     this.currentSubtitle =
-    //       this.subtitles.find((sub: any) => sub.lang === "en") ||
-    //       this.subtitles[0];
-    //     this.captions.mode = "showing";
-    //   },
-    //   { immediate: true }
-    // );
+    this.$watch(
+      () => this.$props.source,
+      () => {
+        if (!this.videoRef || !this.videoContainerRef) return;
+        this.captions.mode = "hidden";
+        // this.videoRef.autoplay = true;
+        this.videoRef.src = handleVideo.checkSource(this.$props.source);
+
+        this.currentSubtitle =
+          this.subtitles.find((sub: any) => sub.lang === "en") ||
+          this.subtitles[0];
+        this.captions.mode = "showing";
+      },
+      { immediate: true }
+    );
   },
   setup(props) {
     const videoRef = ref<HTMLVideoElement>();
@@ -105,6 +106,7 @@ export default {
   },
   mounted() {
     if (!document || !this.videoRef) return;
+    console.log("test router-link");
 
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
