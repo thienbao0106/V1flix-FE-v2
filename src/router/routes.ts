@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/watch/:title",
     name: "Series",
+    props: true,
     component: defineAsyncComponent(() => import("../views/Series.vue")),
   },
   {

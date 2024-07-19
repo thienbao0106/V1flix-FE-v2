@@ -55,6 +55,7 @@ export default {
       () => {
         if (!this.videoRef || !this.videoContainerRef) return;
         this.captions.mode = "hidden";
+        // this.videoRef.autoplay = true;
         this.videoRef.src = handleVideo.checkSource(this.$props.source);
         this.currentSubtitle =
           this.subtitles.find((sub: any) => sub.lang === "en") ||
